@@ -49,11 +49,17 @@ st.markdown("""
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
-    /* 🌟 로그인 폼 내부 입력창 라벨(글씨)을 진하고 선명하게 수정 */
+    /* 🌟 1. 입력창 상단 라벨 글씨 진하게 */
     div[data-testid="stForm"] label p {
         color: #05132d !important;
         font-weight: 700 !important;
         font-size: 1rem !important;
+    }
+    /* 🌟 2. 입력창 내부 안내 텍스트(Placeholder) 색상을 진하게 변경 */
+    input::placeholder {
+        color: #475569 !important;
+        opacity: 1 !important;
+        font-weight: 600 !important;
     }
     /* 상단 우측 로그인 버튼 컴팩트 스타일 */
     .stButton button[kind="secondary"] {
@@ -313,8 +319,8 @@ elif st.session_state.step == "login":
         """, unsafe_allow_html=True)
         
         with st.form("login_form"):
-            email_input = st.text_input("이메일 주소")
-            password_input = st.text_input("비밀번호", type="password")
+            email_input = st.text_input("이메일 주소", placeholder="example@email.com")
+            password_input = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요")
             
             st.markdown("<br>", unsafe_allow_html=True)
             login_submitted = st.form_submit_button("로그인하기", type="primary", use_container_width=True)
