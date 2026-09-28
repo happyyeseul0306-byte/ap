@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. 전문적인 항공 플랫폼 스타일을 위한 커스텀 CSS
+# 2. 커스텀 CSS 스타일링
 st.markdown("""
     <style>
     /* 전체 앱 배경색 */
@@ -75,14 +75,24 @@ if "booking_data" not in st.session_state:
     st.session_state.booking_data = {}
 
 # ==========================================
-# 1. 홈 화면 (메인 배너 및 검색 진입점)
+# 1. 홈 화면 (공항/비행기 배경 이미지 적용)
 # ==========================================
 if st.session_state.step == "home":
-    # 대형 히어로 섹션
+    # Unsplash의 고화질 공항/비행기 사진을 배경으로 깔고, 어두운 오버레이를 얹어 텍스트 가독성을 높였습니다.
     st.markdown("""
-        <div style="background: linear-gradient(135deg, #0b132b 0%, #1c2541 100%); padding: 60px 40px; border-radius: 16px; color: white; text-align: center; margin-bottom: 30px;">
-            <h1 style="margin-bottom: 10px; font-size: 2.5rem;">수백만 개의 항공권, 검색 한 번로 간단하게.</h1>
-            <p style="color: #8d99ae; font-size: 1.1rem;">전 세계 최저가 항공편을 실시간으로 비교하고 예매하세요.</p>
+        <div style="
+            background-image: linear-gradient(rgba(11, 19, 43, 0.65), rgba(11, 19, 43, 0.65)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05');
+            background-size: cover;
+            background-position: center;
+            padding: 90px 30px;
+            border-radius: 16px;
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        ">
+            <h1 style="margin-bottom: 15px; font-size: 2.5rem; font-weight: 800; color: white;">수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>
+            <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 0;">전 세계 최저가 항공편을 실시간으로 비교하고 예매하세요.</p>
         </div>
     """, unsafe_allow_html=True)
     
