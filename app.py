@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. 스카이스캐너 스타일 및 슬라이더 애니메이션 CSS
+# 2. 스카이스캐너 스타일 및 CSS
 st.markdown("""
     <style>
     .stApp {
@@ -22,6 +22,7 @@ st.markdown("""
         align-items: center;
         padding: 10px 20px;
         margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
     .search-box-wrapper {
         background-color: #ffffff;
@@ -40,7 +41,7 @@ st.markdown("""
         margin-bottom: 15px;
         border: 1px solid #e5e7eb;
     }
-    .eticket-box {
+    .eticket-box, .login-box {
         background: #ffffff;
         color: #05132d;
         border: 2px solid #05132d;
@@ -56,18 +57,31 @@ if "step" not in st.session_state:
     st.session_state.step = "home"
 if "booking_data" not in st.session_state:
     st.session_state.booking_data = {}
+if "is_logged_in" not in st.session_state:
+    st.session_state.is_logged_in = False
+if "user_email" not in st.session_state:
+    st.session_state.user_email = ""
 
 # ==========================================
-# 1. 홈 화면 (검색 바 + 자동 전환되는 여행지 사진 배너)
+# 1. 홈 화면 (상단 네비게이션바에 로그인 버튼 포함)
 # ==========================================
 if st.session_state.step == "home":
-    st.markdown("""
-        <div class="nav-bar">
-            <h2 style="color: white; margin: 0; font-size: 1.5rem;">✈️ Skyscanner</h2>
-            <p style="color: #94a3b8; margin: 0;">전 세계 항공권 비교</p>
-        </div>
-    """, unsafe_allow_html=True)
-    
+    # 상단 네비게이션바 구성 (로고, 부제목, 로그인/마이페이지 버튼)
+    nav_col1, nav_col2, nav_col3 = st.columns([2, 5, 1])
+    with nav_col1:
+        st.markdown("<h2 style='color: white; margin: 0; font-size: 1.5rem;'>✈️ Skyscanner</h2>", unsafe_allow_html=True)
+    with nav_col2:
+        st.markdown("<p style='color: #94a3b8; margin: 5px 0 0 0;'>전 세계 항공권 비교</p>", unsafe_allow_html=True)
+    with nav_col3:
+        if st.session_state.is_logged_in:
+            if st.button(f"👤 {st.session_state.user_email[:6]}님", use_container_width=True):
+                st.success("이미 로그인되어 있습니다!")
+        else:
+            if st.button("🔐 로그인", type="secondary", use_container_width=True):
+                st.session_state.step = "login"
+                st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<h1 style='color: white; text-align: center; font-size: 2.2rem; margin-bottom: 5px;'>수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #94a3b8; text-align: center; margin-bottom: 25px;'>원하는 일정의 항공편을 실시간으로 비교하고 예매하세요.</p>", unsafe_allow_html=True)
     
@@ -103,7 +117,7 @@ if st.session_state.step == "home":
             st.session_state.step = "select_flight"
             st.rerun()
 
-    # 🌟 몇 초마다 사진이 자동으로 바뀌는 여행 트렌드 배너 (HTML/JS 슬라이더)
+    # 🌟 자동 전환되는 여행지 사진 배너 (캐러셀)
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -166,7 +180,6 @@ if st.session_state.step == "home":
         </div>
       </div>
     </div>
-
     <script>
       let currentSlide = 0;
       const slides = document.querySelectorAll('.slide');
@@ -175,12 +188,48 @@ if st.session_state.step == "home":
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
       }
-      setInterval(nextSlide, 3500); // 3.5초마다 이미지 변경
+      setInterval(nextSlide, 3500);
     </script>
     </body>
     </html>
     """
     components.html(carousel_html, height=350)
+
+# ==========================================
+# 1-2. 로그인 화면
+# ==========================================
+elif st.session_state.step == "login":
+    if st.button("⬅️ 홈으로 돌아가기"):
+        st.session_state.step = "home"
+        st.rerun()
+        
+    st.markdown("<br>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+    
+    with col2:
+        st.markdown("""
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="color: white;">🔐 Skyscanner 로그인</h2>
+                <p style="color: #94a3b8;">로그인하고 더 많은 맞춤 혜택을 받아보세요.</p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        with st.form("login_form"):
+            email_input = st.text_input("이메일 주소")
+            password_input = st.text_input("비밀번호", type="password")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            login_submitted = st.form_submit_button("로그인하기", type="primary", use_container_width=True)
+            
+            if login_submitted:
+                if email_input and password_input:
+                    st.session_state.is_logged_in = True
+                    st.session_state.user_email = email_input
+                    st.success("로그인 성공! 홈으로 이동합니다.")
+                    st.session_state.step = "home"
+                    st.rerun()
+                else:
+                    st.warning("이메일과 비밀번호를 모두 입력해주세요.")
 
 # ==========================================
 # 2. 비행기 목록 선택 화면
