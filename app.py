@@ -49,6 +49,12 @@ st.markdown("""
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
+    /* 🌟 로그인 폼 내부 입력창 라벨(글씨)을 진하고 선명하게 수정 */
+    div[data-testid="stForm"] label p {
+        color: #05132d !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+    }
     /* 상단 우측 로그인 버튼 컴팩트 스타일 */
     .stButton button[kind="secondary"] {
         background-color: transparent;
