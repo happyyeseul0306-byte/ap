@@ -79,14 +79,12 @@ if "user_email" not in st.session_state:
 # 1. 홈 화면 (상단 네비게이션바에 로그인 버튼 포함)
 # ==========================================
 if st.session_state.step == "home":
-    # 상단 네비게이션바 (우측에 로그인 버튼 배치)
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([2, 4.5, 1, 0.8])
     with nav_col1:
         st.markdown("<h2 style='color: white; margin: 0; font-size: 1.5rem;'>✈️ Skyscanner</h2>", unsafe_allow_html=True)
     with nav_col2:
         st.markdown("<p style='color: #94a3b8; margin: 5px 0 0 0;'>전 세계 항공권 비교</p>", unsafe_allow_html=True)
     with nav_col3:
-        # 아이콘 스타일 연출을 위한 빈 공간 또는 아이콘 대체
         pass
     with nav_col4:
         if st.session_state.is_logged_in:
@@ -101,16 +99,87 @@ if st.session_state.step == "home":
     st.markdown("<h1 style='color: white; text-align: center; font-size: 2.2rem; margin-bottom: 5px;'>수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #94a3b8; text-align: center; margin-bottom: 25px;'>원하는 일정의 항공편을 실시간으로 비교하고 예매하세요.</p>", unsafe_allow_html=True)
     
-    # 🌟 스카이스캐너 스타일의 가로형 검색 바
+    # 🌟 50곳으로 대폭 확장된 전 세계 주요 도시 리스트
+    destinations_list = [
+        # 일본 (8곳)
+        "도쿄/나리타 (NRT) - 일본",
+        "도쿄/하네다 (HND) - 일본",
+        "오사카/간사이 (KIX) - 일본",
+        "후쿠오카 (FUK) - 일본",
+        "삿포로/신치토세 (CTS) - 일본",
+        "오키나와 (OKA) - 일본",
+        "나고야 (NGO) - 일본",
+        "시즈오카 (FSZ) - 일본",
+        # 동남아시아 (15곳)
+        "방콕/수완나품 (BKK) - 태국",
+        "치앙마이 (CNX) - 태국",
+        "푸켓 (HKT) - 태국",
+        "다낭 (DAD) - 베트남",
+        "나트랑/캄란 (CXR) - 베트남",
+        "호치민 (SGN) - 베트남",
+        "하노이 (HAN) - 베트남",
+        "푸꾸옥 (PQC) - 베트남",
+        "싱가포르 (SIN) - 싱가포르",
+        "쿠알라룸푸르 (KUL) - 말레이시아",
+        "코타키나발루 (BKI) - 말레이시아",
+        "세부 (CEB) - 필리핀",
+        "보홀 (TAG) - 필리핀",
+        "마닐라 (MNL) - 필리핀",
+        "발리/덴파사르 (DPS) - 인도네시아",
+        # 동북아 / 중앙아시아 (6곳)
+        "홍콩 (HKG) - 홍콩",
+        "마카오 (MFM) - 마카오",
+        "타이베이/타오위안 (TPE) - 대만",
+        "가오슝 (KHH) - 대만",
+        "베이징/서두 (PEK) - 중국",
+        "상하이/푸동 (PVG) - 중국",
+        "울란바토르 (ULN) - 몽골",
+        # 유럽 (10곳)
+        "파리/샤를드골 (CDG) - 프랑스",
+        "런던/히드로 (LHR) - 영국",
+        "로마/피우미치노 (FCO) - 이탈리아",
+        "바르셀로나 (BCN) - 스페인",
+        "프랑크푸르트 (FRA) - 독일",
+        "스위스/취리히 (ZRH) - 스위스",
+        "체코/프라하 (PRG) - 체코",
+        "오스트리아/빈 (VIE) - 오스트리아",
+        "튀르키예/이스탄불 (IST) - 튀르키예",
+        "네덜란드/암스테르담 (AMS) - 네덜란드",
+        # 미주 및 대양주 / 중동 (11곳)
+        "뉴욕/JFK (JFK) - 미국",
+        "로스앤젤레스 (LAX) - 미국",
+        "샌프란시스코 (SFO) - 미국",
+        "시애틀 (SEA) - 미국",
+        "하와이/호놀룰루 (HNL) - 미국",
+        "밴쿠버 (YVR) - 캐나다",
+        "토론토 (YYZ) - 캐나다",
+        "시드니 (SYD) - 호주",
+        "멜버른 (MEL) - 호주",
+        "괌 (GUM) - 괌",
+        "사이판 (SPN) - 사이판",
+        "두바이 (DXB) - 아랍에미리트"
+    ]
+
+    departure_list = [
+        "서울/인천 (ICN)",
+        "서울/김포 (GMP)",
+        "부산/김해 (PUS)",
+        "제주 (CJU)",
+        "청주 (CJJ)",
+        "대구 (TAE)",
+        "무안 (MWX)"
+    ]
+
+    # 스카이스캐너 스타일의 가로형 검색 바
     with st.container():
         st.markdown('<div class="search-box-wrapper">', unsafe_allow_html=True)
         
-        sc1, sc2, sc3, sc4, sc5 = st.columns([1.2, 1.2, 1.2, 1.2, 1])
+        sc1, sc2, sc3, sc4, sc5 = st.columns([1.2, 1.5, 1.1, 1.1, 0.9])
         
         with sc1:
-            departure = st.selectbox("🛫 출발지", ["서울/인천 (ICN)", "부산/김해 (PUS)", "제주 (CJU)"])
+            departure = st.selectbox("🛫 출발지", departure_list)
         with sc2:
-            destination = st.selectbox("🛬 도착지", ["도쿄/나리타 (NRT)", "방콕 (BKK)", "파리 (CDG)", "뉴욕 (JFK)"])
+            destination = st.selectbox("🛬 도착지", destinations_list)
         with sc3:
             travel_date = st.date_input("📅 가는 날", min_value=date.today())
         with sc4:
@@ -133,7 +202,7 @@ if st.session_state.step == "home":
             st.session_state.step = "select_flight"
             st.rerun()
 
-    # 🌟 자동 전환되는 여행지 사진 배너 (캐러셀)
+    # 자동 전환되는 여행지 사진 배너 (캐러셀)
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -255,7 +324,7 @@ elif st.session_state.step == "login":
 # ==========================================
 elif st.session_state.step == "select_flight":
     if st.button("⬅️ 검색 조건 변경"):
-        st.session_state.step = "search"
+        st.session_state.step = "home"
         st.rerun()
         
     b_data = st.session_state.booking_data
@@ -264,10 +333,10 @@ elif st.session_state.step == "select_flight":
     st.markdown("---")
     
     flights = [
-        {"id": 1, "airline": "대한항공", "flight_no": "KE123", "dep_time": "08:30", "arr_time": "11:00", "price": 380000, "seat": "일반석"},
-        {"id": 2, "airline": "아시아나항공", "flight_no": "OZ456", "dep_time": "12:15", "arr_time": "14:45", "price": 350000, "seat": "일반석"},
-        {"id": 3, "airline": "제주항공", "flight_no": "7C789", "dep_time": "15:40", "arr_time": "18:10", "price": 210000, "seat": "특가석"},
-        {"id": 4, "airline": "진에어", "flight_no": "LJ302", "dep_time": "20:00", "arr_time": "22:30", "price": 190000, "seat": "일반석"},
+        {"id": 1, "airline": "대한항공", "flight_no": "KE123", "dep_time": "08:30", "arr_time": "11:00", "price": 480000, "seat": "일반석"},
+        {"id": 2, "airline": "아시아나항공", "flight_no": "OZ456", "dep_time": "12:15", "arr_time": "14:45", "price": 450000, "seat": "일반석"},
+        {"id": 3, "airline": "제주항공", "flight_no": "7C789", "dep_time": "15:40", "arr_time": "18:10", "price": 290000, "seat": "특가석"},
+        {"id": 4, "airline": "진에어", "flight_no": "LJ302", "dep_time": "20:00", "arr_time": "22:30", "price": 260000, "seat": "일반석"},
     ]
     
     for f in flights:
