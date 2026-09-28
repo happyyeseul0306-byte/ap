@@ -195,12 +195,18 @@ if st.session_state.step == "home":
         st.markdown('</div>', unsafe_allow_html=True)
         
         if search_clicked:
-            st.session_state.booking_data["departure"] = departure
-            st.session_state.booking_data["destination"] = destination
-            st.session_state.booking_data["date"] = travel_date
-            st.session_state.booking_data["time_slot"] = travel_time
-            st.session_state.step = "select_flight"
-            st.rerun()
+            # 🔒 로그인 여부 확인 검사
+            if not st.session_state.is_logged_in:
+                st.warning("🔒 로그인이 필요한 서비스입니다. 먼저 로그인해주세요!")
+                st.session_state.step = "login"
+                st.rerun()
+            else:
+                st.session_state.booking_data["departure"] = departure
+                st.session_state.booking_data["destination"] = destination
+                st.session_state.booking_data["date"] = travel_date
+                st.session_state.booking_data["time_slot"] = travel_time
+                st.session_state.step = "select_flight"
+                st.rerun()
 
     # 자동 전환되는 여행지 사진 배너 (캐러셀)
     carousel_html = """
@@ -296,7 +302,7 @@ elif st.session_state.step == "login":
             <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <h2 style="color: #05132d; margin:0;">🔐 Skyscanner 로그인</h2>
-                    <p style="color: #64748b; margin-top:5px;">로그인하고 더 많은 맞춤 혜택을 받아보세요.</p>
+                    <p style="color: #64748b; margin-top:5px;">항공권을 검색하고 예매하려면 로그인해주세요.</p>
                 </div>
         """, unsafe_allow_html=True)
         
@@ -323,6 +329,12 @@ elif st.session_state.step == "login":
 # 2. 비행기 목록 선택 화면
 # ==========================================
 elif st.session_state.step == "select_flight":
+    # 🔒 이중 보안 체크 (비로그인 접근 차단)
+    if not st.session_state.is_logged_in:
+        st.warning("로그인이 만료되었거나 로그인이 필요한 페이지입니다.")
+        st.session_state.step = "login"
+        st.rerun()
+
     if st.button("⬅️ 검색 조건 변경"):
         st.session_state.step = "home"
         st.rerun()
@@ -368,6 +380,10 @@ elif st.session_state.step == "select_flight":
 # 3. 승객 정보 입력 화면
 # ==========================================
 elif st.session_state.step == "passenger_info":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
     if st.button("⬅️ 항공편 다시 선택"):
         st.session_state.step = "select_flight"
         st.rerun()
@@ -395,6 +411,10 @@ elif st.session_state.step == "passenger_info":
 # 4. 예매 완료 화면 (E-Ticket 바우처)
 # ==========================================
 elif st.session_state.step == "success":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
     st.balloons()
     
     st.markdown("""
