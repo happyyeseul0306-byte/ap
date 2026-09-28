@@ -49,18 +49,24 @@ st.markdown("""
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
-    /* 🌟 1. 입력창 상단 라벨 글씨 진하게 */
+    
+    /* 🌟 로그인 폼 내부 입력창 라벨(이메일 주소, 비밀번호)을 흰색 배경에 맞춰 진하게 설정 */
+    div[data-testid="stForm"] label {
+        background-color: transparent !important;
+    }
     div[data-testid="stForm"] label p {
         color: #05132d !important;
-        font-weight: 700 !important;
-        font-size: 1rem !important;
+        font-weight: 800 !important;
+        font-size: 1.05rem !important;
     }
-    /* 🌟 2. 입력창 내부 안내 텍스트(Placeholder) 색상을 진하게 변경 */
+
+    /* 🌟 입력창 내부 안내 텍스트(Placeholder) 색상을 선명하게 변경 */
     input::placeholder {
         color: #475569 !important;
         opacity: 1 !important;
         font-weight: 600 !important;
     }
+
     /* 상단 우측 로그인 버튼 컴팩트 스타일 */
     .stButton button[kind="secondary"] {
         background-color: transparent;
@@ -111,78 +117,34 @@ if st.session_state.step == "home":
     st.markdown("<h1 style='color: white; text-align: center; font-size: 2.2rem; margin-bottom: 5px;'>수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #94a3b8; text-align: center; margin-bottom: 25px;'>원하는 일정의 항공편을 실시간으로 비교하고 예매하세요.</p>", unsafe_allow_html=True)
     
-    # 🌟 50곳으로 대폭 확장된 전 세계 주요 도시 리스트
     destinations_list = [
         # 일본 (8곳)
-        "도쿄/나리타 (NRT) - 일본",
-        "도쿄/하네다 (HND) - 일본",
-        "오사카/간사이 (KIX) - 일본",
-        "후쿠오카 (FUK) - 일본",
-        "삿포로/신치토세 (CTS) - 일본",
-        "오키나와 (OKA) - 일본",
-        "나고야 (NGO) - 일본",
-        "시즈오카 (FSZ) - 일본",
+        "도쿄/나리타 (NRT) - 일본", "도쿄/하네다 (HND) - 일본", "오사카/간사이 (KIX) - 일본", "후쿠오카 (FUK) - 일본",
+        "삿포로/신치토세 (CTS) - 일본", "오키나와 (OKA) - 일본", "나고야 (NGO) - 일본", "시즈오카 (FSZ) - 일본",
         # 동남아시아 (15곳)
-        "방콕/수완나품 (BKK) - 태국",
-        "치앙마이 (CNX) - 태국",
-        "푸켓 (HKT) - 태국",
-        "다낭 (DAD) - 베트남",
-        "나트랑/캄란 (CXR) - 베트남",
-        "호치민 (SGN) - 베트남",
-        "하노이 (HAN) - 베트남",
-        "푸꾸옥 (PQC) - 베트남",
-        "싱가포르 (SIN) - 싱가포르",
-        "쿠알라룸푸르 (KUL) - 말레이시아",
-        "코타키나발루 (BKI) - 말레이시아",
-        "세부 (CEB) - 필리핀",
-        "보홀 (TAG) - 필리핀",
-        "마닐라 (MNL) - 필리핀",
-        "발리/덴파사르 (DPS) - 인도네시아",
+        "방콕/수완나품 (BKK) - 태국", "치앙마이 (CNX) - 태국", "푸켓 (HKT) - 태국", "다낭 (DAD) - 베트남",
+        "나트랑/캄란 (CXR) - 베트남", "호치민 (SGN) - 베트남", "하노이 (HAN) - 베트남", "푸꾸옥 (PQC) - 베트남",
+        "싱가포르 (SIN) - 싱가포르", "쿠알라룸푸르 (KUL) - 말레이시아", "코타키나발루 (BKI) - 말레이시아",
+        "세부 (CEB) - 필리핀", "보홀 (TAG) - 필리핀", "마닐라 (MNL) - 필리핀", "발리/덴파사르 (DPS) - 인도네시아",
         # 동북아 / 중앙아시아 (6곳)
-        "홍콩 (HKG) - 홍콩",
-        "마카오 (MFM) - 마카오",
-        "타이베이/타오위안 (TPE) - 대만",
-        "가오슝 (KHH) - 대만",
-        "베이징/서두 (PEK) - 중국",
-        "상하이/푸동 (PVG) - 중국",
-        "울란바토르 (ULN) - 몽골",
+        "홍콩 (HKG) - 홍콩", "마카오 (MFM) - 마카오", "타이베이/타오위안 (TPE) - 대만", "가오슝 (KHH) - 대만",
+        "베이징/서두 (PEK) - 중국", "상하이/푸동 (PVG) - 중국", "울란바토르 (ULN) - 몽골",
         # 유럽 (10곳)
-        "파리/샤를드골 (CDG) - 프랑스",
-        "런던/히드로 (LHR) - 영국",
-        "로마/피우미치노 (FCO) - 이탈리아",
-        "바르셀로나 (BCN) - 스페인",
-        "프랑크푸르트 (FRA) - 독일",
-        "스위스/취리히 (ZRH) - 스위스",
-        "체코/프라하 (PRG) - 체코",
-        "오스트리아/빈 (VIE) - 오스트리아",
-        "튀르키예/이스탄불 (IST) - 튀르키예",
+        "파리/샤를드골 (CDG) - 프랑스", "런던/히드로 (LHR) - 영국", "로마/피우미치노 (FCO) - 이탈리아",
+        "바르셀로나 (BCN) - 스페인", "프랑크푸르트 (FRA) - 독일", "스위스/취리히 (ZRH) - 스위스",
+        "체코/프라하 (PRG) - 체코", "오스트리아/빈 (VIE) - 오스트리아", "튀르키예/이스탄불 (IST) - 튀르키예",
         "네덜란드/암스테르담 (AMS) - 네덜란드",
         # 미주 및 대양주 / 중동 (11곳)
-        "뉴욕/JFK (JFK) - 미국",
-        "로스앤젤레스 (LAX) - 미국",
-        "샌프란시스코 (SFO) - 미국",
-        "시애틀 (SEA) - 미국",
-        "하와이/호놀룰루 (HNL) - 미국",
-        "밴쿠버 (YVR) - 캐나다",
-        "토론토 (YYZ) - 캐나다",
-        "시드니 (SYD) - 호주",
-        "멜버른 (MEL) - 호주",
-        "괌 (GUM) - 괌",
-        "사이판 (SPN) - 사이판",
-        "두바이 (DXB) - 아랍에미리트"
+        "뉴욕/JFK (JFK) - 미국", "로스앤젤레스 (LAX) - 미국", "샌프란시스코 (SFO) - 미국", "시애틀 (SEA) - 미국",
+        "하와이/호놀룰루 (HNL) - 미국", "밴쿠버 (YVR) - 캐나다", "토론토 (YYZ) - 캐나다",
+        "시드니 (SYD) - 호주", "멜버른 (MEL) - 호주", "괌 (GUM) - 괌", "사이판 (SPN) - 사이판", "두바이 (DXB) - 아랍에미리트"
     ]
 
     departure_list = [
-        "서울/인천 (ICN)",
-        "서울/김포 (GMP)",
-        "부산/김해 (PUS)",
-        "제주 (CJU)",
-        "청주 (CJJ)",
-        "대구 (TAE)",
-        "무안 (MWX)"
+        "서울/인천 (ICN)", "서울/김포 (GMP)", "부산/김해 (PUS)", 
+        "제주 (CJU)", "청주 (CJJ)", "대구 (TAE)", "무안 (MWX)"
     ]
 
-    # 스카이스캐너 스타일의 가로형 검색 바
     with st.container():
         st.markdown('<div class="search-box-wrapper">', unsafe_allow_html=True)
         
@@ -207,7 +169,6 @@ if st.session_state.step == "home":
         st.markdown('</div>', unsafe_allow_html=True)
         
         if search_clicked:
-            # 🔒 로그인 여부 확인 검사
             if not st.session_state.is_logged_in:
                 st.warning("🔒 로그인이 필요한 서비스입니다. 먼저 로그인해주세요!")
                 st.session_state.step = "login"
@@ -220,7 +181,6 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 자동 전환되는 여행지 사진 배너 (캐러셀)
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -248,9 +208,7 @@ if st.session_state.step == "home":
         padding: 40px;
         box-sizing: border-box;
       }
-      .slide.active {
-        opacity: 1;
-      }
+      .slide.active { opacity: 1; }
       .slide-content {
         background: rgba(0, 0, 0, 0.5);
         padding: 20px;
@@ -341,7 +299,6 @@ elif st.session_state.step == "login":
 # 2. 비행기 목록 선택 화면
 # ==========================================
 elif st.session_state.step == "select_flight":
-    # 🔒 이중 보안 체크 (비로그인 접근 차단)
     if not st.session_state.is_logged_in:
         st.warning("로그인이 만료되었거나 로그인이 필요한 페이지입니다.")
         st.session_state.step = "login"
