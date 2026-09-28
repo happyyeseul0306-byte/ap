@@ -1,5 +1,5 @@
 import streamlit as st
-import pandas as pd
+import streamlit.components.v1 as components
 from datetime import date
 
 # 1. 페이지 설정 (와이드 레이아웃)
@@ -9,64 +9,47 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. 커스텀 CSS 스타일링
+# 2. 스카이스캐너 스타일 및 슬라이더 애니메이션 CSS
 st.markdown("""
     <style>
-    /* 전체 앱 배경색 */
     .stApp {
-        background-color: #f8f9fa;
-    }
-    
-    /* 상단 네비게이션바 스타일 */
-    .nav-bar {
-        background-color: #0b132b;
-        padding: 15px 30px;
+        background-color: #05132d;
         color: white;
-        font-weight: bold;
-        font-size: 1.2rem;
-        border-radius: 8px;
-        margin-bottom: 25px;
+    }
+    .nav-bar {
         display: flex;
+        justify-content: space-between;
         align-items: center;
+        padding: 10px 20px;
+        margin-bottom: 20px;
     }
-    
-    /* 검색 영역 박스 */
-    .search-container {
+    .search-box-wrapper {
         background-color: #ffffff;
-        padding: 30px;
+        padding: 25px;
         border-radius: 12px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border: 1px solid #e5e7eb;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        margin-top: 15px;
+        margin-bottom: 40px;
     }
-    
-    /* 항공편 카드 스타일 */
     .flight-card {
         background-color: #ffffff;
+        color: #05132d;
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        margin-bottom: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
         border: 1px solid #e5e7eb;
-        transition: transform 0.2s;
     }
-    .flight-card:hover {
-        border-color: #0066ff;
-        box-shadow: 0 4px 12px rgba(0,102,255,0.1);
-    }
-    
-    /* E-티켓 영수증 바우처 */
     .eticket-box {
         background: #ffffff;
-        border: 2px solid #0b132b;
+        color: #05132d;
+        border: 2px solid #05132d;
         padding: 35px;
         border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
     </style>
 """, unsafe_allow_html=True)
-
-# 상단 브랜드 네비게이션바
-st.markdown('<div class="nav-bar">✈️ SkyFlight 어그리게이터</div>', unsafe_allow_html=True)
 
 # 세션 상태 초기화
 if "step" not in st.session_state:
@@ -75,72 +58,132 @@ if "booking_data" not in st.session_state:
     st.session_state.booking_data = {}
 
 # ==========================================
-# 1. 홈 화면 (공항/비행기 배경 이미지 적용)
+# 1. 홈 화면 (검색 바 + 자동 전환되는 여행지 사진 배너)
 # ==========================================
 if st.session_state.step == "home":
-    # Unsplash의 고화질 공항/비행기 사진을 배경으로 깔고, 어두운 오버레이를 얹어 텍스트 가독성을 높였습니다.
     st.markdown("""
-        <div style="
-            background-image: linear-gradient(rgba(11, 19, 43, 0.65), rgba(11, 19, 43, 0.65)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05');
-            background-size: cover;
-            background-position: center;
-            padding: 90px 30px;
-            border-radius: 16px;
-            color: white;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-        ">
-            <h1 style="margin-bottom: 15px; font-size: 2.5rem; font-weight: 800; color: white;">수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>
-            <p style="color: #e2e8f0; font-size: 1.2rem; margin-bottom: 0;">전 세계 최저가 항공편을 실시간으로 비교하고 예매하세요.</p>
+        <div class="nav-bar">
+            <h2 style="color: white; margin: 0; font-size: 1.5rem;">✈️ Skyscanner</h2>
+            <p style="color: #94a3b8; margin: 0;">전 세계 항공권 비교</p>
         </div>
     """, unsafe_allow_html=True)
     
-    col1, col2, col3 = st.columns([1, 1.5, 1])
-    with col2:
-        if st.button("🚀 항공권 검색 및 예매 시작하기", type="primary", use_container_width=True):
-            st.session_state.step = "search"
-            st.rerun()
-
-# ==========================================
-# 2. 검색 화면 (전문 검색 필터)
-# ==========================================
-elif st.session_state.step == "search":
-    if st.button("⬅️ 메인으로"):
-        st.session_state.step = "home"
-        st.rerun()
-        
-    st.markdown("### 🔍 맞춤 항공권 검색")
+    st.markdown("<h1 style='color: white; text-align: center; font-size: 2.2rem; margin-bottom: 5px;'>수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94a3b8; text-align: center; margin-bottom: 25px;'>원하는 일정의 항공편을 실시간으로 비교하고 예매하세요.</p>", unsafe_allow_html=True)
     
+    # 🌟 스카이스캐너 스타일의 가로형 검색 바
     with st.container():
-        st.markdown('<div class="search-container">', unsafe_allow_html=True)
+        st.markdown('<div class="search-box-wrapper">', unsafe_allow_html=True)
         
-        col1, col2 = st.columns(2)
-        with col1:
+        sc1, sc2, sc3, sc4, sc5 = st.columns([1.2, 1.2, 1.2, 1.2, 1])
+        
+        with sc1:
             departure = st.selectbox("🛫 출발지", ["서울/인천 (ICN)", "부산/김해 (PUS)", "제주 (CJU)"])
-        with col2:
+        with sc2:
             destination = st.selectbox("🛬 도착지", ["도쿄/나리타 (NRT)", "방콕 (BKK)", "파리 (CDG)", "뉴욕 (JFK)"])
-            
-        col3, col4 = st.columns(2)
-        with col3:
+        with sc3:
             travel_date = st.date_input("📅 가는 날", min_value=date.today())
-        with col4:
-            travel_time = st.selectbox("⏰ 희망 시간대", ["전체 시간대", "오전 (00:00 ~ 11:59)", "오후 (12:00 ~ 17:59)", "저녁/야간 (18:00 ~ 23:59)"])
+        with sc4:
+            travel_time = st.selectbox("⏰ 시간대", ["전체", "오전", "오후", "저녁/야간"])
+        with sc5:
+            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+            search_clicked = st.button("검색하기", type="primary", use_container_width=True)
             
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("검색하기", type="primary", use_container_width=True):
+        cc1, cc2 = st.columns([1, 5])
+        with cc1:
+            st.checkbox("직항 항공편", value=False)
+            
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        if search_clicked:
             st.session_state.booking_data["departure"] = departure
             st.session_state.booking_data["destination"] = destination
             st.session_state.booking_data["date"] = travel_date
             st.session_state.booking_data["time_slot"] = travel_time
-            
             st.session_state.step = "select_flight"
             st.rerun()
-            
-        st.markdown('</div>', unsafe_allow_html=True)
+
+    # 🌟 몇 초마다 사진이 자동으로 바뀌는 여행 트렌드 배너 (HTML/JS 슬라이더)
+    carousel_html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+      .slider-container {
+        position: relative;
+        width: 100%;
+        height: 320px;
+        border-radius: 16px;
+        overflow: hidden;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      }
+      .slide {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 40px;
+        box-sizing: border-box;
+      }
+      .slide.active {
+        opacity: 1;
+      }
+      .slide-content {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+        width: fit-content;
+      }
+      h2 { color: white; margin: 0 0 10px 0; font-size: 1.8rem; font-family: sans-serif; }
+      p { color: #e2e8f0; margin: 0; font-size: 1rem; font-family: sans-serif; }
+    </style>
+    </head>
+    <body>
+    <div class="slider-container">
+      <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
+        <div class="slide-content">
+          <h2>🗼 2026 도쿄 여행 트렌드</h2>
+          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
+        </div>
+      </div>
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+        <div class="slide-content">
+          <h2>🏝️ 낭만의 방콕 휴가</h2>
+          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
+        </div>
+      </div>
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+        <div class="slide-content">
+          <h2>🥐 예술의 도시 파리</h2>
+          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.slide');
+      function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }
+      setInterval(nextSlide, 3500); // 3.5초마다 이미지 변경
+    </script>
+    </body>
+    </html>
+    """
+    components.html(carousel_html, height=350)
 
 # ==========================================
-# 3. 비행기 목록 선택 화면
+# 2. 비행기 목록 선택 화면
 # ==========================================
 elif st.session_state.step == "select_flight":
     if st.button("⬅️ 검색 조건 변경"):
@@ -148,8 +191,8 @@ elif st.session_state.step == "select_flight":
         st.rerun()
         
     b_data = st.session_state.booking_data
-    st.markdown(f"### ✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과")
-    st.caption(f"선택일자: {b_data['date']} | 조건에 맞는 항공편을 확인하세요.")
+    st.markdown(f"<h2 style='color: white;'>✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 마음에 드는 항공편을 선택하세요.</p>", unsafe_allow_html=True)
     st.markdown("---")
     
     flights = [
@@ -164,11 +207,11 @@ elif st.session_state.step == "select_flight":
             <div class="flight-card">
                 <div style="display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <h4 style="margin:0; color:#0b132b;">{f['airline']} <span style="font-size:0.8rem; color:#6b7270;">({f['flight_no']})</span></h4>
+                        <h3 style="margin:0; color:#05132d;">{f['airline']} <span style="font-size:0.8rem; color:#6b7270;">({f['flight_no']})</span></h3>
                         <p style="margin: 5px 0 0 0; color: #4b5563;">출발 <b>{f['dep_time']}</b> ➔ 도착 <b>{f['arr_time']}</b> &nbsp;|&nbsp; 좌석: {f['seat']}</p>
                     </div>
                     <div style="text-align: right;">
-                        <h3 style="margin:0; color:#0066ff;">{f['price']:,}원</h3>
+                        <h2 style="margin:0; color:#0066ff;">{f['price']:,}원</h2>
                     </div>
                 </div>
             </div>
@@ -185,15 +228,15 @@ elif st.session_state.step == "select_flight":
             st.rerun()
 
 # ==========================================
-# 4. 승객 정보 입력 화면
+# 3. 승객 정보 입력 화면
 # ==========================================
 elif st.session_state.step == "passenger_info":
     if st.button("⬅️ 항공편 다시 선택"):
         st.session_state.step = "select_flight"
         st.rerun()
         
-    st.markdown("### 👤 탑승객 정보 입력")
-    st.info("여권 또는 신분증에 기재된 정보와 일치해야 합니다.")
+    st.markdown("<h2 style='color: white;'>👤 탑승객 정보 입력</h2>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94a3b8;'>여권 또는 신분증에 기재된 정보와 일치해야 합니다.</p>", unsafe_allow_html=True)
     
     with st.form("info_form"):
         name = st.text_input("탑승객 성함 (예: 홍길동)")
@@ -212,15 +255,15 @@ elif st.session_state.step == "passenger_info":
                 st.warning("성함을 올바르게 입력해주세요.")
 
 # ==========================================
-# 5. 예매 완료 화면 (E-Ticket 바우처)
+# 4. 예매 완료 화면 (E-Ticket 바우처)
 # ==========================================
 elif st.session_state.step == "success":
     st.balloons()
     
     st.markdown("""
         <div style="text-align: center; margin-bottom: 25px;">
-            <h2 style="color: #0b132b;">🎉 항공권 예매가 완료되었습니다!</h2>
-            <p style="color: #6b7270;">아래 전자 항공권(E-Ticket) 정보를 확인 및 보관하세요.</p>
+            <h2 style="color: white;">🎉 항공권 예매가 완료되었습니다!</h2>
+            <p style="color: #94a3b8;">아래 전자 항공권(E-Ticket) 정보를 확인하세요.</p>
         </div>
     """, unsafe_allow_html=True)
     
@@ -230,7 +273,7 @@ elif st.session_state.step == "success":
     with col2:
         st.markdown(f"""
             <div class="eticket-box">
-                <h3 style="text-align: center; color: #0b132b; margin-top: 0; border-bottom: 2px solid #0b132b; padding-bottom: 12px;">
+                <h3 style="text-align: center; color: #05132d; margin-top: 0; border-bottom: 2px solid #05132d; padding-bottom: 12px;">
                     🎫 E-PASSENGER TICKET
                 </h3>
                 <p><b>[탑승객]</b> {b.get('name')} ({b.get('birthdate')})</p>
