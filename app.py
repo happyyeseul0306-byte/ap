@@ -41,13 +41,26 @@ st.markdown("""
         margin-bottom: 15px;
         border: 1px solid #e5e7eb;
     }
-    .eticket-box, .login-box {
+    .eticket-box {
         background: #ffffff;
         color: #05132d;
         border: 2px solid #05132d;
         padding: 35px;
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    /* 상단 우측 로그인 버튼 컴팩트 스타일 */
+    .stButton button[kind="secondary"] {
+        background-color: transparent;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 4px 14px;
+        font-size: 0.9rem;
+    }
+    .stButton button[kind="secondary"]:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: white;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -66,18 +79,21 @@ if "user_email" not in st.session_state:
 # 1. 홈 화면 (상단 네비게이션바에 로그인 버튼 포함)
 # ==========================================
 if st.session_state.step == "home":
-    # 상단 네비게이션바 구성 (로고, 부제목, 로그인/마이페이지 버튼)
-    nav_col1, nav_col2, nav_col3 = st.columns([2, 5, 1])
+    # 상단 네비게이션바 (우측에 로그인 버튼 배치)
+    nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([2, 4.5, 1, 0.8])
     with nav_col1:
         st.markdown("<h2 style='color: white; margin: 0; font-size: 1.5rem;'>✈️ Skyscanner</h2>", unsafe_allow_html=True)
     with nav_col2:
         st.markdown("<p style='color: #94a3b8; margin: 5px 0 0 0;'>전 세계 항공권 비교</p>", unsafe_allow_html=True)
     with nav_col3:
+        # 아이콘 스타일 연출을 위한 빈 공간 또는 아이콘 대체
+        pass
+    with nav_col4:
         if st.session_state.is_logged_in:
-            if st.button(f"👤 {st.session_state.user_email[:6]}님", use_container_width=True):
-                st.success("이미 로그인되어 있습니다!")
+            if st.button(f"👤 {st.session_state.user_email[:4]}...", type="secondary", use_container_width=True):
+                st.info(f"현재 접속 계정: {st.session_state.user_email}")
         else:
-            if st.button("🔐 로그인", type="secondary", use_container_width=True):
+            if st.button("👤 로그인", type="secondary", use_container_width=True):
                 st.session_state.step = "login"
                 st.rerun()
 
@@ -208,10 +224,11 @@ elif st.session_state.step == "login":
     
     with col2:
         st.markdown("""
-            <div style="text-align: center; margin-bottom: 20px;">
-                <h2 style="color: white;">🔐 Skyscanner 로그인</h2>
-                <p style="color: #94a3b8;">로그인하고 더 많은 맞춤 혜택을 받아보세요.</p>
-            </div>
+            <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #05132d; margin:0;">🔐 Skyscanner 로그인</h2>
+                    <p style="color: #64748b; margin-top:5px;">로그인하고 더 많은 맞춤 혜택을 받아보세요.</p>
+                </div>
         """, unsafe_allow_html=True)
         
         with st.form("login_form"):
@@ -230,6 +247,8 @@ elif st.session_state.step == "login":
                     st.rerun()
                 else:
                     st.warning("이메일과 비밀번호를 모두 입력해주세요.")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
 # 2. 비행기 목록 선택 화면
