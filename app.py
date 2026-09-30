@@ -9,7 +9,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# 2. 스카이스캐너 스타일 및 CSS
+# 2. 스타일 및 CSS
 st.markdown("""
     <style>
     .stApp {
@@ -50,7 +50,7 @@ st.markdown("""
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
     
-    /* 🌟 로그인 폼 내부 입력창 라벨(이메일 주소, 비밀번호)을 흰색 배경에 맞춰 진하게 설정 */
+    /* 로그인 폼 내부 입력창 라벨(이메일 주소, 비밀번호) 색상 고정 */
     div[data-testid="stForm"] label {
         background-color: transparent !important;
     }
@@ -60,7 +60,7 @@ st.markdown("""
         font-size: 1.05rem !important;
     }
 
-    /* 🌟 입력창 내부 안내 텍스트(Placeholder) 색상을 선명하게 변경 */
+    /* 입력창 내부 안내 텍스트(Placeholder) 색상 선명하게 변경 */
     input::placeholder {
         color: #475569 !important;
         opacity: 1 !important;
@@ -296,7 +296,7 @@ elif st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 2. 비행기 목록 선택 화면
+# 2. 비행기 목록 선택 화면 (항공편마다 여러 등급 포함)
 # ==========================================
 elif st.session_state.step == "select_flight":
     if not st.session_state.is_logged_in:
@@ -310,47 +310,83 @@ elif st.session_state.step == "select_flight":
         
     b_data = st.session_state.booking_data
     st.markdown(f"<h2 style='color: white;'>✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 총 10개의 항공편이 검색되었습니다. 마음에 드는 항공편을 선택하세요.</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 각 항공편별로 원하는 좌석 등급을 선택하세요.</p>", unsafe_allow_html=True)
     st.markdown("---")
     
-    # 🌟 풍성하게 구성된 10개의 항공편 리스트
+    # 🌟 각 항공편 내부에 여러 등급(특가석, 일반석, 비즈니스석)을 포함한 구조
     flights = [
-        {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:40", "arr_time": "09:10", "price": 520000, "seat": "일반석"},
-        {"id": 2, "airline": "대한항공", "flight_no": "KE123", "dep_time": "08:30", "arr_time": "11:00", "price": 480000, "seat": "일반석"},
-        {"id": 3, "airline": "아시아나항공", "flight_no": "OZ456", "dep_time": "10:15", "arr_time": "12:45", "price": 460000, "seat": "일반석"},
-        {"id": 4, "airline": "아시아나항공", "flight_no": "OZ482", "dep_time": "12:15", "arr_time": "14:45", "price": 450000, "seat": "일반석"},
-        {"id": 5, "airline": "진에어", "flight_no": "LJ301", "dep_time": "14:00", "arr_time": "16:30", "price": 310000, "seat": "일반석"},
-        {"id": 6, "airline": "제주항공", "flight_no": "7C789", "dep_time": "15:40", "arr_time": "18:10", "price": 290000, "seat": "특가석"},
-        {"id": 7, "airline": "티웨이항공", "flight_no": "TW215", "dep_time": "17:20", "arr_time": "19:50", "price": 275000, "seat": "특가석"},
-        {"id": 8, "airline": "진에어", "flight_no": "LJ302", "dep_time": "19:00", "arr_time": "21:30", "price": 260000, "seat": "일반석"},
-        {"id": 9, "airline": "에어부산", "flight_no": "BX812", "dep_time": "20:45", "arr_time": "23:15", "price": 240000, "seat": "특가석"},
-        {"id": 10, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "01:00 (+1일)", "price": 680000, "seat": "비즈니스석"},
+        {
+            "id": 1, "airline": "대한항공", "flight_no": "KE123", "dep_time": "08:30", "arr_time": "11:00",
+            "classes": [
+                {"seat": "특가석", "price": 420000},
+                {"seat": "일반석", "price": 480000},
+                {"seat": "비즈니스석", "price": 850000}
+            ]
+        },
+        {
+            "id": 2, "airline": "아시아나항공", "flight_no": "OZ456", "dep_time": "12:15", "arr_time": "14:45",
+            "classes": [
+                {"seat": "특가석", "price": 390000},
+                {"seat": "일반석", "price": 450000},
+                {"seat": "비즈니스석", "price": 790000}
+            ]
+        },
+        {
+            "id": 3, "airline": "제주항공", "flight_no": "7C789", "dep_time": "15:40", "arr_time": "18:10",
+            "classes": [
+                {"seat": "특가석", "price": 250000},
+                {"seat": "일반석", "price": 290000}
+            ]
+        },
+        {
+            "id": 4, "airline": "진에어", "flight_no": "LJ302", "dep_time": "20:00", "arr_time": "22:30",
+            "classes": [
+                {"seat": "특가석", "price": 230000},
+                {"seat": "일반석", "price": 260000}
+            ]
+        },
     ]
     
     for f in flights:
+        # 좌석 등급 옵션 레이블 리스트 생성
+        class_options = [f"{c['seat']} - {c['price']:,}원" for c in f["classes"]]
+        
         st.markdown(f"""
             <div class="flight-card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
                     <div>
                         <h3 style="margin:0; color:#05132d;">{f['airline']} <span style="font-size:0.8rem; color:#6b7270;">({f['flight_no']})</span></h3>
-                        <p style="margin: 5px 0 0 0; color: #4b5563;">출발 <b>{f['dep_time']}</b> ➔ 도착 <b>{f['arr_time']}</b> &nbsp;|&nbsp; 좌석: {f['seat']}</p>
-                    </div>
-                    <div style="text-align: right;">
-                        <h2 style="margin:0; color:#0066ff;">{f['price']:,}원</h2>
+                        <p style="margin: 5px 0 0 0; color: #4b5563;">출발 <b>{f['dep_time']}</b> ➔ 도착 <b>{f['arr_time']}</b></p>
                     </div>
                 </div>
             </div>
         """, unsafe_allow_html=True)
         
-        if st.button(f"선택하기 ({f['airline']} - {f['flight_no']})", key=f"sel_{f['id']}"):
-            st.session_state.booking_data["airline"] = f["airline"]
-            st.session_state.booking_data["flight_no"] = f["flight_no"]
-            st.session_state.booking_data["dep_time"] = f["dep_time"]
-            st.session_state.booking_data["arr_time"] = f["arr_time"]
-            st.session_state.booking_data["price"] = f["price"]
-            
-            st.session_state.step = "passenger_info"
-            st.rerun()
+        # 내부 컨테이너나 컬럼을 통해 해당 항공편 안에서 등급 선택 및 예매 버튼 제공
+        col_c1, col_c2 = st.columns([2, 1])
+        with col_c1:
+            selected_class_str = st.selectbox(
+                f"[{f['airline']} {f['flight_no']}] 좌석 등급 선택", 
+                class_options, 
+                key=f"class_sel_{f['id']}"
+            )
+        with col_c2:
+            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+            if st.button(f"이 항공편 예매하기", key=f"btn_sel_{f['id']}"):
+                # 선택된 등급과 가격 추출
+                chosen_idx = class_options.index(selected_class_str)
+                chosen_seat_info = f["classes"][chosen_idx]
+                
+                st.session_state.booking_data["airline"] = f["airline"]
+                st.session_state.booking_data["flight_no"] = f["flight_no"]
+                st.session_state.booking_data["dep_time"] = f["dep_time"]
+                st.session_state.booking_data["arr_time"] = f["arr_time"]
+                st.session_state.booking_data["seat"] = chosen_seat_info["seat"]
+                st.session_state.booking_data["price"] = chosen_seat_info["price"]
+                
+                st.session_state.step = "passenger_info"
+                st.rerun()
+        st.markdown("<hr style='border: 0; border-top: 1px dashed rgba(255,255,255,0.2);'>", unsafe_allow_html=True)
 
 # ==========================================
 # 3. 승객 정보 입력 화면
@@ -413,6 +449,7 @@ elif st.session_state.step == "success":
                 <hr style="border: 0; border-top: 1px solid #e5e7eb;">
                 <p><b>[여정]</b> {b.get('departure')} ➔ {b.get('destination')}</p>
                 <p><b>[항공편]</b> {b.get('airline')} ({b.get('flight_no')})</p>
+                <p><b>[좌석 등급]</b> {b.get('seat')}</p>
                 <p><b>[일시]</b> {b.get('date')} | {b.get('dep_time')} 출발</p>
                 <hr style="border: 0; border-top: 1px solid #e5e7eb;">
                 <p style="text-align: right; font-size: 1.25rem; color: #0066ff; margin-bottom:0;">
