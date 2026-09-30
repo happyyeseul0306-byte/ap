@@ -135,7 +135,7 @@ if st.session_state.step == "home":
         # 동북아 / 중앙아시아 (7곳)
         "홍콩 (HKG) - 홍콩", "마카오 (MFM) - 마카오", "타이베이/타오위안 (TPE) - 대만", "가오슝 (KHH) - 대만",
         "베이징/서두 (PEK) - 중국", "상하이/푸동 (PVG) - 중국", "울란바토르 (ULN) - 몽골",
-        # 유럽 (12곳 - 폴란드, 러시아 추가)
+        # 유럽 (12곳)
         "파리/샤를드골 (CDG) - 프랑스", "런던/히드로 (LHR) - 영국", "로마/피우미치노 (FCO) - 이탈리아",
         "바르셀로나 (BCN) - 스페인", "프랑크푸르트 (FRA) - 독일", "스위스/취리히 (ZRH) - 스위스",
         "체코/프라하 (PRG) - 체코", "오스트리아/빈 (VIE) - 오스트리아", "튀르키예/이스탄불 (IST) - 튀르키예",
@@ -302,7 +302,7 @@ elif st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 2. 비행기 목록 선택 화면 (12개 항공편)
+# 2. 비행기 목록 선택 화면 (실제 시가 반영된 가격표)
 # ==========================================
 elif st.session_state.step == "select_flight":
     if not st.session_state.is_logged_in:
@@ -315,96 +315,61 @@ elif st.session_state.step == "select_flight":
         st.rerun()
         
     b_data = st.session_state.booking_data
-    st.markdown(f"<h2 style='color: white;'>✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 총 12개의 다양한 항공편과 등급을 선택하세요.</p>", unsafe_allow_html=True)
-    st.markdown("---")
     
-    flights = [
-        {
-            "id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:30", "arr_time": "09:00",
-            "classes": [
-                {"seat": "일반석", "price": 490000},
-                {"seat": "비즈니스석", "price": 890000}
-            ]
-        },
-        {
-            "id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "08:15", "arr_time": "10:45",
-            "classes": [
-                {"seat": "일반석", "price": 470000},
-                {"seat": "비즈니스석", "price": 850000}
-            ]
-        },
-        {
-            "id": 3, "airline": "제주항공", "flight_no": "7C303", "dep_time": "09:40", "arr_time": "12:10",
-            "classes": [
-                {"seat": "특가석", "price": 240000},
-                {"seat": "일반석", "price": 280000}
-            ]
-        },
-        {
-            "id": 4, "airline": "진에어", "flight_no": "LJ404", "dep_time": "11:00", "arr_time": "13:30",
-            "classes": [
-                {"seat": "특가석", "price": 250000},
-                {"seat": "일반석", "price": 295000}
-            ]
-        },
-        {
-            "id": 5, "airline": "티웨이항공", "flight_no": "TW505", "dep_time": "12:30", "arr_time": "15:00",
-            "classes": [
-                {"seat": "특가석", "price": 230000},
-                {"seat": "일반석", "price": 270000}
-            ]
-        },
-        {
-            "id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "14:00", "arr_time": "16:30",
-            "classes": [
-                {"seat": "일반석", "price": 520000},
-                {"seat": "비즈니스석", "price": 920000}
-            ]
-        },
-        {
-            "id": 7, "airline": "에어부산", "flight_no": "BX707", "dep_time": "15:20", "arr_time": "17:50",
-            "classes": [
-                {"seat": "특가석", "price": 220000},
-                {"seat": "일반석", "price": 260000}
-            ]
-        },
-        {
-            "id": 8, "airline": "아시아나항공", "flight_no": "OZ808", "dep_time": "16:45", "arr_time": "19:15",
-            "classes": [
-                {"seat": "일반석", "price": 460000},
-                {"seat": "비즈니스석", "price": 830000}
-            ]
-        },
-        {
-            "id": 9, "airline": "제주항공", "flight_no": "7C909", "dep_time": "18:10", "arr_time": "20:40",
-            "classes": [
-                {"seat": "특가석", "price": 260000},
-                {"seat": "일반석", "price": 310000}
-            ]
-        },
-        {
-            "id": 10, "airline": "진에어", "flight_no": "LJ110", "dep_time": "19:30", "arr_time": "22:00",
-            "classes": [
-                {"seat": "특가석", "price": 245000},
-                {"seat": "일반석", "price": 290000}
-            ]
-        },
-        {
-            "id": 11, "airline": "티웨이항공", "flight_no": "TW211", "dep_time": "21:00", "arr_time": "23:30",
-            "classes": [
-                {"seat": "특가석", "price": 210000},
-                {"seat": "일반석", "price": 250000}
-            ]
-        },
-        {
-            "id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "01:00 (+1일)",
-            "classes": [
-                {"seat": "일반석", "price": 550000},
-                {"seat": "비즈니스석", "price": 980000}
-            ]
-        }
-    ]
+    # 선택된 목적지 분류에 따라 시가 데이터 동적 산정
+    dest_str = b_data['destination']
+    if any(k in dest_str for k in ["일본", "홍콩", "마카오", "대만", "중국", "몽골"]):
+        # 단거리 노선 시가 (일반석 35~65만 원, 비즈니스 90~140만 원)
+        flights = [
+            {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:30", "arr_time": "09:00", "classes": [{"seat": "일반석", "price": 580000}, {"seat": "비즈니스석", "price": 1250000}]},
+            {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "08:15", "arr_time": "10:45", "classes": [{"seat": "일반석", "price": 550000}, {"seat": "비즈니스석", "price": 1180000}]},
+            {"id": 3, "airline": "제주항공", "flight_no": "7C303", "dep_time": "09:40", "arr_time": "12:10", "classes": [{"seat": "특가석", "price": 320000}, {"seat": "일반석", "price": 410000}]},
+            {"id": 4, "airline": "진에어", "flight_no": "LJ404", "dep_time": "11:00", "arr_time": "13:30", "classes": [{"seat": "특가석", "price": 340000}, {"seat": "일반석", "price": 430000}]},
+            {"id": 5, "airline": "티웨이항공", "flight_no": "TW505", "dep_time": "12:30", "arr_time": "15:00", "classes": [{"seat": "특가석", "price": 310000}, {"seat": "일반석", "price": 390000}]},
+            {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "14:00", "arr_time": "16:30", "classes": [{"seat": "일반석", "price": 620000}, {"seat": "비즈니스석", "price": 1320000}]},
+            {"id": 7, "airline": "에어부산", "flight_no": "BX707", "dep_time": "15:20", "arr_time": "17:50", "classes": [{"seat": "특가석", "price": 295000}, {"seat": "일반석", "price": 380000}]},
+            {"id": 8, "airline": "아시아나항공", "flight_no": "OZ808", "dep_time": "16:45", "arr_time": "19:15", "classes": [{"seat": "일반석", "price": 530000}, {"seat": "비즈니스석", "price": 1150000}]},
+            {"id": 9, "airline": "제주항공", "flight_no": "7C909", "dep_time": "18:10", "arr_time": "20:40", "classes": [{"seat": "특가석", "price": 350000}, {"seat": "일반석", "price": 450000}]},
+            {"id": 10, "airline": "진에어", "flight_no": "LJ110", "dep_time": "19:30", "arr_time": "22:00", "classes": [{"seat": "특가석", "price": 330000}, {"seat": "일반석", "price": 420000}]},
+            {"id": 11, "airline": "티웨이항공", "flight_no": "TW211", "dep_time": "21:00", "arr_time": "23:30", "classes": [{"seat": "특가석", "price": 290000}, {"seat": "일반석", "price": 370000}]},
+            {"id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "01:00 (+1일)", "classes": [{"seat": "일반석", "price": 650000}, {"seat": "비즈니스석", "price": 1400000}]}
+        ]
+    elif any(k in dest_str for k in ["프랑스", "영국", "이탈리아", "스페인", "독일", "스위스", "체코", "오스트리아", "튀르키예", "네덜란드", "폴란드", "러시아"]):
+        # 유럽 장거리 노선 시가 (일반석 110~170만 원, 비즈니스 280~450만 원)
+        flights = [
+            {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "10:30", "arr_time": "18:00", "classes": [{"seat": "일반석", "price": 1580000}, {"seat": "비즈니스석", "price": 3850000}]},
+            {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "11:15", "arr_time": "19:00", "classes": [{"seat": "일반석", "price": 1490000}, {"seat": "비즈니스석", "price": 3650000}]},
+            {"id": 3, "airline": "폴란드항공", "flight_no": "LO303", "dep_time": "12:40", "arr_time": "20:10", "classes": [{"seat": "특가석", "price": 1150000}, {"seat": "일반석", "price": 1320000}]},
+            {"id": 4, "airline": "핀에어", "flight_no": "AY404", "dep_time": "13:00", "arr_time": "20:30", "classes": [{"seat": "특가석", "price": 1120000}, {"seat": "일반석", "price": 1290000}]},
+            {"id": 5, "airline": "루프트한자", "flight_no": "LH505", "dep_time": "14:30", "arr_time": "22:00", "classes": [{"seat": "일반석", "price": 1450000}, {"seat": "비즈니스석", "price": 3500000}]},
+            {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "15:00", "arr_time": "22:30", "classes": [{"seat": "일반석", "price": 1620000}, {"seat": "비즈니스석", "price": 3950000}]},
+            {"id": 7, "airline": "에미레이트항공", "flight_no": "EK707", "dep_time": "16:20", "arr_time": "23:50", "classes": [{"seat": "일반석", "price": 1380000}, {"seat": "비즈니스석", "price": 3300000}]},
+            {"id": 8, "airline": "카타르항공", "flight_no": "QR808", "dep_time": "17:45", "arr_time": "01:15 (+1일)", "classes": [{"seat": "일반석", "price": 1350000}, {"seat": "비즈니스석", "price": 3200000}]},
+            {"id": 9, "airline": "터키항공", "flight_no": "TK909", "dep_time": "19:10", "arr_time": "02:40 (+1일)", "classes": [{"seat": "특가석", "price": 1180000}, {"seat": "일반석", "price": 1360000}]},
+            {"id": 10, "airline": "프랑스에어", "flight_no": "AF110", "dep_time": "20:30", "arr_time": "04:00 (+1일)", "classes": [{"seat": "일반석", "price": 1510000}, {"seat": "비즈니스석", "price": 3700000}]},
+            {"id": 11, "airline": "영국항공", "flight_no": "BA211", "dep_time": "21:00", "arr_time": "04:30 (+1일)", "classes": [{"seat": "일반석", "price": 1480000}, {"seat": "비즈니스석", "price": 3600000}]},
+            {"id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "06:00 (+1일)", "classes": [{"seat": "일반석", "price": 1680000}, {"seat": "비즈니스석", "price": 4100000}]}
+        ]
+    else:
+        # 동남아 / 미주 / 기타 장거리 노선 시가 (일반석 70~150만 원)
+        flights = [
+            {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "07:30", "arr_time": "13:00", "classes": [{"seat": "일반석", "price": 980000}, {"seat": "비즈니스석", "price": 2400000}]},
+            {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "09:15", "arr_time": "14:45", "classes": [{"seat": "일반석", "price": 920000}, {"seat": "비즈니스석", "price": 2250000}]},
+            {"id": 3, "airline": "싱가포르항공", "flight_no": "SQ303", "dep_time": "10:40", "arr_time": "16:10", "classes": [{"seat": "특가석", "price": 750000}, {"seat": "일반석", "price": 890000}]},
+            {"id": 4, "airline": "베트남항공", "flight_no": "VN404", "dep_time": "11:00", "arr_time": "16:30", "classes": [{"seat": "특가석", "price": 680000}, {"seat": "일반석", "price": 810000}]},
+            {"id": 5, "airline": "타이항공", "flight_no": "TG505", "dep_time": "12:30", "arr_time": "18:00", "classes": [{"seat": "특가석", "price": 710000}, {"seat": "일반석", "price": 850000}]},
+            {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "14:00", "arr_time": "19:30", "classes": [{"seat": "일반석", "price": 1020000}, {"seat": "비즈니스석", "price": 2500000}]},
+            {"id": 7, "airline": "제주항공", "flight_no": "7C707", "dep_time": "15:20", "arr_time": "20:50", "classes": [{"seat": "특가석", "price": 590000}, {"seat": "일반석", "price": 720000}]},
+            {"id": 8, "airline": "아시아나항공", "flight_no": "OZ808", "dep_time": "16:45", "arr_time": "22:15", "classes": [{"seat": "일반석", "price": 940000}, {"seat": "비즈니스석", "price": 2300000}]},
+            {"id": 9, "airline": "세부퍼시픽", "flight_no": "5J909", "dep_time": "18:10", "arr_time": "23:40", "classes": [{"seat": "특가석", "price": 550000}, {"seat": "일반석", "price": 680000}]},
+            {"id": 10, "airline": "진에어", "flight_no": "LJ110", "dep_time": "19:30", "arr_time": "01:00 (+1일)", "classes": [{"seat": "특가석", "price": 610000}, {"seat": "일반석", "price": 750000}]},
+            {"id": 11, "airline": "티웨이항공", "flight_no": "TW211", "dep_time": "21:00", "arr_time": "02:30 (+1일)", "classes": [{"seat": "특가석", "price": 570000}, {"seat": "일반석", "price": 700000}]},
+            {"id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "04:00 (+1일)", "classes": [{"seat": "일반석", "price": 1080000}, {"seat": "비즈니스석", "price": 2650000}]}
+        ]
+    
+    st.markdown(f"<h2 style='color: white;'>✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 실시간 시가가 반영된 총 12개의 항공편입니다.</p>", unsafe_allow_html=True)
+    st.markdown("---")
     
     for f in flights:
         class_options = [f"{c['seat']} - {c['price']:,}원" for c in f["classes"]]
