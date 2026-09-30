@@ -107,7 +107,7 @@ if "is_logged_in" not in st.session_state:
 if "user_email" not in st.session_state:
     st.session_state.user_email = ""
 if "selected_destination_info" not in st.session_state:
-    st.session_state.selected_destination_info = ""
+    st.session_state.selected_destination_info = "도쿄"
 
 # ==========================================
 # 1. 홈 화면
@@ -197,7 +197,7 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 캐러셀 슬라이더 HTML (이미지 시각 효과용)
+    # 캐러셀 슬라이더 HTML
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -273,52 +273,55 @@ if st.session_state.step == "home":
     """
     components.html(carousel_html, height=320)
 
-    # 슬라이더 아래에 확실하게 작동하는 여행지 상세 가이드 이동 버튼 배치
-    st.markdown("<p style='text-align: center; color: #94a3b8; margin-top: 10px;'>👇 아래 버튼을 눌러 추천 여행지 상세 가이드를 확인해보세요!</p>", unsafe_allow_html=True)
+    # 홈 화면 하단 확장된 추천 여행지 바로가기 버튼들
+    st.markdown("<p style='text-align: center; color: #94a3b8; margin-top: 15px;'>👇 아래 추천 도시 버튼을 눌러 상세 가이드를 확인해보세요!</p>", unsafe_allow_html=True)
     
-    bt_col1, bt_col2, bt_col3 = st.columns(3)
-    with bt_col1:
-        if st.button("🗼 도쿄 여행지 상세 보기", use_container_width=True):
-            if not st.session_state.is_logged_in:
-                st.warning("🔒 로그인이 필요한 서비스입니다!")
-                st.session_state.step = "login"
-            else:
-                st.session_state.selected_destination_info = "도쿄"
-                st.session_state.step = "destination_detail"
+    # 2행 형태로 버튼 배치 (총 6개 도시)
+    row1_c1, row1_c2, row1_c3 = st.columns(3)
+    with row1_c1:
+        if st.button("🗼 도쿄 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "도쿄"
+            st.session_state.step = "destination_detail"
             st.rerun()
-    with bt_col2:
-        if st.button("🏝️ 방콕 여행지 상세 보기", use_container_width=True):
-            if not st.session_state.is_logged_in:
-                st.warning("🔒 로그인이 필요한 서비스입니다!")
-                st.session_state.step = "login"
-            else:
-                st.session_state.selected_destination_info = "방콕"
-                st.session_state.step = "destination_detail"
+    with row1_c2:
+        if st.button("🏝️ 방콕 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "방콕"
+            st.session_state.step = "destination_detail"
             st.rerun()
-    with bt_col3:
-        if st.button("🥐 파리 여행지 상세 보기", use_container_width=True):
-            if not st.session_state.is_logged_in:
-                st.warning("🔒 로그인이 필요한 서비스입니다!")
-                st.session_state.step = "login"
-            else:
-                st.session_state.selected_destination_info = "파리"
-                st.session_state.step = "destination_detail"
+    with row1_c3:
+        if st.button("🥐 파리 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "파리"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+
+    row2_c1, row2_c2, row2_c3 = st.columns(3)
+    with row2_c1:
+        if st.button("🗽 뉴욕 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "뉴욕"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row2_c2:
+        if st.button("🌊 다낭 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "다낭"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row2_c3:
+        if st.button("⛰️ 스위스 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "스위스"
+            st.session_state.step = "destination_detail"
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지
+# 1-1. 여행지 상세 소개 페이지 (확장됨)
 # ==========================================
 elif st.session_state.step == "destination_detail":
-    if not st.session_state.is_logged_in:
-        st.session_state.step = "login"
-        st.rerun()
-
     if st.button("⬅️ 홈으로 돌아가기"):
         st.session_state.step = "home"
         st.rerun()
 
     dest_name = st.session_state.selected_destination_info
 
+    # 확장된 여행지 상세 정보 사전
     dest_info_dict = {
         "도쿄": {
             "title": "🗼 일본 도쿄 (Tokyo)",
@@ -343,6 +346,30 @@ elif st.session_state.step == "destination_detail":
             "desc": "센 강이 흐르는 파리는 세련된 건축물과 세계 최고 수준의 미술관, 그리고 낭만적인 카페 문화가 가득한 도시입니다. 에펠탑의 야경과 루브르 박물관의 명작들을 직접 만나보세요.",
             "spots": ["에펠탑 & 트로카데로 광장", "루브르 박물관", "오르세 미술관", "몽마르트르 언덕 & 사크레쾨르 대성당"],
             "foods": ["정통 바게트 & 크루아상", "프렌치 어니언 수프", "마카롱", "스테이크 프릿"]
+        },
+        "뉴욕": {
+            "title": "🗽 미국 뉴욕 (New York)",
+            "sub": "잠들지 않는 세계 경제와 문화의 중심지",
+            "img": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
+            "desc": "뉴욕은 자유의 여신상, 타임스 스퀘어, 센트럴 파크 등 전 세계 사람들이 동경하는 랜드마크가 가득한 도시입니다. 브로드웨이 뮤지컬과 세계 각국의 다채로운 미식을 경험할 수 있습니다.",
+            "spots": ["타임스 스퀘어 & 브로드웨이", "센트럴 파크", "자유의 여신상", "엠파이어 스테이트 빌딩 전망대"],
+            "foods": ["뉴욕 스타일 피자", "패스트라미 샌드위치", "베이글 & 크림치즈", "스테이크"]
+        },
+        "다낭": {
+            "title": "🌊 베트남 다낭 (Da Nang)",
+            "sub": "아름다운 미케 해변과 세계적인 휴양 리조트 도시",
+            "img": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
+            "desc": "베트남 중부를 대표하는 다낭은 끝없이 펼쳐진 미케 비치와 세계문화유산인 호이안 구시가지가 가까워 휴양과 관광을 동시에 즐길 수 있는 최고의 인기 여행지입니다.",
+            "spots": ["미케 해변 (My Khe Beach)", "바나힐 테마파크 & 골든브릿지", "오행산 (마블 마운틴)", "호이안 올드타운"],
+            "foods": ["베트남 쌀국수 (포)", "반쎄오", "분짜", "씨푸드 해산물 요리"]
+        },
+        "스위스": {
+            "title": "⛰️ 스위스 취리히 / 인터라켄 (Switzerland)",
+            "sub": "알프스의 대자연과 동화 같은 풍경이 숨쉬는 곳",
+            "img": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
+            "desc": "스위스는 웅장한 융프라우요흐와 만년설, 깨끗한 호수가 어우러진 알프스의 낙원입니다. 환상적인 산악열차를 타고 청정 자연 속을 누비며 힐링을 만끽할 수 있습니다.",
+            "spots": ["융프라우요흐 (유럽의 지붕)", "인터라켄 하더 쿨룸", "루체른 카펠교", "체르마트 마테호른"],
+            "foods": ["스위스 치즈퐁듀", "라클렛", "스위스 초콜릿", "뢰스티"]
         }
     }
 
@@ -372,17 +399,28 @@ elif st.session_state.step == "destination_detail":
         """, unsafe_allow_html=True)
 
     if st.button(f"✈️ '{dest_name}' 항공권 실시간 시가 검색하러 가기", type="primary", use_container_width=True):
-        matching_dest = "도쿄/나리타 (NRT) - 일본"
-        if dest_name == "방콕":
-            matching_dest = "방콕/수완나품 (BKK) - 태국"
-        elif dest_name == "파리":
-            matching_dest = "파리/샤를드골 (CDG) - 프랑스"
-            
-        st.session_state.booking_data["departure"] = "서울/인천 (ICN)"
-        st.session_state.booking_data["destination"] = matching_dest
-        st.session_state.booking_data["date"] = date.today()
-        st.session_state.step = "select_flight"
-        st.rerun()
+        if not st.session_state.is_logged_in:
+            st.warning("🔒 로그인이 필요한 서비스입니다! 먼저 로그인해주세요.")
+            st.session_state.step = "login"
+            st.rerun()
+        else:
+            matching_dest = "도쿄/나리타 (NRT) - 일본"
+            if dest_name == "방콕":
+                matching_dest = "방콕/수완나품 (BKK) - 태국"
+            elif dest_name == "파리":
+                matching_dest = "파리/샤를드골 (CDG) - 프랑스"
+            elif dest_name == "뉴욕":
+                matching_dest = "뉴욕/JFK (JFK) - 미국"
+            elif dest_name == "다낭":
+                matching_dest = "다낭 (DAD) - 베트남"
+            elif dest_name == "스위스":
+                matching_dest = "스위스/취리히 (ZRH) - 스위스"
+                
+            st.session_state.booking_data["departure"] = "서울/인천 (ICN)"
+            st.session_state.booking_data["destination"] = matching_dest
+            st.session_state.booking_data["date"] = date.today()
+            st.session_state.step = "select_flight"
+            st.rerun()
 
 # ==========================================
 # 1-2. 로그인 화면
@@ -438,21 +476,19 @@ elif st.session_state.step == "select_flight":
     b_data = st.session_state.booking_data
     dest_str = b_data['destination']
     
-    if any(k in dest_str for k in ["일본", "홍콩", "마카오", "대만", "중국", "몽골"]):
+    if any(k in dest_str for k in ["일본", "홍콩", "마카오", "대만", "중국", "몽골", "베트남"]):
         flights = [
             {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:30", "arr_time": "09:00", "classes": [{"seat": "일반석", "price": 580000}, {"seat": "비즈니스석", "price": 1250000}]},
             {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "08:15", "arr_time": "10:45", "classes": [{"seat": "일반석", "price": 550000}, {"seat": "비즈니스석", "price": 1180000}]},
             {"id": 3, "airline": "제주항공", "flight_no": "7C303", "dep_time": "09:40", "arr_time": "12:10", "classes": [{"seat": "특가석", "price": 320000}, {"seat": "일반석", "price": 410000}]},
             {"id": 4, "airline": "진에어", "flight_no": "LJ404", "dep_time": "11:00", "arr_time": "13:30", "classes": [{"seat": "특가석", "price": 340000}, {"seat": "일반석", "price": 430000}]},
             {"id": 5, "airline": "티웨이항공", "flight_no": "TW505", "dep_time": "12:30", "arr_time": "15:00", "classes": [{"seat": "특가석", "price": 310000}, {"seat": "일반석", "price": 390000}]},
-            {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "14:00", "arr_time": "16:30", "classes": [{"seat": "일반석", "price": 620000}, {"seat": "비즈니스석", "price": 1320000}]},
         ]
     elif any(k in dest_str for k in ["프랑스", "영국", "이탈리아", "스페인", "독일", "스위스", "체코", "오스트리아", "튀르키예", "네덜란드", "폴란드", "러시아"]):
         flights = [
             {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "10:30", "arr_time": "18:00", "classes": [{"seat": "일반석", "price": 1580000}, {"seat": "비즈니스석", "price": 3850000}]},
             {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "11:15", "arr_time": "19:00", "classes": [{"seat": "일반석", "price": 1490000}, {"seat": "비즈니스석", "price": 3650000}]},
             {"id": 3, "airline": "폴란드항공", "flight_no": "LO303", "dep_time": "12:40", "arr_time": "20:10", "classes": [{"seat": "특가석", "price": 1150000}, {"seat": "일반석", "price": 1320000}]},
-            {"id": 4, "airline": "핀에어", "flight_no": "AY404", "dep_time": "13:00", "arr_time": "20:30", "classes": [{"seat": "특가석", "price": 1120000}, {"seat": "일반석", "price": 1290000}]},
         ]
     else:
         flights = [
