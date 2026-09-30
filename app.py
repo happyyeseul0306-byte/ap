@@ -109,19 +109,6 @@ if "user_email" not in st.session_state:
 if "selected_destination_info" not in st.session_state:
     st.session_state.selected_destination_info = ""
 
-# Streamlit Query Params를 통한 슬라이더 클릭 감지 처리 (여행지 소개 페이지로 이동)
-query_params = st.query_params
-if "clicked_dest" in query_params:
-    if not st.session_state.is_logged_in:
-        st.warning("🔒 로그인이 필요한 서비스입니다. 먼저 로그인해주세요!")
-        st.session_state.step = "login"
-    else:
-        dest_val = query_params["clicked_dest"]
-        st.session_state.selected_destination_info = dest_val
-        st.session_state.step = "destination_detail"
-    st.query_params.clear()
-    st.rerun()
-
 # ==========================================
 # 1. 홈 화면
 # ==========================================
@@ -210,7 +197,7 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 캐러셀 슬라이더 HTML (클릭 시 각 여행지 이름 전달)
+    # 캐러셀 슬라이더 HTML (이미지 시각 효과용)
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -219,11 +206,10 @@ if st.session_state.step == "home":
       .slider-container {
         position: relative;
         width: 100%;
-        height: 320px;
+        height: 300px;
         border-radius: 16px;
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        cursor: pointer;
       }
       .slide {
         position: absolute;
@@ -236,39 +222,39 @@ if st.session_state.step == "home":
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
-        padding: 40px;
+        padding: 30px;
         box-sizing: border-box;
       }
       .slide.active { opacity: 1; }
       .slide-content {
         background: rgba(0, 0, 0, 0.5);
-        padding: 20px;
+        padding: 15px 20px;
         border-radius: 10px;
         backdrop-filter: blur(5px);
         width: fit-content;
       }
-      h2 { color: white; margin: 0 0 10px 0; font-size: 1.8rem; font-family: sans-serif; }
-      p { color: #e2e8f0; margin: 0; font-size: 1rem; font-family: sans-serif; }
+      h2 { color: white; margin: 0 0 5px 0; font-size: 1.6rem; font-family: sans-serif; }
+      p { color: #e2e8f0; margin: 0; font-size: 0.95rem; font-family: sans-serif; }
     </style>
     </head>
     <body>
-    <div class="slider-container" onclick="handleSlideClick()">
-      <div class="slide active" data-dest="도쿄" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
+    <div class="slider-container">
+      <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
         <div class="slide-content">
           <h2>🗼 2026 도쿄 여행 트렌드</h2>
-          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지 (클릭하여 여행지 보기)</p>
+          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
         </div>
       </div>
-      <div class="slide" data-dest="방콕" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
         <div class="slide-content">
           <h2>🏝️ 낭만의 방콕 휴가</h2>
-          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시 (클릭하여 여행지 보기)</p>
+          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
         </div>
       </div>
-      <div class="slide" data-dest="파리" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
         <div class="slide-content">
           <h2>🥐 예술의 도시 파리</h2>
-          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳 (클릭하여 여행지 보기)</p>
+          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
         </div>
       </div>
     </div>
@@ -281,20 +267,46 @@ if st.session_state.step == "home":
         slides[currentSlide].classList.add('active');
       }
       setInterval(nextSlide, 3500);
-
-      function handleSlideClick() {
-        const activeEl = document.querySelector('.slide.active');
-        const dest = activeEl.getAttribute('data-dest');
-        window.parent.location.href = window.parent.location.pathname + '?clicked_dest=' + encodeURIComponent(dest);
-      }
     </script>
     </body>
     </html>
     """
-    components.html(carousel_html, height=350)
+    components.html(carousel_html, height=320)
+
+    # 슬라이더 아래에 확실하게 작동하는 여행지 상세 가이드 이동 버튼 배치
+    st.markdown("<p style='text-align: center; color: #94a3b8; margin-top: 10px;'>👇 아래 버튼을 눌러 추천 여행지 상세 가이드를 확인해보세요!</p>", unsafe_allow_html=True)
+    
+    bt_col1, bt_col2, bt_col3 = st.columns(3)
+    with bt_col1:
+        if st.button("🗼 도쿄 여행지 상세 보기", use_container_width=True):
+            if not st.session_state.is_logged_in:
+                st.warning("🔒 로그인이 필요한 서비스입니다!")
+                st.session_state.step = "login"
+            else:
+                st.session_state.selected_destination_info = "도쿄"
+                st.session_state.step = "destination_detail"
+            st.rerun()
+    with bt_col2:
+        if st.button("🏝️ 방콕 여행지 상세 보기", use_container_width=True):
+            if not st.session_state.is_logged_in:
+                st.warning("🔒 로그인이 필요한 서비스입니다!")
+                st.session_state.step = "login"
+            else:
+                st.session_state.selected_destination_info = "방콕"
+                st.session_state.step = "destination_detail"
+            st.rerun()
+    with bt_col3:
+        if st.button("🥐 파리 여행지 상세 보기", use_container_width=True):
+            if not st.session_state.is_logged_in:
+                st.warning("🔒 로그인이 필요한 서비스입니다!")
+                st.session_state.step = "login"
+            else:
+                st.session_state.selected_destination_info = "파리"
+                st.session_state.step = "destination_detail"
+            st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (새로 추가된 부분)
+# 1-1. 여행지 상세 소개 페이지
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if not st.session_state.is_logged_in:
@@ -307,7 +319,6 @@ elif st.session_state.step == "destination_detail":
 
     dest_name = st.session_state.selected_destination_info
 
-    # 여행지별 정보 데이터 정의
     dest_info_dict = {
         "도쿄": {
             "title": "🗼 일본 도쿄 (Tokyo)",
@@ -318,7 +329,7 @@ elif st.session_state.step == "destination_detail":
             "foods": ["정통 에도마에 스시", "돈코츠 라멘", "몬쟈야키", "야키토리"]
         },
         "방콕": {
-            "title": "🏝️️ 태국 방콕 (Bangkok)",
+            "title": "🏝 태국 방콕 (Bangkok)",
             "sub": "활기찬 야시장과 찬란한 사원의 도시",
             "img": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
             "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 그리고 전 세계 백패커들의 성지로 불리는 활기찬 야시장이 매력적인 도시입니다. 가성비 높은 호캉스와 환상적인 태국 로컬 푸드를 즐길 수 있습니다.",
@@ -360,9 +371,7 @@ elif st.session_state.step == "destination_detail":
             </div>
         """, unsafe_allow_html=True)
 
-    # 이 여행지 항공권 검색으로 바로 연결해주는 버튼 제공
     if st.button(f"✈️ '{dest_name}' 항공권 실시간 시가 검색하러 가기", type="primary", use_container_width=True):
-        # 상응하는 목적지 매핑
         matching_dest = "도쿄/나리타 (NRT) - 일본"
         if dest_name == "방콕":
             matching_dest = "방콕/수완나품 (BKK) - 태국"
@@ -415,7 +424,7 @@ elif st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 2. 비행기 목록 선택 화면 (실제 시가 반영)
+# 2. 비행기 목록 선택 화면
 # ==========================================
 elif st.session_state.step == "select_flight":
     if not st.session_state.is_logged_in:
@@ -452,7 +461,7 @@ elif st.session_state.step == "select_flight":
             {"id": 3, "airline": "싱가포르항공", "flight_no": "SQ303", "dep_time": "10:40", "arr_time": "16:10", "classes": [{"seat": "특가석", "price": 750000}, {"seat": "일반석", "price": 890000}]},
         ]
     
-    st.markdown(f"<h2 style='color: white;'>✈️️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color: white;'>✈ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
     st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 실시간 시가 반영</p>", unsafe_allow_html=True)
     st.markdown("---")
     
