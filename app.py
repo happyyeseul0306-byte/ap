@@ -4,8 +4,8 @@ from datetime import date
 
 # 1. 페이지 설정 (와이드 레이아웃)
 st.set_page_config(
-    page_title="SkyScanner - 항공권 예매", 
-    page_icon="✈️", 
+    page_title="StarPort - 항공권 예매", 
+    page_icon="🚀", 
     layout="wide"
 )
 
@@ -99,7 +99,7 @@ if "user_email" not in st.session_state:
 if st.session_state.step == "home":
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([2, 4.5, 1, 0.8])
     with nav_col1:
-        st.markdown("<h2 style='color: white; margin: 0; font-size: 1.5rem;'>✈️ Skyscanner</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='color: white; margin: 0; font-size: 1.5rem;'>🚀 StarPort</h2>", unsafe_allow_html=True)
     with nav_col2:
         st.markdown("<p style='color: #94a3b8; margin: 5px 0 0 0;'>전 세계 항공권 비교</p>", unsafe_allow_html=True)
     with nav_col3:
@@ -271,7 +271,7 @@ elif st.session_state.step == "login":
         st.markdown("""
             <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
                 <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="color: #05132d; margin:0;">🔐 Skyscanner 로그인</h2>
+                    <h2 style="color: #05132d; margin:0;">🔐 StarPort 로그인</h2>
                     <p style="color: #64748b; margin-top:5px;">항공권을 검색하고 예매하려면 로그인해주세요.</p>
                 </div>
         """, unsafe_allow_html=True)
@@ -400,7 +400,7 @@ elif st.session_state.step == "success":
         st.markdown(f"""
             <div class="eticket-box">
                 <h3 style="text-align: center; color: #05132d; margin-top: 0; border-bottom: 2px solid #05132d; padding-bottom: 12px;">
-                    🎫 E-PASSENGER TICKET
+                    🎫 STARPORT E-PASSENGER TICKET
                 </h3>
                 <p><b>[탑승객]</b> {b.get('name')} ({b.get('birthdate')})</p>
                 <hr style="border: 0; border-top: 1px solid #e5e7eb;">
