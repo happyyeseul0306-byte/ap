@@ -310,14 +310,21 @@ elif st.session_state.step == "select_flight":
         
     b_data = st.session_state.booking_data
     st.markdown(f"<h2 style='color: white;'>✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 마음에 드는 항공편을 선택하세요.</p>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 총 10개의 항공편이 검색되었습니다. 마음에 드는 항공편을 선택하세요.</p>", unsafe_allow_html=True)
     st.markdown("---")
     
+    # 🌟 풍성하게 구성된 10개의 항공편 리스트
     flights = [
-        {"id": 1, "airline": "대한항공", "flight_no": "KE123", "dep_time": "08:30", "arr_time": "11:00", "price": 480000, "seat": "일반석"},
-        {"id": 2, "airline": "아시아나항공", "flight_no": "OZ456", "dep_time": "12:15", "arr_time": "14:45", "price": 450000, "seat": "일반석"},
-        {"id": 3, "airline": "제주항공", "flight_no": "7C789", "dep_time": "15:40", "arr_time": "18:10", "price": 290000, "seat": "특가석"},
-        {"id": 4, "airline": "진에어", "flight_no": "LJ302", "dep_time": "20:00", "arr_time": "22:30", "price": 260000, "seat": "일반석"},
+        {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:40", "arr_time": "09:10", "price": 520000, "seat": "일반석"},
+        {"id": 2, "airline": "대한항공", "flight_no": "KE123", "dep_time": "08:30", "arr_time": "11:00", "price": 480000, "seat": "일반석"},
+        {"id": 3, "airline": "아시아나항공", "flight_no": "OZ456", "dep_time": "10:15", "arr_time": "12:45", "price": 460000, "seat": "일반석"},
+        {"id": 4, "airline": "아시아나항공", "flight_no": "OZ482", "dep_time": "12:15", "arr_time": "14:45", "price": 450000, "seat": "일반석"},
+        {"id": 5, "airline": "진에어", "flight_no": "LJ301", "dep_time": "14:00", "arr_time": "16:30", "price": 310000, "seat": "일반석"},
+        {"id": 6, "airline": "제주항공", "flight_no": "7C789", "dep_time": "15:40", "arr_time": "18:10", "price": 290000, "seat": "특가석"},
+        {"id": 7, "airline": "티웨이항공", "flight_no": "TW215", "dep_time": "17:20", "arr_time": "19:50", "price": 275000, "seat": "특가석"},
+        {"id": 8, "airline": "진에어", "flight_no": "LJ302", "dep_time": "19:00", "arr_time": "21:30", "price": 260000, "seat": "일반석"},
+        {"id": 9, "airline": "에어부산", "flight_no": "BX812", "dep_time": "20:45", "arr_time": "23:15", "price": 240000, "seat": "특가석"},
+        {"id": 10, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "01:00 (+1일)", "price": 680000, "seat": "비즈니스석"},
     ]
     
     for f in flights:
@@ -335,7 +342,7 @@ elif st.session_state.step == "select_flight":
             </div>
         """, unsafe_allow_html=True)
         
-        if st.button(f"선택하기 ({f['airline']})", key=f"sel_{f['id']}"):
+        if st.button(f"선택하기 ({f['airline']} - {f['flight_no']})", key=f"sel_{f['id']}"):
             st.session_state.booking_data["airline"] = f["airline"]
             st.session_state.booking_data["flight_no"] = f["flight_no"]
             st.session_state.booking_data["dep_time"] = f["dep_time"]
