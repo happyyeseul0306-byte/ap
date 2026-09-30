@@ -60,6 +60,12 @@ st.markdown("""
         font-size: 1.05rem !important;
     }
 
+    /* 🌟 항공편 선택 화면의 셀렉트박스(좌석 등급 선택) 라벨 색상을 선명한 흰색으로 변경 */
+    div[data-testid="stSelectbox"] label p {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+    }
+
     /* 입력창 내부 안내 텍스트(Placeholder) 색상 선명하게 변경 */
     input::placeholder {
         color: #475569 !important;
@@ -230,7 +236,7 @@ if st.session_state.step == "home":
       </div>
       <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
         <div class="slide-content">
-          <h2>🏝️ 낭만의 방콕 휴가</h2>
+          <h2>🏝️️ 낭만의 방콕 휴가</h2>
           <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
         </div>
       </div>
@@ -296,7 +302,7 @@ elif st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 2. 비행기 목록 선택 화면 (12개 항공편, 각 항공편별 다양한 등급 포함)
+# 2. 비행기 목록 선택 화면 (12개 항공편, 라벨 가독성 개선)
 # ==========================================
 elif st.session_state.step == "select_flight":
     if not st.session_state.is_logged_in:
@@ -313,7 +319,6 @@ elif st.session_state.step == "select_flight":
     st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 총 12개의 다양한 항공편과 등급을 선택하세요.</p>", unsafe_allow_html=True)
     st.markdown("---")
     
-    # 🌟 총 12개의 다양한 항공사 및 시간대, 등급 조합 리스트
     flights = [
         {
             "id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:30", "arr_time": "09:00",
@@ -447,7 +452,7 @@ elif st.session_state.step == "passenger_info":
         st.session_state.step = "login"
         st.rerun()
 
-    if st.button("⬅️️ 항공편 다시 선택"):
+    if st.button("⬅ 항공편 다시 선택"):
         st.session_state.step = "select_flight"
         st.rerun()
         
