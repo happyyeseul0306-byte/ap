@@ -4,7 +4,7 @@ from datetime import date
 
 # 1. 페이지 설정 (와이드 레이아웃)
 st.set_page_config(
-    page_title="StarPort - 항공권 예매", 
+    page_title="StarPort - 여행지 & 항공권", 
     page_icon="🚀", 
     layout="wide"
 )
@@ -49,6 +49,14 @@ st.markdown("""
         border-radius: 12px;
         box-shadow: 0 6px 20px rgba(0,0,0,0.2);
     }
+    .dest-info-box {
+        background-color: #ffffff;
+        color: #05132d;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        margin-bottom: 25px;
+    }
     
     /* 로그인 폼 내부 입력창 라벨 색상 고정 */
     div[data-testid="stForm"] label {
@@ -60,7 +68,7 @@ st.markdown("""
         font-size: 1.05rem !important;
     }
 
-    /* 항공편 선택 화면의 셀렉트박스(좌석 등급 선택) 라벨 색상을 선명한 흰색으로 변경 */
+    /* 항공편 선택 화면의 셀렉트박스 라벨 색상을 흰색으로 변경 */
     div[data-testid="stSelectbox"] label p {
         color: #ffffff !important;
         font-weight: 700 !important;
@@ -98,16 +106,31 @@ if "is_logged_in" not in st.session_state:
     st.session_state.is_logged_in = False
 if "user_email" not in st.session_state:
     st.session_state.user_email = ""
+if "selected_destination_info" not in st.session_state:
+    st.session_state.selected_destination_info = ""
+
+# Streamlit Query Params를 통한 슬라이더 클릭 감지 처리 (여행지 소개 페이지로 이동)
+query_params = st.query_params
+if "clicked_dest" in query_params:
+    if not st.session_state.is_logged_in:
+        st.warning("🔒 로그인이 필요한 서비스입니다. 먼저 로그인해주세요!")
+        st.session_state.step = "login"
+    else:
+        dest_val = query_params["clicked_dest"]
+        st.session_state.selected_destination_info = dest_val
+        st.session_state.step = "destination_detail"
+    st.query_params.clear()
+    st.rerun()
 
 # ==========================================
-# 1. 홈 화면 (상단 네비게이션바에 로그인 버튼 포함)
+# 1. 홈 화면
 # ==========================================
 if st.session_state.step == "home":
     nav_col1, nav_col2, nav_col3, nav_col4 = st.columns([2, 4.5, 1, 0.8])
     with nav_col1:
         st.markdown("<h2 style='color: white; margin: 0; font-size: 1.5rem;'>🚀 StarPort</h2>", unsafe_allow_html=True)
     with nav_col2:
-        st.markdown("<p style='color: #94a3b8; margin: 5px 0 0 0;'>전 세계 항공권 비교</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color: #94a3b8; margin: 5px 0 0 0;'>전 세계 항공권 비교 및 여행지 가이드</p>", unsafe_allow_html=True)
     with nav_col3:
         pass
     with nav_col4:
@@ -187,6 +210,7 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
+    # 캐러셀 슬라이더 HTML (클릭 시 각 여행지 이름 전달)
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -199,6 +223,7 @@ if st.session_state.step == "home":
         border-radius: 16px;
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        cursor: pointer;
       }
       .slide {
         position: absolute;
@@ -227,23 +252,23 @@ if st.session_state.step == "home":
     </style>
     </head>
     <body>
-    <div class="slider-container">
-      <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
+    <div class="slider-container" onclick="handleSlideClick()">
+      <div class="slide active" data-dest="도쿄" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
         <div class="slide-content">
           <h2>🗼 2026 도쿄 여행 트렌드</h2>
-          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
+          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지 (클릭하여 여행지 보기)</p>
         </div>
       </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+      <div class="slide" data-dest="방콕" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
         <div class="slide-content">
           <h2>🏝️ 낭만의 방콕 휴가</h2>
-          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
+          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시 (클릭하여 여행지 보기)</p>
         </div>
       </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+      <div class="slide" data-dest="파리" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
         <div class="slide-content">
           <h2>🥐 예술의 도시 파리</h2>
-          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
+          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳 (클릭하여 여행지 보기)</p>
         </div>
       </div>
     </div>
@@ -256,11 +281,99 @@ if st.session_state.step == "home":
         slides[currentSlide].classList.add('active');
       }
       setInterval(nextSlide, 3500);
+
+      function handleSlideClick() {
+        const activeEl = document.querySelector('.slide.active');
+        const dest = activeEl.getAttribute('data-dest');
+        window.parent.location.href = window.parent.location.pathname + '?clicked_dest=' + encodeURIComponent(dest);
+      }
     </script>
     </body>
     </html>
     """
     components.html(carousel_html, height=350)
+
+# ==========================================
+# 1-1. 여행지 상세 소개 페이지 (새로 추가된 부분)
+# ==========================================
+elif st.session_state.step == "destination_detail":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    if st.button("⬅️ 홈으로 돌아가기"):
+        st.session_state.step = "home"
+        st.rerun()
+
+    dest_name = st.session_state.selected_destination_info
+
+    # 여행지별 정보 데이터 정의
+    dest_info_dict = {
+        "도쿄": {
+            "title": "🗼 일본 도쿄 (Tokyo)",
+            "sub": "전통과 미래가 공존하는 매력적인 메가폴리스",
+            "img": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
+            "desc": "도쿄는 첨단 기술과 전통 문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다.",
+            "spots": ["시부야 스크램블 / 스카이트리", "도쿄 디즈니랜드 / 디즈니씨", "아사쿠사 센소지", "신주쿠 교엔 국립공원"],
+            "foods": ["정통 에도마에 스시", "돈코츠 라멘", "몬쟈야키", "야키토리"]
+        },
+        "방콕": {
+            "title": "🏝️️ 태국 방콕 (Bangkok)",
+            "sub": "활기찬 야시장과 찬란한 사원의 도시",
+            "img": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
+            "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 그리고 전 세계 백패커들의 성지로 불리는 활기찬 야시장이 매력적인 도시입니다. 가성비 높은 호캉스와 환상적인 태국 로컬 푸드를 즐길 수 있습니다.",
+            "spots": ["왓 아룬 (새벽 사원)", "왕궁 & 왓 포", "짜뚜짝 주말 시장", "카오산 로드"],
+            "foods": ["똠얌꿍", "팟타이", "망고 스티키 라이스", "푸팟퐁 커리"]
+        },
+        "파리": {
+            "title": "🥐 프랑스 파리 (Paris)",
+            "sub": "예술, 낭만, 패션의 영원한 수도",
+            "img": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+            "desc": "센 강이 흐르는 파리는 세련된 건축물과 세계 최고 수준의 미술관, 그리고 낭만적인 카페 문화가 가득한 도시입니다. 에펠탑의 야경과 루브르 박물관의 명작들을 직접 만나보세요.",
+            "spots": ["에펠탑 & 트로카데로 광장", "루브르 박물관", "오르세 미술관", "몽마르트르 언덕 & 사크레쾨르 대성당"],
+            "foods": ["정통 바게트 & 크루아상", "프렌치 어니언 수프", "마카롱", "스테이크 프릿"]
+        }
+    }
+
+    info = dest_info_dict.get(dest_name, dest_info_dict["도쿄"])
+
+    st.markdown(f"<h1 style='color: white; margin-bottom: 5px;'>{info['title']}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8; font-size: 1.2rem; margin-bottom: 25px;'>{info['sub']}</p>", unsafe_allow_html=True)
+
+    col_img, col_txt = st.columns([1.2, 1.8])
+    with col_img:
+        st.image(info['img'], use_container_width=True)
+    with col_txt:
+        st.markdown(f"""
+            <div class="dest-info-box">
+                <h3>📖 여행지 소개</h3>
+                <p style="color: #475569; font-size: 1.05rem; line-height: 1.6;">{info['desc']}</p>
+                <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 15px 0;">
+                <h4>✨ 주요 관광 명소</h4>
+                <ul>
+                    {"".join([f"<li>{s}</li>" for s in info['spots']])}
+                </ul>
+                <h4>🍲 추천 먹거리</h4>
+                <ul>
+                    {"".join([f"<li>{f}</li>" for f in info['foods']])}
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
+
+    # 이 여행지 항공권 검색으로 바로 연결해주는 버튼 제공
+    if st.button(f"✈️ '{dest_name}' 항공권 실시간 시가 검색하러 가기", type="primary", use_container_width=True):
+        # 상응하는 목적지 매핑
+        matching_dest = "도쿄/나리타 (NRT) - 일본"
+        if dest_name == "방콕":
+            matching_dest = "방콕/수완나품 (BKK) - 태국"
+        elif dest_name == "파리":
+            matching_dest = "파리/샤를드골 (CDG) - 프랑스"
+            
+        st.session_state.booking_data["departure"] = "서울/인천 (ICN)"
+        st.session_state.booking_data["destination"] = matching_dest
+        st.session_state.booking_data["date"] = date.today()
+        st.session_state.step = "select_flight"
+        st.rerun()
 
 # ==========================================
 # 1-2. 로그인 화면
@@ -278,7 +391,7 @@ elif st.session_state.step == "login":
             <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
                 <div style="text-align: center; margin-bottom: 20px;">
                     <h2 style="color: #05132d; margin:0;">🔐 StarPort 로그인</h2>
-                    <p style="color: #64748b; margin-top:5px;">항공권을 검색하고 예매하려면 로그인해주세요.</p>
+                    <p style="color: #64748b; margin-top:5px;">서비스를 이용하려면 로그인해주세요.</p>
                 </div>
         """, unsafe_allow_html=True)
         
@@ -302,11 +415,10 @@ elif st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 2. 비행기 목록 선택 화면 (실제 시가 반영된 가격표)
+# 2. 비행기 목록 선택 화면 (실제 시가 반영)
 # ==========================================
 elif st.session_state.step == "select_flight":
     if not st.session_state.is_logged_in:
-        st.warning("로그인이 만료되었거나 로그인이 필요한 페이지입니다.")
         st.session_state.step = "login"
         st.rerun()
 
@@ -315,11 +427,9 @@ elif st.session_state.step == "select_flight":
         st.rerun()
         
     b_data = st.session_state.booking_data
-    
-    # 선택된 목적지 분류에 따라 시가 데이터 동적 산정
     dest_str = b_data['destination']
+    
     if any(k in dest_str for k in ["일본", "홍콩", "마카오", "대만", "중국", "몽골"]):
-        # 단거리 노선 시가 (일반석 35~65만 원, 비즈니스 90~140만 원)
         flights = [
             {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:30", "arr_time": "09:00", "classes": [{"seat": "일반석", "price": 580000}, {"seat": "비즈니스석", "price": 1250000}]},
             {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "08:15", "arr_time": "10:45", "classes": [{"seat": "일반석", "price": 550000}, {"seat": "비즈니스석", "price": 1180000}]},
@@ -327,48 +437,23 @@ elif st.session_state.step == "select_flight":
             {"id": 4, "airline": "진에어", "flight_no": "LJ404", "dep_time": "11:00", "arr_time": "13:30", "classes": [{"seat": "특가석", "price": 340000}, {"seat": "일반석", "price": 430000}]},
             {"id": 5, "airline": "티웨이항공", "flight_no": "TW505", "dep_time": "12:30", "arr_time": "15:00", "classes": [{"seat": "특가석", "price": 310000}, {"seat": "일반석", "price": 390000}]},
             {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "14:00", "arr_time": "16:30", "classes": [{"seat": "일반석", "price": 620000}, {"seat": "비즈니스석", "price": 1320000}]},
-            {"id": 7, "airline": "에어부산", "flight_no": "BX707", "dep_time": "15:20", "arr_time": "17:50", "classes": [{"seat": "특가석", "price": 295000}, {"seat": "일반석", "price": 380000}]},
-            {"id": 8, "airline": "아시아나항공", "flight_no": "OZ808", "dep_time": "16:45", "arr_time": "19:15", "classes": [{"seat": "일반석", "price": 530000}, {"seat": "비즈니스석", "price": 1150000}]},
-            {"id": 9, "airline": "제주항공", "flight_no": "7C909", "dep_time": "18:10", "arr_time": "20:40", "classes": [{"seat": "특가석", "price": 350000}, {"seat": "일반석", "price": 450000}]},
-            {"id": 10, "airline": "진에어", "flight_no": "LJ110", "dep_time": "19:30", "arr_time": "22:00", "classes": [{"seat": "특가석", "price": 330000}, {"seat": "일반석", "price": 420000}]},
-            {"id": 11, "airline": "티웨이항공", "flight_no": "TW211", "dep_time": "21:00", "arr_time": "23:30", "classes": [{"seat": "특가석", "price": 290000}, {"seat": "일반석", "price": 370000}]},
-            {"id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "01:00 (+1일)", "classes": [{"seat": "일반석", "price": 650000}, {"seat": "비즈니스석", "price": 1400000}]}
         ]
     elif any(k in dest_str for k in ["프랑스", "영국", "이탈리아", "스페인", "독일", "스위스", "체코", "오스트리아", "튀르키예", "네덜란드", "폴란드", "러시아"]):
-        # 유럽 장거리 노선 시가 (일반석 110~170만 원, 비즈니스 280~450만 원)
         flights = [
             {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "10:30", "arr_time": "18:00", "classes": [{"seat": "일반석", "price": 1580000}, {"seat": "비즈니스석", "price": 3850000}]},
             {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "11:15", "arr_time": "19:00", "classes": [{"seat": "일반석", "price": 1490000}, {"seat": "비즈니스석", "price": 3650000}]},
             {"id": 3, "airline": "폴란드항공", "flight_no": "LO303", "dep_time": "12:40", "arr_time": "20:10", "classes": [{"seat": "특가석", "price": 1150000}, {"seat": "일반석", "price": 1320000}]},
             {"id": 4, "airline": "핀에어", "flight_no": "AY404", "dep_time": "13:00", "arr_time": "20:30", "classes": [{"seat": "특가석", "price": 1120000}, {"seat": "일반석", "price": 1290000}]},
-            {"id": 5, "airline": "루프트한자", "flight_no": "LH505", "dep_time": "14:30", "arr_time": "22:00", "classes": [{"seat": "일반석", "price": 1450000}, {"seat": "비즈니스석", "price": 3500000}]},
-            {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "15:00", "arr_time": "22:30", "classes": [{"seat": "일반석", "price": 1620000}, {"seat": "비즈니스석", "price": 3950000}]},
-            {"id": 7, "airline": "에미레이트항공", "flight_no": "EK707", "dep_time": "16:20", "arr_time": "23:50", "classes": [{"seat": "일반석", "price": 1380000}, {"seat": "비즈니스석", "price": 3300000}]},
-            {"id": 8, "airline": "카타르항공", "flight_no": "QR808", "dep_time": "17:45", "arr_time": "01:15 (+1일)", "classes": [{"seat": "일반석", "price": 1350000}, {"seat": "비즈니스석", "price": 3200000}]},
-            {"id": 9, "airline": "터키항공", "flight_no": "TK909", "dep_time": "19:10", "arr_time": "02:40 (+1일)", "classes": [{"seat": "특가석", "price": 1180000}, {"seat": "일반석", "price": 1360000}]},
-            {"id": 10, "airline": "프랑스에어", "flight_no": "AF110", "dep_time": "20:30", "arr_time": "04:00 (+1일)", "classes": [{"seat": "일반석", "price": 1510000}, {"seat": "비즈니스석", "price": 3700000}]},
-            {"id": 11, "airline": "영국항공", "flight_no": "BA211", "dep_time": "21:00", "arr_time": "04:30 (+1일)", "classes": [{"seat": "일반석", "price": 1480000}, {"seat": "비즈니스석", "price": 3600000}]},
-            {"id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "06:00 (+1일)", "classes": [{"seat": "일반석", "price": 1680000}, {"seat": "비즈니스석", "price": 4100000}]}
         ]
     else:
-        # 동남아 / 미주 / 기타 장거리 노선 시가 (일반석 70~150만 원)
         flights = [
             {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "07:30", "arr_time": "13:00", "classes": [{"seat": "일반석", "price": 980000}, {"seat": "비즈니스석", "price": 2400000}]},
             {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "09:15", "arr_time": "14:45", "classes": [{"seat": "일반석", "price": 920000}, {"seat": "비즈니스석", "price": 2250000}]},
             {"id": 3, "airline": "싱가포르항공", "flight_no": "SQ303", "dep_time": "10:40", "arr_time": "16:10", "classes": [{"seat": "특가석", "price": 750000}, {"seat": "일반석", "price": 890000}]},
-            {"id": 4, "airline": "베트남항공", "flight_no": "VN404", "dep_time": "11:00", "arr_time": "16:30", "classes": [{"seat": "특가석", "price": 680000}, {"seat": "일반석", "price": 810000}]},
-            {"id": 5, "airline": "타이항공", "flight_no": "TG505", "dep_time": "12:30", "arr_time": "18:00", "classes": [{"seat": "특가석", "price": 710000}, {"seat": "일반석", "price": 850000}]},
-            {"id": 6, "airline": "대한항공", "flight_no": "KE606", "dep_time": "14:00", "arr_time": "19:30", "classes": [{"seat": "일반석", "price": 1020000}, {"seat": "비즈니스석", "price": 2500000}]},
-            {"id": 7, "airline": "제주항공", "flight_no": "7C707", "dep_time": "15:20", "arr_time": "20:50", "classes": [{"seat": "특가석", "price": 590000}, {"seat": "일반석", "price": 720000}]},
-            {"id": 8, "airline": "아시아나항공", "flight_no": "OZ808", "dep_time": "16:45", "arr_time": "22:15", "classes": [{"seat": "일반석", "price": 940000}, {"seat": "비즈니스석", "price": 2300000}]},
-            {"id": 9, "airline": "세부퍼시픽", "flight_no": "5J909", "dep_time": "18:10", "arr_time": "23:40", "classes": [{"seat": "특가석", "price": 550000}, {"seat": "일반석", "price": 680000}]},
-            {"id": 10, "airline": "진에어", "flight_no": "LJ110", "dep_time": "19:30", "arr_time": "01:00 (+1일)", "classes": [{"seat": "특가석", "price": 610000}, {"seat": "일반석", "price": 750000}]},
-            {"id": 11, "airline": "티웨이항공", "flight_no": "TW211", "dep_time": "21:00", "arr_time": "02:30 (+1일)", "classes": [{"seat": "특가석", "price": 570000}, {"seat": "일반석", "price": 700000}]},
-            {"id": 12, "airline": "대한항공", "flight_no": "KE999", "dep_time": "22:30", "arr_time": "04:00 (+1일)", "classes": [{"seat": "일반석", "price": 1080000}, {"seat": "비즈니스석", "price": 2650000}]}
         ]
     
-    st.markdown(f"<h2 style='color: white;'>✈️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
-    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 실시간 시가가 반영된 총 12개의 항공편입니다.</p>", unsafe_allow_html=True)
+    st.markdown(f"<h2 style='color: white;'>✈️️ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 실시간 시가 반영</p>", unsafe_allow_html=True)
     st.markdown("---")
     
     for f in flights:
@@ -422,7 +507,6 @@ elif st.session_state.step == "passenger_info":
         st.rerun()
         
     st.markdown("<h2 style='color: white;'>👤 탑승객 정보 입력</h2>", unsafe_allow_html=True)
-    st.markdown("<p style='color: #94a3b8;'>여권 또는 신분증에 기재된 정보와 일치해야 합니다.</p>", unsafe_allow_html=True)
     
     with st.form("info_form"):
         name = st.text_input("탑승객 성함 (예: 홍길동)")
@@ -450,13 +534,7 @@ elif st.session_state.step == "success":
 
     st.balloons()
     
-    st.markdown("""
-        <div style="text-align: center; margin-bottom: 25px;">
-            <h2 style="color: white;">🎉 항공권 예매가 완료되었습니다!</h2>
-            <p style="color: #94a3b8;">아래 전자 항공권(E-Ticket) 정보를 확인하세요.</p>
-        </div>
-    """, unsafe_allow_html=True)
-    
+    st.markdown("<h2 style='text-align: center; color: white;'>🎉 항공권 예매가 완료되었습니다!</h2>", unsafe_allow_html=True)
     b = st.session_state.booking_data
     
     col1, col2, col3 = st.columns([1, 2, 1])
