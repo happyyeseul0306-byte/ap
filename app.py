@@ -60,7 +60,7 @@ st.markdown("""
         font-size: 1.05rem !important;
     }
 
-    /* 🌟 항공편 선택 화면의 셀렉트박스(좌석 등급 선택) 라벨 색상을 선명한 흰색으로 변경 */
+    /* 항공편 선택 화면의 셀렉트박스(좌석 등급 선택) 라벨 색상을 선명한 흰색으로 변경 */
     div[data-testid="stSelectbox"] label p {
         color: #ffffff !important;
         font-weight: 700 !important;
@@ -120,7 +120,7 @@ if st.session_state.step == "home":
                 st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<h1 style='color: white; text-align: center; font-size: 2.2rem; margin-bottom: 5px;'>수백만 개의 저가 항공권, 검색 한 번으로 간단하게.</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color: white; text-align: center; font-size: 2.2rem; margin-bottom: 5px;'>수백만 개의 항공권, 검색 한 번으로 간단하게.</h1>", unsafe_allow_html=True)
     st.markdown("<p style='color: #94a3b8; text-align: center; margin-bottom: 25px;'>원하는 일정의 항공편을 실시간으로 비교하고 예매하세요.</p>", unsafe_allow_html=True)
     
     destinations_list = [
@@ -236,7 +236,7 @@ if st.session_state.step == "home":
       </div>
       <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
         <div class="slide-content">
-          <h2>🏝️️ 낭만의 방콕 휴가</h2>
+          <h2>🏝️ 낭만의 방콕 휴가</h2>
           <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
         </div>
       </div>
@@ -302,7 +302,7 @@ elif st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ==========================================
-# 2. 비행기 목록 선택 화면 (12개 항공편, 라벨 가독성 개선)
+# 2. 비행기 목록 선택 화면 (12개 항공편, 저가 문구 제거)
 # ==========================================
 elif st.session_state.step == "select_flight":
     if not st.session_state.is_logged_in:
