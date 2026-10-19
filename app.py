@@ -179,7 +179,6 @@ if st.session_state.step == "home":
         with sc3:
             travel_date = st.date_input("📅 가는 날", min_value=date.today())
         with sc4:
-            # 기존 시간대 selectbox 대신 슬라이더로 변경 (원하는 시간 범위 선택)
             travel_time_range = st.slider(
                 "⏰ 출발 시간대 범위", 
                 value=(time(0, 0), time(23, 59)),
@@ -222,4 +221,398 @@ if st.session_state.step == "home":
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
       }
-      .
+      .slide {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 30px;
+        box-sizing: border-box;
+      }
+      .slide.active { opacity: 1; }
+      .slide-content {
+        background: rgba(0, 0, 0, 0.5);
+        padding: 15px 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(5px);
+        width: fit-content;
+      }
+      h2 { color: white; margin: 0 0 5px 0; font-size: 1.6rem; font-family: sans-serif; }
+      p { color: #e2e8f0; margin: 0; font-size: 0.95rem; font-family: sans-serif; }
+    </style>
+    </head>
+    <body>
+    <div class="slider-container">
+      <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
+        <div class="slide-content">
+          <h2>🗼 2026 도쿄 여행 트렌드</h2>
+          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
+        </div>
+      </div>
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+        <div class="slide-content">
+          <h2>🏝️ 낭만의 방콕 휴가</h2>
+          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
+        </div>
+      </div>
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+        <div class="slide-content">
+          <h2>🥐 예술의 도시 파리</h2>
+          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.slide');
+      function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }
+      setInterval(nextSlide, 3500);
+    </script>
+    </body>
+    </html>
+    """
+    components.html(carousel_html, height=320)
+
+    st.markdown("<p style='text-align: center; color: #94a3b8; margin-top: 15px;'>👇 아래 추천 도시 버튼을 눌러 상세 가이드를 확인해보세요!</p>", unsafe_allow_html=True)
+    
+    row1_c1, row1_c2, row1_c3 = st.columns(3)
+    with row1_c1:
+        if st.button("🗼 도쿄 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "도쿄"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row1_c2:
+        if st.button("🏝️ 방콕 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "방콕"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row1_c3:
+        if st.button("🥐 파리 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "파리"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+
+    row2_c1, row2_c2, row2_c3 = st.columns(3)
+    with row2_c1:
+        if st.button("🗽 뉴욕 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "뉴욕"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row2_c2:
+        if st.button("🌊 다낭 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "다낭"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row2_c3:
+        if st.button("⛰️ 스위스 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "스위스"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+
+# ==========================================
+# 1-1. 여행지 상세 소개 페이지
+# ==========================================
+elif st.session_state.step == "destination_detail":
+    if st.button("⬅️ 홈으로 돌아가기"):
+        st.session_state.step = "home"
+        st.rerun()
+
+    dest_name = st.session_state.selected_destination_info
+
+    dest_info_dict = {
+        "도쿄": {
+            "title": "🗼 일본 도쿄 (Tokyo)",
+            "sub": "전통과 미래가 공존하는 매력적인 메가폴리스",
+            "img": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
+            "desc": "도쿄는 첨단 기술과 전통 문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다.",
+            "spots": ["시부야 스크램블 / 스카이트리", "도쿄 디즈니랜드 / 디즈니씨", "아사쿠사 센소지", "신주쿠 교엔 국립공원"],
+            "foods": ["정통 에도마에 스시", "돈코츠 라멘", "몬쟈야키", "야키토리"]
+        },
+        "방콕": {
+            "title": "🏝 태국 방콕 (Bangkok)",
+            "sub": "활기찬 야시장과 찬란한 사원의 도시",
+            "img": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
+            "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 그리고 전 세계 백패커들의 성지로 불리는 활기찬 야시장이 매력적인 도시입니다. 가성비 높은 호캉스와 환상적인 태국 로컬 푸드를 즐길 수 있습니다.",
+            "spots": ["왓 아룬 (새벽 사원)", "왕궁 & 왓 포", "짜뚜짝 주말 시장", "카오산 로드"],
+            "foods": ["똠얌꿍", "팟타이", "망고 스티키 라이스", "푸팟퐁 커리"]
+        },
+        "파리": {
+            "title": "🥐 프랑스 파리 (Paris)",
+            "sub": "예술, 낭만, 패션의 영원한 수도",
+            "img": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+            "desc": "센 강이 흐르는 파리는 세련된 건축물과 세계 최고 수준의 미술관, 그리고 낭만적인 카페 문화가 가득한 도시입니다. 에펠탑의 야경과 루브르 박물관의 명작들을 직접 만나보세요.",
+            "spots": ["에펠탑 & 트로카데로 광장", "루브르 박물관", "오르세 미술관", "몽마르트르 언덕 & 사크레쾨르 대성당"],
+            "foods": ["정통 바게트 & 크루아상", "프렌치 어니언 수프", "마카롱", "스테이크 프릿"]
+        },
+        "뉴욕": {
+            "title": "🗽 미국 뉴욕 (New York)",
+            "sub": "잠들지 않는 세계 경제와 문화의 중심지",
+            "img": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
+            "desc": "뉴욕은 자유의 여신상, 타임스 스퀘어, 센트럴 파크 등 전 세계 사람들이 동경하는 랜드마크가 가득한 도시입니다. 브로드웨이 뮤지컬과 세계 각국의 다채로운 미식을 경험할 수 있습니다.",
+            "spots": ["타임스 스퀘어 & 브로드웨이", "센트럴 파크", "자유의 여신상", "엠파이어 스테이트 빌딩 전망대"],
+            "foods": ["뉴욕 스타일 피자", "패스트라미 샌드위치", "베이글 & 크림치즈", "스테이크"]
+        },
+        "다낭": {
+            "title": "🌊 베트남 다낭 (Da Nang)",
+            "sub": "아름다운 미케 해변과 세계적인 휴양 리조트 도시",
+            "img": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
+            "desc": "베트남 중부를 대표하는 다낭은 끝없이 펼쳐진 미케 비치와 세계문화유산인 호이안 구시가지가 가까워 휴양과 관광을 동시에 즐길 수 있는 최고의 인기 여행지입니다.",
+            "spots": ["미케 해변 (My Khe Beach)", "바나힐 테마파크 & 골든브릿지", "오행산 (마블 마운틴)", "호이안 올드타운"],
+            "foods": ["베트남 쌀국수 (포)", "반쎄오", "분짜", "씨푸드 해산물 요리"]
+        },
+        "스위스": {
+            "title": "⛰️ 스위스 취리히 / 인터라켄 (Switzerland)",
+            "sub": "알프스의 대자연과 동화 같은 풍경이 숨쉬는 곳",
+            "img": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
+            "desc": "스위스는 웅장한 융프라우요흐와 만년설, 깨끗한 호수가 어우러진 알프스의 낙원입니다. 환상적인 산악열차를 타고 청정 자연 속을 누비며 힐링을 만끽할 수 있습니다.",
+            "spots": ["융프라우요흐 (유럽의 지붕)", "인터라켄 하더 쿨룸", "루체른 카펠교", "체르마트 마테호른"],
+            "foods": ["스위스 치즈퐁듀", "라클렛", "스위스 초콜릿", "뢰스티"]
+        }
+    }
+
+    info = dest_info_dict.get(dest_name, dest_info_dict["도쿄"])
+
+    st.markdown(f"<h1 style='color: white; margin-bottom: 5px;'>{info['title']}</h1>", unsafe_allow_html=True)
+    st.markdown(f"<p style='color: #94a3b8; font-size: 1.2rem; margin-bottom: 25px;'>{info['sub']}</p>", unsafe_allow_html=True)
+
+    col_img, col_txt = st.columns([1.2, 1.8])
+    with col_img:
+        st.image(info['img'], use_container_width=True)
+    with col_txt:
+        st.markdown(f"""
+            <div class="dest-info-box">
+                <h3>📖 여행지 소개</h3>
+                <p style="color: #475569; font-size: 1.05rem; line-height: 1.6;">{info['desc']}</p>
+                <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 15px 0;">
+                <h4>✨ 주요 관광 명소</h4>
+                <ul>
+                    {"".join([f"<li>{s}</li>" for s in info['spots']])}
+                </ul>
+                <h4>🍲 추천 먹거리</h4>
+                <ul>
+                    {"".join([f"<li>{f}</li>" for f in info['foods']])}
+                </ul>
+            </div>
+        """, unsafe_allow_html=True)
+
+    if st.button(f"✈️ '{dest_name}' 항공권 실시간 시가 검색하러 가기", type="primary", use_container_width=True):
+        if not st.session_state.is_logged_in:
+            st.warning("🔒 로그인이 필요한 서비스입니다! 먼저 로그인해주세요.")
+            st.session_state.step = "login"
+            st.rerun()
+        else:
+            matching_dest = "도쿄/나리타 (NRT) - 일본"
+            if dest_name == "방콕":
+                matching_dest = "방콕/수완나품 (BKK) - 태국"
+            elif dest_name == "파리":
+                matching_dest = "파리/샤를드골 (CDG) - 프랑스"
+            elif dest_name == "뉴욕":
+                matching_dest = "뉴욕/JFK (JFK) - 미국"
+            elif dest_name == "다낭":
+                matching_dest = "다낭 (DAD) - 베트남"
+            elif dest_name == "스위스":
+                matching_dest = "스위스/취리히 (ZRH) - 스위스"
+                
+            st.session_state.booking_data["departure"] = "서울/인천 (ICN)"
+            st.session_state.booking_data["destination"] = matching_dest
+            st.session_state.booking_data["date"] = date.today()
+            st.session_state.booking_data["time_range"] = (time(0, 0), time(23, 59))
+            st.session_state.step = "select_flight"
+            st.rerun()
+
+# ==========================================
+# 1-2. 로그인 화면
+# ==========================================
+elif st.session_state.step == "login":
+    if st.button("⬅️ 홈으로 돌아가기"):
+        st.session_state.step = "home"
+        st.rerun()
+        
+    st.markdown("<br>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+    
+    with col2:
+        st.markdown("""
+            <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #05132d; margin:0;">🔐 StarPort 로그인</h2>
+                    <p style="color: #64748b; margin-top:5px;">서비스를 이용하려면 로그인해주세요.</p>
+                </div>
+        """, unsafe_allow_html=True)
+        
+        with st.form("login_form"):
+            email_input = st.text_input("이메일 주소", placeholder="example@email.com")
+            password_input = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요")
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            login_submitted = st.form_submit_button("로그인하기", type="primary", use_container_width=True)
+            
+            if login_submitted:
+                if email_input and password_input:
+                    st.session_state.is_logged_in = True
+                    st.session_state.user_email = email_input
+                    st.success("로그인 성공! 홈으로 이동합니다.")
+                    st.session_state.step = "home"
+                    st.rerun()
+                else:
+                    st.warning("이메일과 비밀번호를 모두 입력해주세요.")
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+
+# ==========================================
+# 2. 비행기 목록 선택 화면
+# ==========================================
+elif st.session_state.step == "select_flight":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    if st.button("⬅️ 검색 조건 변경"):
+        st.session_state.step = "home"
+        st.rerun()
+        
+    b_data = st.session_state.booking_data
+    dest_str = b_data['destination']
+    
+    if any(k in dest_str for k in ["일본", "홍콩", "마카오", "대만", "중국", "몽골", "베트남"]):
+        flights = [
+            {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "06:30", "arr_time": "09:00", "classes": [{"seat": "일반석", "price": 580000}, {"seat": "비즈니스석", "price": 1250000}]},
+            {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "08:15", "arr_time": "10:45", "classes": [{"seat": "일반석", "price": 550000}, {"seat": "비즈니스석", "price": 1180000}]},
+            {"id": 3, "airline": "제주항공", "flight_no": "7C303", "dep_time": "09:40", "arr_time": "12:10", "classes": [{"seat": "특가석", "price": 320000}, {"seat": "일반석", "price": 410000}]},
+            {"id": 4, "airline": "진에어", "flight_no": "LJ404", "dep_time": "11:00", "arr_time": "13:30", "classes": [{"seat": "특가석", "price": 340000}, {"seat": "일반석", "price": 430000}]},
+            {"id": 5, "airline": "티웨이항공", "flight_no": "TW505", "dep_time": "12:30", "arr_time": "15:00", "classes": [{"seat": "특가석", "price": 310000}, {"seat": "일반석", "price": 390000}]},
+        ]
+    elif any(k in dest_str for k in ["프랑스", "영국", "이탈리아", "스페인", "독일", "스위스", "체코", "오스트리아", "튀르키예", "네덜란드", "폴란드", "러시아"]):
+        flights = [
+            {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "10:30", "arr_time": "18:00", "classes": [{"seat": "일반석", "price": 1580000}, {"seat": "비즈니스석", "price": 3850000}]},
+            {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "11:15", "arr_time": "19:00", "classes": [{"seat": "일반석", "price": 1490000}, {"seat": "비즈니스석", "price": 3650000}]},
+            {"id": 3, "airline": "폴란드항공", "flight_no": "LO303", "dep_time": "12:40", "arr_time": "20:10", "classes": [{"seat": "특가석", "price": 1150000}, {"seat": "일반석", "price": 1320000}]},
+        ]
+    else:
+        flights = [
+            {"id": 1, "airline": "대한항공", "flight_no": "KE101", "dep_time": "07:30", "arr_time": "13:00", "classes": [{"seat": "일반석", "price": 980000}, {"seat": "비즈니스석", "price": 2400000}]},
+            {"id": 2, "airline": "아시아나항공", "flight_no": "OZ202", "dep_time": "09:15", "arr_time": "14:45", "classes": [{"seat": "일반석", "price": 920000}, {"seat": "비즈니스석", "price": 2250000}]},
+            {"id": 3, "airline": "싱가포르항공", "flight_no": "SQ303", "dep_time": "10:40", "arr_time": "16:10", "classes": [{"seat": "특가석", "price": 750000}, {"seat": "일반석", "price": 890000}]},
+        ]
+    
+    st.markdown(f"<h2 style='color: white;'>✈ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>", unsafe_allow_html=True)
+    t_start, t_end = b_data.get('time_range', (time(0, 0), time(23, 59)))
+    st.markdown(f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 시간대: {t_start.strftime('%H:%M')} ~ {t_end.strftime('%H:%M')}</p>", unsafe_allow_html=True)
+    st.markdown("---")
+    
+    for f in flights:
+        class_options = [f"{c['seat']} - {c['price']:,}원" for c in f["classes"]]
+        
+        st.markdown(f"""
+            <div class="flight-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <div>
+                        <h3 style="margin:0; color:#05132d;">{f['airline']} <span style="font-size:0.8rem; color:#6b7270;">({f['flight_no']})</span></h3>
+                        <p style="margin: 5px 0 0 0; color: #4b5563;">출발 <b>{f['dep_time']}</b> ➔ 도착 <b>{f['arr_time']}</b></p>
+                    </div>
+                </div>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        col_c1, col_c2 = st.columns([2, 1])
+        with col_c1:
+            selected_class_str = st.selectbox(
+                f"[{f['airline']} {f['flight_no']}] 좌석 등급 선택", 
+                class_options, 
+                key=f"class_sel_{f['id']}"
+            )
+        with col_c2:
+            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
+            if st.button(f"이 항공편 예매하기", key=f"btn_sel_{f['id']}"):
+                chosen_idx = class_options.index(selected_class_str)
+                chosen_seat_info = f["classes"][chosen_idx]
+                
+                st.session_state.booking_data["airline"] = f["airline"]
+                st.session_state.booking_data["flight_no"] = f["flight_no"]
+                st.session_state.booking_data["dep_time"] = f["dep_time"]
+                st.session_state.booking_data["arr_time"] = f["arr_time"]
+                st.session_state.booking_data["seat"] = chosen_seat_info["seat"]
+                st.session_state.booking_data["price"] = chosen_seat_info["price"]
+                
+                st.session_state.step = "passenger_info"
+                st.rerun()
+        st.markdown("<hr style='border: 0; border-top: 1px dashed rgba(255,255,255,0.2);'>", unsafe_allow_html=True)
+
+# ==========================================
+# 3. 승객 정보 입력 화면
+# ==========================================
+elif st.session_state.step == "passenger_info":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    if st.button("⬅ 항공편 다시 선택"):
+        st.session_state.step = "select_flight"
+        st.rerun()
+        
+    st.markdown("<h2 style='color: white;'>👤 탑승객 정보 입력</h2>", unsafe_allow_html=True)
+    
+    with st.form("info_form"):
+        name = st.text_input("탑승객 성함 (예: 홍길동)")
+        birthdate = st.date_input("생년월일", min_value=date(1920, 1, 1), max_value=date.today())
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        submitted = st.form_submit_button("✅ 결제 및 예매 확정", type="primary")
+        
+        if submitted:
+            if name:
+                st.session_state.booking_data["name"] = name
+                st.session_state.booking_data["birthdate"] = birthdate
+                st.session_state.step = "success"
+                st.rerun()
+            else:
+                st.warning("성함을 올바르게 입력해주세요.")
+
+# ==========================================
+# 4. 예매 완료 화면 (E-Ticket 바우처)
+# ==========================================
+elif st.session_state.step == "success":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    st.balloons()
+    
+    st.markdown("<h2 style='text-align: center; color: white;'>🎉 항공권 예매가 완료되었습니다!</h2>", unsafe_allow_html=True)
+    b = st.session_state.booking_data
+    
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown(f"""
+            <div class="eticket-box">
+                <h3 style="text-align: center; color: #05132d; margin-top: 0; border-bottom: 2px solid #05132d; padding-bottom: 12px;">
+                    🎫 STARPORT E-PASSENGER TICKET
+                </h3>
+                <p><b>[탑승객]</b> {b.get('name')} ({b.get('birthdate')})</p>
+                <hr style="border: 0; border-top: 1px solid #e5e7eb;">
+                <p><b>[여정]</b> {b.get('departure')} ➔ {b.get('destination')}</p>
+                <p><b>[항공편]</b> {b.get('airline')} ({b.get('flight_no')})</p>
+                <p><b>[좌석 등급]</b> {b.get('seat')}</p>
+                <p><b>[일시]</b> {b.get('date')} | {b.get('dep_time')} 출발</p>
+                <hr style="border: 0; border-top: 1px solid #e5e7eb;">
+                <p style="text-align: right; font-size: 1.25rem; color: #0066ff; margin-bottom:0;">
+                    <b>총 결제금액: {b.get('price', 0):,}원</b>
+                </p>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        if st.button("🏠 처음으로 돌아가기", use_container_width=True):
+            st.session_state.booking_data = {}
+            st.session_state.step = "home"
+            st.rerun()
