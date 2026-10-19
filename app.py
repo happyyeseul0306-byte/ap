@@ -68,16 +68,13 @@ st.markdown("""
         font-size: 1.05rem !important;
     }
 
-    /* 항공편 선택 화면의 셀렉트박스 라벨 색상을 흰색으로 변경 */
-    div[data-testid="stSelectbox"] label p {
+    /* 검색 영역(출발지, 도착지, 가는 날, 시간 슬라이더) 라벨 색상을 흰색으로 선명하게 고정 */
+    div[data-testid="stSelectbox"] label p,
+    div[data-testid="stDateInput"] label p,
+    div[data-testid="stSlider"] label p {
         color: #ffffff !important;
         font-weight: 700 !important;
-    }
-
-    /* 슬라이더 라벨 색상 고정 */
-    div[data-testid="stSlider"] label p {
-        color: #05132d !important;
-        font-weight: 700 !important;
+        font-size: 1rem !important;
     }
 
     /* 입력창 내부 안내 텍스트(Placeholder) 색상 선명하게 변경 */
@@ -179,8 +176,9 @@ if st.session_state.step == "home":
         with sc3:
             travel_date = st.date_input("📅 가는 날", min_value=date.today())
         with sc4:
+            # '시간' 글씨가 명확히 보이도록 라벨 추가
             travel_time_range = st.slider(
-                "⏰ 출발 시간대 범위", 
+                "⏰ 출발 시간대", 
                 value=(time(0, 0), time(23, 59)),
                 format="HH:mm"
             )
@@ -374,7 +372,7 @@ elif st.session_state.step == "destination_detail":
             "title": "⛰️ 스위스 취리히 / 인터라켄 (Switzerland)",
             "sub": "알프스의 대자연과 동화 같은 풍경이 숨쉬는 곳",
             "img": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
-            "desc": "스위스는 웅장한 융프라우요흐와 만년설, 깨끗한 호수가 어우러진 알프스의 낙원입니다. 환상적인 산악열차를 타고 청정 자연 속을 누비며 힐링을 만끽할 수 있습니다.",
+            "desc": "스위스는 융프라우요흐와 만년설, 깨끗한 호수가 어우러진 알프스의 낙원입니다. 환상적인 산악열차를 타고 청정 자연 속을 누비며 힐링을 만끽할 수 있습니다.",
             "spots": ["융프라우요흐 (유럽의 지붕)", "인터라켄 하더 쿨룸", "루체른 카펠교", "체르마트 마테호른"],
             "foods": ["스위스 치즈퐁듀", "라클렛", "스위스 초콜릿", "뢰스티"]
         }
