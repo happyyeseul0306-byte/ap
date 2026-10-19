@@ -245,4 +245,57 @@ if st.session_state.step == "home":
           <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
         </div>
       </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+        <div class="slide-content">
+          <h2>🏝️ 낭만의 방콕 휴가</h2>
+          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
+        </div>
+      </div>
+      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+        <div class="slide-content">
+          <h2>🥐 예술의 도시 파리</h2>
+          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
+        </div>
+      </div>
+    </div>
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll('.slide');
+      function nextSlide() {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+      }
+      setInterval(nextSlide, 3500);
+    </script>
+    </body>
+    </html>
+    """
+    components.html(carousel_html, height=320)
+
+    # 홈 화면 하단 확장된 추천 여행지 바로가기 버튼들
+    st.markdown("<p style='text-align: center; color: #94a3b8; margin-top: 15px;'>👇 아래 추천 도시 버튼을 눌러 상세 가이드를 확인해보세요!</p>", unsafe_allow_html=True)
+    
+    # 2행 형태로 버튼 배치 (총 6개 도시)
+    row1_c1, row1_c2, row1_c3 = st.columns(3)
+    with row1_c1:
+        if st.button("🗼 도쿄 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "도쿄"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row1_c2:
+        if st.button("🏝️ 방콕 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "방콕"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+    with row1_c3:
+        if st.button("🥐 파리 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "파리"
+            st.session_state.step = "destination_detail"
+            st.rerun()
+
+    row2_c1, row2_c2, row2_c3 = st.columns(3)
+    with row2_c1:
+        if st.button("🗽 뉴욕 가이드 보기", use_container_width=True):
+            st.session_state.selected_destination_info = "뉴욕"
+            st.session_state
