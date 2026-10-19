@@ -16,14 +16,6 @@ st.markdown("""
         background-color: #05132d;
         color: white;
     }
-    .nav-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
     .search-box-wrapper {
         background-color: #ffffff;
         padding: 25px;
@@ -58,7 +50,7 @@ st.markdown("""
         margin-bottom: 25px;
     }
     
-    /* 로그인 폼 내부 입력창 라벨 색상 고정 (흰색으로 변경하여 남색 배경에서 잘 보이도록 처리) */
+    /* 로그인 폼 내부 입력창 라벨 색상 선명하게 (남색 배경 위 흰색) */
     div[data-testid="stForm"] label {
         background-color: transparent !important;
     }
@@ -68,20 +60,20 @@ st.markdown("""
         font-size: 1.05rem !important;
     }
 
-    /* 항공편 선택 화면의 셀렉트박스 라벨 색상을 흰색으로 변경 */
+    /* 셀렉트박스 라벨 색상을 흰색으로 고정 */
     div[data-testid="stSelectbox"] label p {
         color: #ffffff !important;
         font-weight: 700 !important;
     }
 
-    /* 입력창 내부 안내 텍스트(Placeholder) 색상 선명하게 변경 */
+    /* 입력창 내부 안내 텍스트(Placeholder) 색상 지정 */
     input::placeholder {
         color: #475569 !important;
         opacity: 1 !important;
         font-weight: 600 !important;
     }
 
-    /* 상단 우측 로그인 버튼 컴팩트 스타일 */
+    /* 상단 버튼 스타일 */
     .stButton button[kind="secondary"] {
         background-color: transparent;
         color: white;
@@ -134,23 +126,23 @@ if st.session_state.step == "home":
     st.markdown("<p style='color: #94a3b8; text-align: center; margin-bottom: 25px;'>원하는 일정의 항공편을 실시간으로 비교하고 예매하세요.</p>", unsafe_allow_html=True)
     
     destinations_list = [
-        # 일본 (8곳)
+        # 일본
         "도쿄/나리타 (NRT) - 일본", "도쿄/하네다 (HND) - 일본", "오사카/간사이 (KIX) - 일본", "후쿠오카 (FUK) - 일본",
         "삿포로/신치토세 (CTS) - 일본", "오키나와 (OKA) - 일본", "나고야 (NGO) - 일본", "시즈오카 (FSZ) - 일본",
-        # 동남아시아 (15곳)
+        # 동남아시아
         "방콕/수완나품 (BKK) - 태국", "치앙마이 (CNX) - 태국", "푸켓 (HKT) - 태국", "다낭 (DAD) - 베트남",
         "나트랑/캄란 (CXR) - 베트남", "호치민 (SGN) - 베트남", "하노이 (HAN) - 베트남", "푸꾸옥 (PQC) - 베트남",
         "싱가포르 (SIN) - 싱가포르", "쿠알라룸푸르 (KUL) - 말레이시아", "코타키나발루 (BKI) - 말레이시아",
         "세부 (CEB) - 필리핀", "보홀 (TAG) - 필리핀", "마닐라 (MNL) - 필리핀", "발리/덴파사르 (DPS) - 인도네시아",
-        # 동북아 / 중앙아시아 (7곳)
+        # 동북아 / 중앙아시아
         "홍콩 (HKG) - 홍콩", "마카오 (MFM) - 마카오", "타이베이/타오위안 (TPE) - 대만", "가오슝 (KHH) - 대만",
         "베이징/서두 (PEK) - 중국", "상하이/푸동 (PVG) - 중국", "울란바토르 (ULN) - 몽골",
-        # 유럽 (12곳)
+        # 유럽
         "파리/샤를드골 (CDG) - 프랑스", "런던/히드로 (LHR) - 영국", "로마/피우미치노 (FCO) - 이탈리아",
         "바르셀로나 (BCN) - 스페인", "프랑크푸르트 (FRA) - 독일", "스위스/취리히 (ZRH) - 스위스",
         "체코/프라하 (PRG) - 체코", "오스트리아/빈 (VIE) - 오스트리아", "튀르키예/이스탄불 (IST) - 튀르키예",
         "네덜란드/암스테르담 (AMS) - 네덜란드", "폴란드/바르샤바 (WAW) - 폴란드", "러시아/모스크바 (SVO) - 러시아",
-        # 미주 및 대양주 / 중동 (11곳)
+        # 미주 및 대양주 / 중동
         "뉴욕/JFK (JFK) - 미국", "로스앤젤레스 (LAX) - 미국", "샌프란시스코 (SFO) - 미국", "시애틀 (SEA) - 미국",
         "하와이/호놀룰루 (HNL) - 미국", "밴쿠버 (YVR) - 캐나다", "토론토 (YYZ) - 캐나다",
         "시드니 (SYD) - 호주", "멜버른 (MEL) - 호주", "괌 (GUM) - 괌", "사이판 (SPN) - 사이판", "두바이 (DXB) - 아랍에미리트"
@@ -173,129 +165,4 @@ if st.session_state.step == "home":
         with sc3:
             travel_date = st.date_input("📅 가는 날", min_value=date.today())
         with sc4:
-            travel_time = st.selectbox("⏰ 시간대", ["전체", "오전", "오후", "저녁/야간"])
-        with sc5:
-            st.markdown("<div style='margin-top: 28px;'></div>", unsafe_allow_html=True)
-            search_clicked = st.button("검색하기", type="primary", use_container_width=True)
-            
-        cc1, cc2 = st.columns([1, 5])
-        with cc1:
-            st.checkbox("직항 항공편", value=False)
-            
-        st.markdown('</div>', unsafe_allow_html=True)
-        
-        if search_clicked:
-            if not st.session_state.is_logged_in:
-                st.warning("🔒 로그인이 필요한 서비스입니다. 먼저 로그인해주세요!")
-                st.session_state.step = "login"
-                st.rerun()
-            else:
-                st.session_state.booking_data["departure"] = departure
-                st.session_state.booking_data["destination"] = destination
-                st.session_state.booking_data["date"] = travel_date
-                st.session_state.booking_data["time_slot"] = travel_time
-                st.session_state.step = "select_flight"
-                st.rerun()
-
-    # 캐러셀 슬라이더 HTML
-    carousel_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <style>
-      .slider-container {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      }
-      .slide {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 30px;
-        box-sizing: border-box;
-      }
-      .slide.active { opacity: 1; }
-      .slide-content {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 15px 20px;
-        border-radius: 10px;
-        backdrop-filter: blur(5px);
-        width: fit-content;
-      }
-      h2 { color: white; margin: 0 0 5px 0; font-size: 1.6rem; font-family: sans-serif; }
-      p { color: #e2e8f0; margin: 0; font-size: 0.95rem; font-family: sans-serif; }
-    </style>
-    </head>
-    <body>
-    <div class="slider-container">
-      <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
-        <div class="slide-content">
-          <h2>🗼 2026 도쿄 여행 트렌드</h2>
-          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
-        </div>
-      </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
-        <div class="slide-content">
-          <h2>🏝️ 낭만의 방콕 휴가</h2>
-          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
-        </div>
-      </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
-        <div class="slide-content">
-          <h2>🥐 예술의 도시 파리</h2>
-          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
-        </div>
-      </div>
-    </div>
-    <script>
-      let currentSlide = 0;
-      const slides = document.querySelectorAll('.slide');
-      function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-      }
-      setInterval(nextSlide, 3500);
-    </script>
-    </body>
-    </html>
-    """
-    components.html(carousel_html, height=320)
-
-    # 홈 화면 하단 확장된 추천 여행지 바로가기 버튼들
-    st.markdown("<p style='text-align: center; color: #94a3b8; margin-top: 15px;'>👇 아래 추천 도시 버튼을 눌러 상세 가이드를 확인해보세요!</p>", unsafe_allow_html=True)
-    
-    # 2행 형태로 버튼 배치 (총 6개 도시)
-    row1_c1, row1_c2, row1_c3 = st.columns(3)
-    with row1_c1:
-        if st.button("🗼 도쿄 가이드 보기", use_container_width=True):
-            st.session_state.selected_destination_info = "도쿄"
-            st.session_state.step = "destination_detail"
-            st.rerun()
-    with row1_c2:
-        if st.button("🏝️ 방콕 가이드 보기", use_container_width=True):
-            st.session_state.selected_destination_info = "방콕"
-            st.session_state.step = "destination_detail"
-            st.rerun()
-    with row1_c3:
-        if st.button("🥐 파리 가이드 보기", use_container_width=True):
-            st.session_state.selected_destination_info = "파리"
-            st.session_state.step = "destination_detail"
-            st.rerun()
-
-    row2_c1, row2_c2, row2_c3 = st.columns(3)
-    with row2_c1:
-        if st.button("🗽 뉴욕 가이드 보기", use_container_width=True):
-            st.session_state.selected_destination_info = "뉴욕"
-            st.session_state
+            travel_time = st.selectbox("⏰ 시간대",
