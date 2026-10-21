@@ -1,45 +1,95 @@
-# ==========================================
-# 1-2. 로그인 화면
-# ==========================================
-elif st.session_state.step == "login":
-    if st.button("⬅️ 홈으로 돌아가기"):
-        st.session_state.step = "home"
-        st.rerun()
-        
-    st.markdown("<br>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 1.5, 1])
+from datetime import date, time
+import streamlit as st
+import streamlit.components.v1 as components
+
+# 1. 페이지 설정 (와이드 레이아웃)
+st.set_page_config(
+    page_title="StarPort - 여행지 & 항공권", page_icon="🚀", layout="wide"
+)
+
+# 2. 스타일 및 CSS
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-color: #05132d;
+        color: white;
+    }
+    .nav-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .search-box-wrapper {
+        background-color: #ffffff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        margin-top: 15px;
+        margin-bottom: 40px;
+    }
+    .flight-card {
+        background-color: #ffffff;
+        color: #05132d;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        margin-bottom: 15px;
+        border: 1px solid #e5e7eb;
+    }
+    .eticket-box {
+        background: #ffffff;
+        color: #05132d;
+        border: 2px solid #05132d;
+        padding: 35px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    }
+    .dest-info-box {
+        background-color: #ffffff;
+        color: #05132d;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+        margin-bottom: 25px;
+    }
     
-    with col2:
-        st.markdown("""
-            <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
-                <div style="text-align: center; margin-bottom: 20px;">
-                    <h2 style="color: #05132d; margin:0;">🔐 StarPort 로그인</h2>
-                    <p style="color: #64748b; margin-top:5px;">서비스를 이용하려면 로그인해주세요.</p>
-                </div>
-        """, unsafe_allow_html=True)
-        
-        with st.form("login_form"):
-            # 이메일 입력창 위에 선명한 텍스트 라벨 추가
-            st.markdown('<p style="color: #05132d !important; font-weight: 800 !important; font-size: 1.05rem !important; margin-bottom: 5px;">이메일</p>', unsafe_allow_html=True)
-            email_input = st.text_input("이메일", placeholder="example@email.com", label_visibility="collapsed")
-            
-            st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
-            
-            # 비밀번호 입력창 위에 선명한 텍스트 라벨 추가
-            st.markdown('<p style="color: #05132d !important; font-weight: 800 !important; font-size: 1.05rem !important; margin-bottom: 5px;">비밀번호</p>', unsafe_allow_html=True)
-            password_input = st.text_input("비밀번호", type="password", placeholder="비밀번호를 입력하세요", label_visibility="collapsed")
-            
-            st.markdown("<br>", unsafe_allow_html=True)
-            login_submitted = st.form_submit_button("로그인하기", type="primary", use_container_width=True)
-            
-            if login_submitted:
-                if email_input and password_input:
-                    st.session_state.is_logged_in = True
-                    st.session_state.user_email = email_input
-                    st.success("로그인 성공! 홈으로 이동합니다.")
-                    st.session_state.step = "home"
-                    st.rerun()
-                else:
-                    st.warning("이메일과 비밀번호를 모두 입력해주세요.")
-        
-        st.markdown("</div>", unsafe_allow_html=True)
+    /* 검색 영역 라벨 색상 */
+    div[data-testid="stSelectbox"] label p,
+    div[data-testid="stDateInput"] label p,
+    div[data-testid="stSlider"] label p {
+        color: #ffffff !important;
+        font-weight: 700 !important;
+        font-size: 1rem !important;
+    }
+
+    /* 입력창 Placeholder 스타일 */
+    input::placeholder {
+        color: #475569 !important;
+        opacity: 1 !important;
+        font-weight: 600 !important;
+    }
+
+    /* 상단 우측 로그인 버튼 */
+    .stButton button[kind="secondary"] {
+        background-color: transparent;
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        padding: 4px 14px;
+        font-size: 0.9rem;
+    }
+    .stButton button[kind="secondary"]:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: white;
+    }
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
+# 세션 상태 초기화
+if "step" not in st
