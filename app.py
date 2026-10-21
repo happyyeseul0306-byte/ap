@@ -379,7 +379,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지
+# 1-1. 여행지 상세 소개 페이지 (풍성해진 사진과 정보)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -388,113 +388,150 @@ elif st.session_state.step == "destination_detail":
 
     dest_name = st.session_state.selected_destination_info
 
+    # 💡 각 도시별 상세 정보 및 여러 장의 사진 추가
     dest_info_dict = {
         "도쿄": {
             "title": "🗼 일본 도쿄 (Tokyo)",
             "sub": "전통과 미래가 공존하는 매력적인 메가폴리스",
-            "img": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
-            "desc": "도쿄는 첨단 기술과 전통 문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다.",
+            "imgs": [
+                "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
+                "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf",
+                "https://images.unsplash.com/photo-1538481199705-c710c4e965fc",
+            ],
+            "desc": "도쿄는 첨단 기술과 전통 문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다. 지하철 노선이 매우 잘 되어 있어 초보 여행자도 쉽게 대중교통을 이용할 수 있습니다.",
+            "best_season": "봄 (3~5월 벚꽃 시즌) 및 가을 (9~11월 단풍 시즌)",
+            "tip": "대중교통 이용 시 '스이카(Suica)' 또는 '파스모(Pasmo)' 교통카드를 발급받으면 편리합니다.",
             "spots": [
-                "시부야 스크램블 / 스카이트리",
-                "도쿄 디즈니랜드 / 디즈니씨",
-                "아사쿠사 센소지",
-                "신주쿠 교엔 국립공원",
+                "시부야 스크램블 / 스카이트리 전망대",
+                "도쿄 디즈니랜드 & 디즈니씨",
+                "아사쿠사 센소지 (전통 거리)",
+                "신주쿠 교엔 국립공원 & 도청 전망대",
             ],
             "foods": [
-                "정통 에도마에 스시",
-                "돈코츠 라멘",
-                "몬쟈야키",
-                "야키토리",
+                "정통 에도마에 스시 & 츠키지 장어덮밥",
+                "진한 육수의 돈코츠 라멘",
+                "철판에서 바로 구워 먹는 몬쟈야키",
+                "숯불 향 가득한 야키토리",
             ],
         },
         "방콕": {
             "title": "🏝 태국 방콕 (Bangkok)",
             "sub": "활기찬 야시장과 찬란한 사원의 도시",
-            "img": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
-            "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 그리고 전 세계 백패커들의 성지로 불리는 활기찬 야시장이 매력적인 도시입니다. 가성비 높은 호캉스와 환상적인 태국 로컬 푸드를 즐길 수 있습니다.",
+            "imgs": [
+                "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
+                "https://images.unsplash.com/photo-1563492065599-3520f775eeed",
+                "https://images.unsplash.com/photo-1582510003544-4d00b7f74220",
+            ],
+            "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 그리고 전 세계 백패커들의 성지로 불리는 활기찬 야시장이 매력적인 도시입니다. 가성비 높은 럭셔리 호캉스와 환상적인 태국 로컬 푸드를 저렴한 가격에 마음껏 즐길 수 있어 언제나 사랑받는 여행지입니다.",
+            "best_season": "건기인 11월 ~ 2월 (비가 적고 선선한 날씨)",
+            "tip": "사원 방문 시 민소매나 반바지 등 노출이 심한 옷은 입장이 제한될 수 있으니 가벼운 겉옷을 챙기세요.",
             "spots": [
-                "왓 아룬 (새벽 사원)",
-                "왕궁 & 왓 포",
-                "짜뚜짝 주말 시장",
-                "카오산 로드",
+                "왓 아룬 (새벽 사원 야경)",
+                "방콕 왕궁 & 왓 포 (와불상)",
+                "짜뚜짝 주말 시장 (쇼핑의 성지)",
+                "카오산 로드 (자유로운 야시장)",
             ],
             "foods": [
-                "똠얌꿍",
-                "팟타이",
-                "망고 스티키 라이스",
-                "푸팟퐁 커리",
+                "세계적인 스프 똠얌꿍",
+                "단짠의 정석 팟타이",
+                "달콤한 망고 스티키 라이스",
+                "부드러운 푸팟퐁 커리",
             ],
         },
         "파리": {
             "title": "🥐 프랑스 파리 (Paris)",
             "sub": "예술, 낭만, 패션의 영원한 수도",
-            "img": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
-            "desc": "센 강이 흐르는 파리는 세련된 건축물과 세계 최고 수준의 미술관, 그리고 낭만적인 카페 문화가 가득한 도시입니다. 에펠탑의 야경과 루브르 박물관의 명작들을 직접 만나보세요.",
+            "imgs": [
+                "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+                "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f",
+                "https://images.unsplash.com/photo-1549144511-f099e773c147",
+            ],
+            "desc": "센 강이 흐르는 파리는 세련된 건축물과 세계 최고 수준의 미술관, 그리고 낭만적인 카페 문화가 가득한 도시입니다. 에펠탑의 반짝이는 야경과 루브르 박물관의 세계적인 명작들을 직접 만나보며 평생 잊지 못할 낭만을 경험해보세요.",
+            "best_season": "초여름 (5~6월) 및 가을 (9~10월)",
+            "tip": "유럽 여행 시 소매치기를 항상 조심하고, 주요 미술관 및 명소는 사전에 온라인 예매를 하는 것이 필수입니다.",
             "spots": [
                 "에펠탑 & 트로카데로 광장",
-                "루브르 박물관",
-                "오르세 미술관",
+                "루브르 박물관 & 오르세 미술관",
                 "몽마르트르 언덕 & 사크레쾨르 대성당",
+                "샹젤리제 거리 & 개선문",
             ],
             "foods": [
-                "정통 바게트 & 크루아상",
-                "프렌치 어니언 수프",
-                "마카롱",
-                "스테이크 프릿",
+                "갓 구운 정통 바게트 & 크루아상",
+                "따뜻하고 진한 프렌치 어니언 수프",
+                "알록달록 달콤한 마카롱",
+                "바삭한 감자튀김과 스테이크 프릿",
             ],
         },
         "뉴욕": {
             "title": "🗽 미국 뉴욕 (New York)",
             "sub": "잠들지 않는 세계 경제와 문화의 중심지",
-            "img": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
-            "desc": "뉴욕은 자유의 여신상, 타임스 스퀘어, 센트럴 파크 등 전 세계 사람들이 동경하는 랜드마크가 가득한 도시입니다. 브로드웨이 뮤지컬과 세계 각국의 다채로운 미식을 경험할 수 있습니다.",
+            "imgs": [
+                "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
+                "https://images.unsplash.com/photo-1534430480872-3498386e7856",
+                "https://images.unsplash.com/photo-1506744038136-46273834b3fb",
+            ],
+            "desc": "뉴욕은 자유의 여신상, 타임스 스퀘어, 센트럴 파크 등 전 세계 사람들이 동경하는 랜드마크가 가득한 도시입니다. 세계 각국의 문화가 용광로처럼 어우러져 있어 다채로운 미식과 브로드웨이 뮤지컬을 즐길 수 있습니다.",
+            "best_season": "가을 (9~11월 단풍이 지는 센트럴파크)",
+            "tip": "레스토랑 및 택시 이용 시 15~20% 정도의 팁(Tip) 문화가 있으니 참고하세요.",
             "spots": [
-                "타임스 스퀘어 & 브로드웨이",
-                "센트럴 파크",
-                "자유의 여신상",
-                "엠파이어 스테이트 빌딩 전망대",
+                "타임스 스퀘어 & 브로드웨이 뮤지컬 거리",
+                "센트럴 파크 (도심 속 거대한 힐링 공원)",
+                "자유의 여신상 크루즈",
+                "엠파이어 스테이트 빌딩 & 톱오브더락 전망대",
             ],
             "foods": [
-                "뉴욕 스타일 피자",
-                "패스트라미 샌드위치",
-                "베이글 & 크림치즈",
-                "스테이크",
+                "한 조각씩 즐기는 뉴욕 스타일 피자",
+                "푸짐한 패스트라미 샌드위치",
+                "크림치즈가 듬뿍 발린 뉴욕 베이글",
+                "육즙 가득한 정통 아메리칸 스테이크",
             ],
         },
         "다낭": {
             "title": "🌊 베트남 다낭 (Da Nang)",
             "sub": "아름다운 미케 해변과 세계적인 휴양 리조트 도시",
-            "img": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
-            "desc": "베트남 중부를 대표하는 다낭은 끝없이 펼쳐진 미케 비치와 세계문화유산인 호이안 구시가지가 가까워 휴양과 관광을 동시에 즐길 수 있는 최고의 인기 여행지입니다.",
+            "imgs": [
+                "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
+                "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf",
+                "https://images.unsplash.com/photo-1528127269322-539801943592",
+            ],
+            "desc": "베트남 중부를 대표하는 다낭은 끝없이 펼쳐진 세계적인 미케 비치와 유네스코 세계문화유산인 호이안 구시가지가 가까워 휴양과 관광을 동시에 즐길 수 있는 최고의 인기 여행지입니다. 물가가 저렴하여 가성비 최고의 호캉스를 누릴 수 있습니다.",
+            "best_season": "건기인 2월 ~ 8월 (날씨가 맑고 해수욕하기 좋음)",
+            "tip": "그랩(Grab) 앱을 미리 설치하고 가시면 시내 이동과 바가지 요금 방지에 매우 편리합니다.",
             "spots": [
-                "미케 해변 (My Khe Beach)",
-                "바나힐 테마파크 & 골든브릿지",
+                "미케 해변 (My Khe Beach - 세계적인 해변)",
+                "바나힐 테마파크 & 거대한 골든브릿지",
                 "오행산 (마블 마운틴)",
-                "호이안 올드타운",
+                "호이안 올드타운 (밤의 야경이 아름다운 곳)",
             ],
             "foods": [
-                "베트남 쌀국수 (포)",
-                "반쎄오",
-                "분짜",
-                "씨푸드 해산물 요리",
+                "진한 국물의 베트남 쌀국수 (포)",
+                "바삭한 베트남식 부침개 반쎄오",
+                "숯불고기 국수 분짜",
+                "싱싱하고 푸짐한 씨푸드 해산물 요리",
             ],
         },
         "스위스": {
             "title": "⛰️ 스위스 취리히 / 인터라켄 (Switzerland)",
             "sub": "알프스의 대자연과 동화 같은 풍경이 숨쉬는 곳",
-            "img": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
-            "desc": "스위스는 융프라우요흐와 만년설, 깨끗한 호수가 어우러진 알프스의 낙원입니다. 환상적인 산악열차를 타고 청정 자연 속을 누비며 힐링을 만끽할 수 있습니다.",
+            "imgs": [
+                "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
+                "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
+                "https://images.unsplash.com/photo-1502784444187-359ac186c5bb",
+            ],
+            "desc": "스위스는 융프라우요흐와 만년설, 에메랄드빛 깨끗한 호수가 어우러진 알프스의 낙원입니다. 환상적인 산악열차와 케이블카를 타고 청정 대자연 속을 누비며 일상의 스트레스를 날려버릴 수 있는 힐링 여행지입니다.",
+            "best_season": "여름 (6~8월 야생화와 하이킹) 또는 겨울 (12~2월 스키와 설경)",
+            "tip": "물가가 매우 높으므로 마트(Coop 등)를 적극 활용하고, 스위스 패스(Swiss Travel Pass)를 미리 준비하면 교통비를 아낄 수 있습니다.",
             "spots": [
-                "융프라우요흐 (유럽의 지붕)",
-                "인터라켄 하더 쿨룸",
-                "루체른 카펠교",
-                "체르마트 마테호른",
+                "융프라우요흐 (유럽의 지붕, 만년설 전망대)",
+                "인터라켄 하더 쿨룸 전망대",
+                "루체른 카펠교 & 호수 산책로",
+                "마테호른의 자태가 빛나는 체르마트",
             ],
             "foods": [
-                "스위스 치즈퐁듀",
-                "라클렛",
-                "스위스 초콜릿",
-                "뢰스티",
+                "따뜻하게 녹여 먹는 스위스 치즈퐁듀",
+                "감자와 치즈의 만남 라클렛",
+                "세계 최고 품질의 스위스 초콜릿",
+                "스위스식 감자전 뢰스티",
             ],
         },
     }
@@ -510,28 +547,40 @@ elif st.session_state.step == "destination_detail":
         unsafe_allow_html=True,
     )
 
-    col_img, col_txt = st.columns([1.2, 1.8])
-    with col_img:
-        st.image(info["img"], use_container_width=True)
-    with col_txt:
-        st.markdown(
-            f"""
-            <div class="dest-info-box">
-                <h3>📖 여행지 소개</h3>
-                <p style="color: #475569; font-size: 1.05rem; line-height: 1.6;">{info['desc']}</p>
-                <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 15px 0;">
-                <h4>✨ 주요 관광 명소</h4>
-                <ul>
-                    {"".join([f"<li>{s}</li>" for s in info['spots']])}
-                </ul>
-                <h4>🍲 추천 먹거리</h4>
-                <ul>
-                    {"".join([f"<li>{f}</li>" for f in info['foods']])}
-                </ul>
-            </div>
-        """,
-            unsafe_allow_html=True,
-        )
+    # 📸 여러 장의 사진을 3분할 컬럼으로 멋지게 배치
+    st.markdown(
+        "<h4 style='color: white; margin-bottom: 10px;'>📸 현지 풍경 미리보기</h4>",
+        unsafe_allow_html=True,
+    )
+    img_cols = st.columns(3)
+    for idx, img_url in enumerate(info["imgs"]):
+        with img_cols[idx]:
+            st.image(img_url, use_container_width=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # 📖 상세 가이드 정보 박스
+    st.markdown(
+        f"""
+        <div class="dest-info-box">
+            <h3>📖 상세 가이드 및 소개</h3>
+            <p style="color: #475569; font-size: 1.05rem; line-height: 1.6;">{info['desc']}</p>
+            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 15px 0;">
+            <p><b>☀️ 최적의 여행 시기:</b> {info['best_season']}</p>
+            <p><b>💡 현지 여행 꿀팁:</b> {info['tip']}</p>
+            <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 15px 0;">
+            <h4>✨ 주요 관광 명소</h4>
+            <ul>
+                {"".join([f"<li>{s}</li>" for s in info['spots']])}
+            </ul>
+            <h4>🍲 추천 먹거리</h4>
+            <ul>
+                {"".join([f"<li>{f}</li>" for f in info['foods']])}
+            </ul>
+        </div>
+    """,
+        unsafe_allow_html=True,
+    )
 
     if st.button(
         f"✈️ '{dest_name}' 항공권 실시간 시가 검색하러 가기",
@@ -589,7 +638,6 @@ elif st.session_state.step == "login":
         )
 
         with st.form("login_form"):
-            # 이메일 입력창 및 상단 라벨
             st.markdown(
                 '<p style="color: #05132d !important; font-weight: 800 !important; font-size: 1.05rem !important; margin-bottom: 5px;">이메일</p>',
                 unsafe_allow_html=True,
@@ -602,7 +650,6 @@ elif st.session_state.step == "login":
                 "<div style='margin-top: 15px;'></div>", unsafe_allow_html=True
             )
 
-            # 비밀번호 입력창 및 상단 라벨
             st.markdown(
                 '<p style="color: #05132d !important; font-weight: 800 !important; font-size: 1.05rem !important; margin-bottom: 5px;">비밀번호</p>',
                 unsafe_allow_html=True,
