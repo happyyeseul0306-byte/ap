@@ -356,7 +356,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (설명과 사진 완벽 매칭 수정 완료)
+# 1-1. 여행지 상세 소개 페이지 (방콕 사진 반영 완료)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -390,8 +390,8 @@ elif st.session_state.step == "destination_detail":
         "방콕": {
             "title": "🏝 태국 방콕 (Bangkok)",
             "sub": "활기찬 야시장과 찬란한 불교 사원의 도시",
-            "img_title": "🛕 왓 아룬 (새벽 사원)의 웅장한 자태",
-            "img_url": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220",
+            "img_title": "🛕 왓 아룬 (새벽 사원)",
+            "img_url": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2", # 올려주신 왓 아룬 야경 사진의 고화질 소스 적용[cite: 5]
             "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 짜오프라야 강변의 풍경 및 밤문화를 자랑하는 활기 넘치는 세계적인 여행지입니다.",
             "best_season": "11월 ~ 2월 (비가 적고 쾌적한 건기)",
             "tip": "사원 방문 시 반바지나 민소매 차림은 입장이 제한될 수 있으므로 얇은 긴 옷을 준비하세요.",
@@ -510,7 +510,6 @@ elif st.session_state.step == "destination_detail":
         unsafe_allow_html=True,
     )
     
-    # 대표 사진 1개 정중앙 가독성 높은 배치
     col_l, col_c, col_r = st.columns([1, 2.2, 1])
     with col_c:
         st.image(info["img_url"], use_container_width=True)
