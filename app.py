@@ -566,3 +566,441 @@ elif st.session_state.step == "destination_detail":
                 matching_dest = "스위스/취리히 (ZRH) - 스위스"
 
             st.session_state.booking_data["departure"] = "서울/인천 (ICN)"
+            st.session_state.booking_data["destination"] = matching_dest
+            st.session_state.booking_data["date"] = date.today()
+            st.session_state.booking_data["time_range"] = (
+                time(0, 0),
+                time(23, 59),
+            )
+            st.session_state.step = "select_flight"
+            st.rerun()
+
+# ==========================================
+# 1-2. 로그인 화면
+# ==========================================
+elif st.session_state.step == "login":
+    if st.button("⬅️ 홈으로 돌아가기"):
+        st.session_state.step = "home"
+        st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 1.5, 1])
+
+    with col2:
+        st.markdown(
+            """
+            <div style="background: #ffffff; padding: 35px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.2); color: #05132d;">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <h2 style="color: #05132d; margin:0;">🔐 StarPort 로그인</h2>
+                    <p style="color: #64748b; margin-top:5px;">서비스를 이용하려면 로그인해주세요.</p>
+                </div>
+        """,
+            unsafe_allow_html=True,
+        )
+
+        with st.form("login_form"):
+            st.markdown(
+                '<p style="color: #05132d !important; font-weight: 800 !important; font-size: 1.05rem !important; margin-bottom: 5px;">이메일</p>',
+                unsafe_allow_html=True,
+            )
+            email_input = st.text_input(
+                "이메일", placeholder="example@email.com", label_visibility="collapsed"
+            )
+
+            st.markdown(
+                "<div style='margin-top: 15px;'></div>", unsafe_allow_html=True
+            )
+
+            st.markdown(
+                '<p style="color: #05132d !important; font-weight: 800 !important; font-size: 1.05rem !important; margin-bottom: 5px;">비밀번호</p>',
+                unsafe_allow_html=True,
+            )
+            password_input = st.text_input(
+                "비밀번호",
+                type="password",
+                placeholder="비밀번호를 입력하세요",
+                label_visibility="collapsed",
+            )
+
+            st.markdown("<br>", unsafe_allow_html=True)
+            login_submitted = st.form_submit_button(
+                "로그인하기", type="primary", use_container_width=True
+            )
+
+            if login_submitted:
+                if email_input and password_input:
+                    st.session_state.is_logged_in = True
+                    st.session_state.user_email = email_input
+                    st.success("로그인 성공! 홈으로 이동합니다.")
+                    st.session_state.step = "home"
+                    st.rerun()
+                else:
+                    st.warning("이메일과 비밀번호를 모두 입력해주세요.")
+
+        st.markdown("</div>", unsafe_allow_html=True)
+
+# ==========================================
+# 2. 비행기 목록 선택 화면
+# ==========================================
+elif st.session_state.step == "select_flight":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    if st.button("⬅️ 검색 조건 변경"):
+        st.session_state.step = "home"
+        st.rerun()
+
+    b_data = st.session_state.booking_data
+    dest_str = b_data["destination"]
+
+    if any(
+        k in dest_str
+        for k in ["일본", "홍콩", "마카오", "대만", "중국", "몽골", "베트남"]
+    ):
+        flights = [
+            {
+                "id": 1,
+                "airline": "대한항공",
+                "flight_no": "KE101",
+                "dep_time": "06:30",
+                "arr_time": "09:00",
+                "classes": [
+                    {"seat": "일반석", "price": 580000},
+                    {"seat": "비즈니스석", "price": 1250000},
+                ],
+            },
+            {
+                "id": 2,
+                "airline": "아시아나항공",
+                "flight_no": "OZ202",
+                "dep_time": "08:15",
+                "arr_time": "10:45",
+                "classes": [
+                    {"seat": "일반석", "price": 550000},
+                    {"seat": "비즈니스석", "price": 1180000},
+                ],
+            },
+            {
+                "id": 3,
+                "airline": "제주항공",
+                "flight_no": "7C303",
+                "dep_time": "09:40",
+                "arr_time": "12:10",
+                "classes": [
+                    {"seat": "특가석", "price": 320000},
+                    {"seat": "일반석", "price": 410000},
+                ],
+            },
+            {
+                "id": 4,
+                "airline": "진에어",
+                "flight_no": "LJ404",
+                "dep_time": "11:00",
+                "arr_time": "13:30",
+                "classes": [
+                    {"seat": "특가석", "price": 340000},
+                    {"seat": "일반석", "price": 430000},
+                ],
+            },
+            {
+                "id": 5,
+                "airline": "티웨이항공",
+                "flight_no": "TW505",
+                "dep_time": "12:30",
+                "arr_time": "15:00",
+                "classes": [
+                    {"seat": "특가석", "price": 310000},
+                    {"seat": "일반석", "price": 390000},
+                ],
+            },
+        ]
+    elif any(
+        k in dest_str
+        for k in [
+            "프랑스",
+            "영국",
+            "이탈리아",
+            "스페인",
+            "독일",
+            "스위스",
+            "체코",
+            "오스트리아",
+            "튀르키예",
+            "네덜란드",
+        ]
+    ):
+        flights = [
+            {
+                "id": 1,
+                "airline": "대한항공",
+                "flight_no": "KE101",
+                "dep_time": "10:30",
+                "arr_time": "18:00",
+                "classes": [
+                    {"seat": "일반석", "price": 1580000},
+                    {"seat": "비즈니스석", "price": 3850000},
+                ],
+            },
+            {
+                "id": 2,
+                "airline": "아시아나항공",
+                "flight_no": "OZ202",
+                "dep_time": "11:15",
+                "arr_time": "19:00",
+                "classes": [
+                    {"seat": "일반석", "price": 1490000},
+                    {"seat": "비즈니스석", "price": 3650000},
+                ],
+            },
+            {
+                "id": 3,
+                "airline": "폴란드항공",
+                "flight_no": "LO303",
+                "dep_time": "12:40",
+                "arr_time": "20:10",
+                "classes": [
+                    {"seat": "특가석", "price": 1150000},
+                    {"seat": "일반석", "price": 1320000},
+                ],
+            },
+        ]
+    else:
+        flights = [
+            {
+                "id": 1,
+                "airline": "대한항공",
+                "flight_no": "KE101",
+                "dep_time": "07:30",
+                "arr_time": "13:00",
+                "classes": [
+                    {"seat": "일반석", "price": 980000},
+                    {"seat": "비즈니스석", "price": 2400000},
+                ],
+            },
+            {
+                "id": 2,
+                "airline": "아시아나항공",
+                "flight_no": "OZ202",
+                "dep_time": "09:15",
+                "arr_time": "14:45",
+                "classes": [
+                    {"seat": "일반석", "price": 920000},
+                    {"seat": "비즈니스석", "price": 2250000},
+                ],
+            },
+            {
+                "id": 3,
+                "airline": "싱가포르항공",
+                "flight_no": "SQ303",
+                "dep_time": "10:40",
+                "arr_time": "16:10",
+                "classes": [
+                    {"seat": "특가석", "price": 750000},
+                    {"seat": "일반석", "price": 890000},
+                ],
+            },
+        ]
+
+    st.markdown(
+        f"<h2 style='color: white;'>✈ {b_data['departure']} ➔ {b_data['destination']} 검색 결과</h2>",
+        unsafe_allow_html=True,
+    )
+    t_start, t_end = b_data.get(
+        "time_range", (time(0, 0), time(23, 59))
+    )
+    st.markdown(
+        f"<p style='color: #94a3b8;'>선택일자: {b_data['date']} | 시간대: {t_start.strftime('%H:%M')} ~ {t_end.strftime('%H:%M')}</p>",
+        unsafe_allow_html=True,
+    )
+    st.markdown("---")
+
+    for f in flights:
+        class_options = [
+            f"{c['seat']} - {c['price']:,}원" for c in f["classes"]
+        ]
+
+        st.markdown(
+            f"""
+            <div class="flight-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+                    <div>
+                        <h3 style="margin:0; color:#05132d;">{f['airline']} <span style="font-size:0.8rem; color:#6b7270;">({f['flight_no']})</span></h3>
+                        <p style="margin: 5px 0 0 0; color: #4b5563;">출발 <b>{f['dep_time']}</b> ➔ 도착 <b>{f['arr_time']}</b></p>
+                    </div>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+
+        col_c1, col_c2 = st.columns([2, 1])
+        with col_c1:
+            selected_class_str = st.selectbox(
+                f"[{f['airline']} {f['flight_no']}] 좌석 등급 선택",
+                class_options,
+                key=f"class_sel_{f['id']}",
+            )
+        with col_c2:
+            st.markdown(
+                "<div style='margin-top: 28px;'></div>", unsafe_allow_html=True
+            )
+            if st.button(
+                "이 항공편 예매하기", key=f"btn_sel_{f['id']}"
+            ):
+                chosen_idx = class_options.index(selected_class_str)
+                chosen_seat_info = f["classes"][chosen_idx]
+
+                st.session_state.booking_data["airline"] = f["airline"]
+                st.session_state.booking_data["flight_no"] = f["flight_no"]
+                st.session_state.booking_data["dep_time"] = f["dep_time"]
+                st.session_state.booking_data["arr_time"] = f["arr_time"]
+                st.session_state.booking_data["seat"] = chosen_seat_info["seat"]
+                st.session_state.booking_data["price"] = chosen_seat_info["price"]
+
+                st.session_state.step = "passenger_info"
+                st.rerun()
+        st.markdown(
+            "<hr style='border: 0; border-top: 1px dashed rgba(255,255,255,0.2);'>",
+            unsafe_allow_html=True,
+        )
+
+# ==========================================
+# 3. 승객 정보 입력 화면
+# ==========================================
+elif st.session_state.step == "passenger_info":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    if st.button("⬅ 항공편 다시 선택"):
+        st.session_state.step = "select_flight"
+        st.rerun()
+
+    st.markdown(
+        "<h2 style='color: white;'>👤 탑승객 정보 입력</h2>",
+        unsafe_allow_html=True,
+    )
+
+    with st.form("info_form"):
+        name = st.text_input("탑승객 성함 (예: 홍길동)")
+        birthdate = st.date_input(
+            "생년월일", min_value=date(1920, 1, 1), max_value=date.today()
+        )
+
+        st.markdown("<br>", unsafe_allow_html=True)
+        submitted = st.form_submit_button(
+            "✅ 결제 및 예매 확정", type="primary"
+        )
+
+        if submitted:
+            if name:
+                st.session_state.booking_data["name"] = name
+                st.session_state.booking_data["birthdate"] = birthdate
+                st.session_state.step = "success"
+                st.rerun()
+            else:
+                st.warning("성함을 올바르게 입력해주세요.")
+
+# ==========================================
+# 4. 예매 완료 화면 (궤도 회전 애니메이션)
+# ==========================================
+elif st.session_state.step == "success":
+    if not st.session_state.is_logged_in:
+        st.session_state.step = "login"
+        st.rerun()
+
+    st.balloons()
+
+    st.markdown(
+        "<h2 style='text-align: center; color: white;'>🎉 항공권 예매가 완료되었습니다!</h2>",
+        unsafe_allow_html=True,
+    )
+    b = st.session_state.booking_data
+
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown(
+            f"""
+            <div class="eticket-box">
+                <h3 style="text-align: center; color: #05132d; margin-top: 0; border-bottom: 2px solid #05132d; padding-bottom: 12px;">
+                    🎫 STARPORT E-PASSENGER TICKET
+                </h3>
+                <p><b>[탑승객]</b> {b.get('name')} ({b.get('birthdate')})</p>
+                <hr style="border: 0; border-top: 1px solid #e5e7eb;">
+                <p><b>[여정]</b> {b.get('departure')} ➔ {b.get('destination')}</p>
+                <p><b>[항공편]</b> {b.get('airline')} ({b.get('flight_no')})</p>
+                <p><b>[좌석 등급]</b> {b.get('seat')}</p>
+                <p><b>[일시]</b> {b.get('date')} | {b.get('dep_time')} 출발</p>
+                <hr style="border: 0; border-top: 1px solid #e5e7eb;">
+                <p style="text-align: right; font-size: 1.25rem; color: #0066ff; margin-bottom:0;">
+                    <b>총 결제금액: {b.get('price', 0):,}원</b>
+                </p>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+
+        flight_animation_html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
+          .orbit-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            overflow: hidden;
+          }
+          .earth {
+            font-size: 80px;
+            animation: spin 14s linear infinite;
+            user-select: none;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5));
+          }
+          .orbit-path {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 1.5px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: rotateOrbit 7s linear infinite;
+          }
+          .airplane {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(90deg);
+            font-size: 24px;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+        </head>
+        <body>
+          <div class="orbit-container">
+            <div class="earth">🌍</div>
+            <div class="orbit-path">
+              <div class="airplane">✈️</div>
+            </div>
+          </div>
+        </body>
+        </html>
+        """
+        components.html(flight_animation_html, height=190)
+
+        if st.button("🏠 처음으로 돌아가기", use_container_width=True):
+            st.session_state.booking_data = {}
+            st.session_state.step = "home"
+            st.rerun()
