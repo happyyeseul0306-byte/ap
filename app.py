@@ -186,7 +186,7 @@ if st.session_state.step == "home":
         "보홀 (TAG) - 필리핀",
         "마닐라 (MNL) - 필리핀",
         "발리/덴파사르 (DPS) - 인도네시아",
-        # 동북아 / 중앙아시아
+        # 동북아 / 중화권 / 중앙아
         "홍콩 (HKG) - 홍콩",
         "마카오 (MFM) - 마카오",
         "타이베이/타오위안 (TPE) - 대만",
@@ -205,20 +205,16 @@ if st.session_state.step == "home":
         "오스트리아/빈 (VIE) - 오스트리아",
         "튀르키예/이스탄불 (IST) - 튀르키예",
         "네덜란드/암스테르담 (AMS) - 네덜란드",
-        "폴란드/바르샤바 (WAW) - 폴란드",
-        "러시아/모스크바 (SVO) - 러시아",
-        # 미주 및 대양주 / 중동
+        # 미주, 대양주, 중동
         "뉴욕/JFK (JFK) - 미국",
         "로스앤젤레스 (LAX) - 미국",
         "샌프란시스코 (SFO) - 미국",
-        "시애틀 (SEA) - 미국",
         "하와이/호놀룰루 (HNL) - 미국",
         "밴쿠버 (YVR) - 캐나다",
         "토론토 (YYZ) - 캐나다",
         "시드니 (SYD) - 호주",
         "멜버른 (MEL) - 호주",
         "괌 (GUM) - 괌",
-        "사이판 (SPN) - 사이판",
         "두바이 (DXB) - 아랍에미리트",
     ]
 
@@ -394,7 +390,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (완전 새로워진 풍성한 갤러리 가이드)
+# 1-1. 여행지 상세 소개 페이지 (요청하신 일본 도쿄 사진 3종 교체)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -403,7 +399,6 @@ elif st.session_state.step == "destination_detail":
 
     dest_name = st.session_state.selected_destination_info
 
-    # 💡 도시별 주제가 각기 다른 4장의 다채로운 사진 및 라벨 적용
     dest_info_dict = {
         "도쿄": {
             "title": "🗼 일본 도쿄 (Tokyo)",
@@ -414,21 +409,21 @@ elif st.session_state.step == "destination_detail":
                     "url": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
                 },
                 {
-                    "title": "⛩️ 전통 아사쿠사 센소지",
-                    "url": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9",
+                    "title": "⛩️ 아사쿠사 센소지 사원",
+                    "url": "https://images.unsplash.com/photo-1583838382506-ee6f722e032f",  # 센소지 오층탑 사진
                 },
                 {
                     "title": "🍣 정통 에도마에 초밥",
-                    "url": "https://images.unsplash.com/photo-1579871494447-9811cf80d66c",
+                    "url": "https://images.unsplash.com/photo-1611143669185-af224c5e3252",  # 목판 위 모둠 초밥 세트
                 },
                 {
                     "title": "🚶 시부야 스크램블 교차로",
-                    "url": "https://images.unsplash.com/photo-1542051841857-5f90071e7989",
+                    "url": "https://images.unsplash.com/photo-1542051841857-5f90071e7989",  # 시부야 교차로 전경
                 },
             ],
-            "desc": "도쿄는 첨단 기술과 오랜 전통문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지 사원, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다. 지하철 노선망이 매우 잘 정비되어 있어 자유여행 초보자도 편리하게 누빌 수 있습니다.",
+            "desc": "도쿄는 첨단 기술과 오랜 전통문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지 사원, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다.",
             "best_season": "3~5월 (화사한 벚꽃 시즌) 및 9~11월 (선선한 단풍 시즌)",
-            "tip": "도쿄 지하철 이용 시 스마트폰의 Apple Pay/Google Pay에 'Suica' 또는 'Pasmo' 교통카드를 등록하면 입출구가 편리합니다.",
+            "tip": "도쿄 지하철 이용 시 스마트폰에 'Suica' 또는 'Pasmo' 교통카드를 등록하면 편리합니다.",
             "spots": [
                 "시부야 스크램블 교차로 & 스카이트리 전망대",
                 "도쿄 디즈니랜드 & 디즈니씨",
@@ -448,24 +443,24 @@ elif st.session_state.step == "destination_detail":
             "gallery": [
                 {
                     "title": "🛕 왓 아룬 (새벽 사원)",
-                    "url": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
+                    "url": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220",
                 },
                 {
-                    "title": "🛍️ 활기찬 로컬 야시장",
-                    "url": "https://images.unsplash.com/photo-1563492065599-3520f775eeed",
+                    "title": "🛍️ 방콕 야시장 (조명과 천막)",
+                    "url": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf",
                 },
                 {
-                    "title": "🍜 로컬 팟타이 요리",
+                    "title": "🍜 정통 태국 팟타이",
                     "url": "https://images.unsplash.com/photo-1559847844-5315695dadae",
                 },
                 {
-                    "title": "🛶 수상 시장 풍경",
-                    "url": "https://images.unsplash.com/photo-1552465011-b4e21bf6e79a",
+                    "title": "🛶 이국적인 수상 시장",
+                    "url": "https://images.unsplash.com/photo-1563492065599-3520f775eeed",
                 },
             ],
-            "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 그리고 전 세계 배낭여행자들의 성지인 활기찬 야시장이 어우러진 휴양지입니다. 가성비 높은 5성급 호텔 호캉스와 맛있는 스트리트 푸드를 저렴하게 마음껏 즐길 수 있습니다.",
+            "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원(왓 아룬 등), 그리고 전 세계 배낭여행자들의 성지인 활기찬 야시장이 어우러진 휴양지입니다.",
             "best_season": "11월 ~ 2월 (비가 적고 쾌적한 건기)",
-            "tip": "사원 방문 시에는 반바지나 민소매 차림이 제한되므로 얇은 겉옷이나 긴 바지를 준비하는 것이 좋습니다.",
+            "tip": "사원 방문 시에는 반바지나 민소매 차림이 제한되므로 가벼운 겉옷을 준비하세요.",
             "spots": [
                 "짜오프라야 강변의 왓 아룬 (새벽 사원)",
                 "방콕 왕궁 & 왓 포 거대 와불상",
@@ -484,25 +479,25 @@ elif st.session_state.step == "destination_detail":
             "sub": "예술, 낭만, 패션이 숨쉬는 영원한 수도",
             "gallery": [
                 {
-                    "title": "🗼 낭만의 에펠탑 야경",
-                    "url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
-                },
-                {
-                    "title": "🏛️ 루브르 박물관 박공",
+                    "title": "🗼 낭만의 에펠탑",
                     "url": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f",
                 },
                 {
-                    "title": "☕ 노천 카페 노변",
-                    "url": "https://images.unsplash.com/photo-1509439581779-6298f75bf6e5",
+                    "title": "🏛️ 루브르 박물관 피라미드",
+                    "url": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a",
+                },
+                {
+                    "title": "☕ 파리 거리의 노천 카페",
+                    "url": "https://images.unsplash.com/photo-1559339352-11d035aa65de",
                 },
                 {
                     "title": "🧁 프렌치 디저트 마카롱",
                     "url": "https://images.unsplash.com/photo-1569864358642-9d1684040f43",
                 },
             ],
-            "desc": "센 강이 유유히 흐르는 파리는 고풍스러운 건축물과 세계적인 미술관, 그리고 고소한 빵 냄새가 번지는 카페가 가득한 낭만의 도시입니다. 루브르와 오르세의 걸작들을 감상하고 센 강변을 거닐며 유럽의 정취를 만끽해 보세요.",
+            "desc": "센 강이 유유히 흐르는 파리는 고풍스러운 건축물, 세계적인 루브르 미술관, 그리고 파리 특유의 노천 카페 문화가 가득한 낭만의 도시입니다.",
             "best_season": "5~6월 (포근한 봄날) 및 9~10월 (낭만적인 가을)",
-            "tip": "루브르 박물관이나 에펠탑 등 주요 인기 명소는 대기 시간이 길므로 출국 전 온라인 타임슬롯 예약을 추천합니다.",
+            "tip": "루브르 박물관이나 에펠탑 등 주요 인기 명소는 사전에 온라인 타임슬롯 예약을 추천합니다.",
             "spots": [
                 "에펠탑 & 트로카데로 광장",
                 "루브르 박물관 & 오르세 미술관",
@@ -521,7 +516,7 @@ elif st.session_state.step == "destination_detail":
             "sub": "잠들지 않는 세계 경제와 문화의 메카",
             "gallery": [
                 {
-                    "title": "🏙️ 타임스 스퀘어 빌딩숲",
+                    "title": "🏙️ 타임스 스퀘어 야경",
                     "url": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
                 },
                 {
@@ -533,22 +528,22 @@ elif st.session_state.step == "destination_detail":
                     "url": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2",
                 },
                 {
-                    "title": "🍕 뉴욕 스트리트 피자",
+                    "title": "🍕 뉴욕 화덕 피자",
                     "url": "https://images.unsplash.com/photo-1513104890138-7c749659a591",
                 },
             ],
-            "desc": "뉴욕은 자유의 여신상, 브루클린 브릿지, 타임스 스퀘어 등 마천루가 빛나는 거대한 도심입니다. 브로드웨이 뮤지컬의 감동과 세계 각국의 다채로운 식문화를 한곳에서 오롯이 경험할 수 있습니다.",
+            "desc": "뉴욕은 자유의 여신상, 브루클린 브릿지, 타임스 스퀘어 등 마천루가 빛나는 거대한 도심입니다.",
             "best_season": "9~11월 (센트럴 파크의 형형색색 단풍 시즌)",
-            "tip": "식당 이용 시 식사 금액의 15~20% 팁 문화가 적용되며, 메트로카드(Subway Pass) 이용이 편리합니다.",
+            "tip": "식당 이용 시 식사 금액의 15~20% 팁 문화가 적용됩니다.",
             "spots": [
                 "타임스 스퀘어 & 브로드웨이 뮤지컬",
                 "센트럴 파크 (도심 속 휴식 공간)",
                 "자유의 여신상 페리 투어",
-                "엠파이어 스테이트 빌딩 & 톱오브더락 전망대",
+                "엠파이어 스테이트 빌딩 전망대",
             ],
             "foods": [
                 "큼직한 한 조각 뉴욕 스타일 화덕피자",
-                "훈제 고기가 가득한 패스트라미 샌드위치",
+                "푸짐한 패스트라미 샌드위치",
                 "쫄깃한 뉴욕 베이글 & 크림치즈",
                 "정통 아메리칸 드라이에이징 스테이크",
             ],
@@ -574,20 +569,20 @@ elif st.session_state.step == "destination_detail":
                     "url": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43",
                 },
             ],
-            "desc": "다낭은 끝없이 펼쳐진 미케 해변과 유네스코 세계유산인 호이안 구시가지가 근처에 있어 휴양과 관광을 함께 즐기기에 최적인 명소입니다. 합리적인 물가로 최고급 리조트 호캉스를 누릴 수 있습니다.",
+            "desc": "다낭은 끝없이 펼쳐진 미케 해변과 유네스코 세계유산인 호이안 구시가지가 근처에 있어 휴양과 관광을 함께 즐기기에 좋습니다.",
             "best_season": "2월 ~ 8월 (파도가 잔잔하고 맑은 건기)",
-            "tip": "이동 시에는 모바일 차량 호출 서비스인 Grab(그랩)을 활용하시면 편리하게 이동할 수 있습니다.",
+            "tip": "이동 시에는 차량 호출 서비스인 Grab을 사용하세요.",
             "spots": [
-                "세계 6대 해변으로 꼽히는 미케 비치",
+                "미케 비치 (세계적인 해변)",
                 "바나힐 테마파크 & 손모양 골든 브릿지",
-                "호이안 올드타운 (풍등 가득한 야경)",
-                "신비로운 신전 오행산 (마블 마운틴)",
+                "호이안 올드타운 (야경 명소)",
+                "오행산 (마블 마운틴)",
             ],
             "foods": [
                 "진한 소고기 육수의 베트남 쌀국수",
-                "바삭한 야채 부침개 반쎄오",
+                "바삭한 부침개 반쎄오",
                 "숯불에 구운 돼지고기 노점 분짜",
-                "싱싱하고 저렴한 해산물 락사 요리",
+                "싱싱하고 저렴한 해산물 요리",
             ],
         },
         "스위스": {
@@ -611,20 +606,20 @@ elif st.session_state.step == "destination_detail":
                     "url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
                 },
             ],
-            "desc": "스위스는 융프라우와 만년설, 에메랄드빛 청정 호수가 어우러진 알프스의 낙원입니다. 산악열차와 케이블카를 타고 환상적인 대자연 풍경 속으로 힐링 여행을 떠나보세요.",
-            "best_season": "6~8월 (야생화 만발 및 하이킹) 또는 12~2월 (겨울 설경 & 스키)",
-            "tip": "교통비가 높은 편이므로 기차, 유람선, 버스를 자유롭게 탈 수 있는 스위스 트래블 패스를 챙기시는 것이 경제적입니다.",
+            "desc": "스위스는 융프라우와 만년설, 에메랄드빛 청정 호수가 어우러진 알프스의 낙원입니다.",
+            "best_season": "6~8월 (하이킹) 또는 12~2월 (겨울 설경)",
+            "tip": "스위스 트래블 패스를 미리 준비하면 이동 시 매우 경제적입니다.",
             "spots": [
-                "융프라우요흐 (유럽의 지붕 전망대)",
+                "융프라우요흐 (유럽의 지붕)",
                 "인터라켄 하더 쿨룸 전망대",
                 "루체른 카펠교 & 호수 산책로",
                 "체르마트 마테호른 봉우리",
             ],
             "foods": [
                 "고소하고 따뜻한 치즈 퐁듀",
-                "감자에 치즈를 얹은 라클렛",
+                "치즈를 얹은 라클렛",
                 "스위스 전통 감자전 뢰스티",
-                "달콤하고 진한 프리미엄 스위스 초콜릿",
+                "프리미엄 스위스 초콜릿",
             ],
         },
     }
@@ -640,7 +635,6 @@ elif st.session_state.step == "destination_detail":
         unsafe_allow_html=True,
     )
 
-    # 📸 다채로운 주제의 4장 포토 갤러리 카드
     st.markdown(
         "<h3 style='color: white; margin-bottom: 15px;'>📸 풍경 & 문화 갤러리</h3>",
         unsafe_allow_html=True,
@@ -656,7 +650,6 @@ elif st.session_state.step == "destination_detail":
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # 📖 상세 가이드 정보 박스
     st.markdown(
         f"""
         <div class="dest-info-box">
@@ -712,7 +705,7 @@ elif st.session_state.step == "destination_detail":
             st.rerun()
 
 # ==========================================
-# 1-2. 로그인 화면 (이메일 & 비밀번호 글씨 선명하게 고정)
+# 1-2. 로그인 화면
 # ==========================================
 elif st.session_state.step == "login":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -864,8 +857,6 @@ elif st.session_state.step == "select_flight":
             "오스트리아",
             "튀르키예",
             "네덜란드",
-            "폴란드",
-            "러시아",
         ]
     ):
         flights = [
@@ -1041,7 +1032,7 @@ elif st.session_state.step == "passenger_info":
                 st.warning("성함을 올바르게 입력해주세요.")
 
 # ==========================================
-# 4. 예매 완료 화면 (E-Ticket 바우처)
+# 4. 예매 완료 화면 (궤도 회전 애니메이션)
 # ==========================================
 elif st.session_state.step == "success":
     if not st.session_state.is_logged_in:
@@ -1079,7 +1070,65 @@ elif st.session_state.step == "success":
             unsafe_allow_html=True,
         )
 
-        st.markdown("<br>", unsafe_allow_html=True)
+        flight_animation_html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
+          .orbit-container {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+            overflow: hidden;
+          }
+          .earth {
+            font-size: 80px;
+            animation: spin 14s linear infinite;
+            user-select: none;
+            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5));
+          }
+          .orbit-path {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 1.5px dashed rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: rotateOrbit 7s linear infinite;
+          }
+          .airplane {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%) rotate(90deg);
+            font-size: 24px;
+            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+          }
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          @keyframes rotateOrbit {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+        </style>
+        </head>
+        <body>
+          <div class="orbit-container">
+            <div class="earth">🌍</div>
+            <div class="orbit-path">
+              <div class="airplane">✈️</div>
+            </div>
+          </div>
+        </body>
+        </html>
+        """
+        components.html(flight_animation_html, height=190)
+
         if st.button("🏠 처음으로 돌아가기", use_container_width=True):
             st.session_state.booking_data = {}
             st.session_state.step = "home"
