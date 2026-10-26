@@ -195,79 +195,78 @@ if st.session_state.step == "home":
         "무안 (MWX)",
     ]
 
+    # 🌟 기존 빈 하얀 박스를 제거하고 해당 위치에 실시간 랭킹 박스가 들어가도록 배치
+    ranking_ticker_html = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+    <style>
+      .ticker-box {
+        display: flex;
+        align-items: center;
+        background: #ffffff;
+        padding: 12px 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        font-family: sans-serif;
+      }
+      .ticker-badge {
+        background-color: #2563eb;
+        color: white;
+        font-weight: 700;
+        font-size: 0.9rem;
+        padding: 6px 14px;
+        border-radius: 20px;
+        margin-right: 15px;
+        white-space: nowrap;
+      }
+      .ticker-content {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: #1e293b;
+        transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+      }
+    </style>
+    </head>
+    <body style="margin:0; padding:0; background:transparent;">
+      <div class="ticker-box">
+        <div class="ticker-badge">🔥 실시간 인기 여행지 순위</div>
+        <div id="rank-text" class="ticker-content">1위 🗼 일본 도쿄 (최고 인기 메가폴리스)</div>
+      </div>
+      <script>
+        const ranks = [
+          "1위 🗼 일본 도쿄 (최고 인기 메가폴리스)",
+          "2위 🛍️ 태국 방콕 (활기찬 야시장과 사원)",
+          "3위 🌊 베트남 다낭 (에메랄드빛 미케 해변)",
+          "4위 🏙️ 미국 뉴욕 (맨해튼 빌딩 숲과 센트럴 파크)",
+          "5위 🥐 프랑스 파리 (낭만의 에펠탑과 센 강)",
+          "6위 🏔️ 스위스 (체르마트 마테호른 & 알프스)",
+          "7위 🧋 대만 타이베이 (식도락과 야시장 여행)"
+        ];
+        let idx = 0;
+        const textElement = document.getElementById('rank-text');
+        
+        setInterval(() => {
+          textElement.style.opacity = 0;
+          textElement.style.transform = "translateY(8px)";
+          setTimeout(() => {
+            idx = (idx + 1) % ranks.length;
+            textElement.innerText = ranks[idx];
+            textElement.style.opacity = 1;
+            textElement.style.transform = "translateY(0px)";
+          }, 400);
+        }, 3000);
+      </script>
+    </body>
+    </html>
+    """
+    components.html(ranking_ticker_html, height=65)
+
     with st.container():
         st.markdown(
-            '<div class="search-box-wrapper">', unsafe_allow_html=True
+            '<div class="search-box-wrapper" style="margin-top: 0px;">', unsafe_allow_html=True
         )
-
-        # 🌟 1위부터 7위까지 실시간 인기 여행지 순위를 보여주는 티커 컴포넌트 추가
-        ranking_ticker_html = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <style>
-          .ticker-box {
-            display: flex;
-            align-items: center;
-            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
-            padding: 10px 18px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            border-left: 5px solid #2563eb;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            font-family: sans-serif;
-          }
-          .ticker-badge {
-            background-color: #2563eb;
-            color: white;
-            font-weight: 700;
-            font-size: 0.85rem;
-            padding: 4px 10px;
-            border-radius: 20px;
-            margin-right: 15px;
-            white-space: nowrap;
-          }
-          .ticker-content {
-            font-size: 1.05rem;
-            font-weight: 700;
-            color: #1e293b;
-            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-          }
-        </style>
-        </head>
-        <body>
-          <div class="ticker-box">
-            <div class="ticker-badge">🔥 실시간 인기 여행지 순위</div>
-            <div id="rank-text" class="ticker-content">1위 🗼 일본 도쿄</div>
-          </div>
-          <script>
-            const ranks = [
-              "1위 🗼 일본 도쿄 (최고 인기 메가폴리스)",
-              "2위 🛍️ 태국 방콕 (활기찬 야시장과 사원)",
-              "3위 🌊 베트남 다낭 (에메랄드빛 미케 해변)",
-              "4위 🏙️ 미국 뉴욕 (맨해튼 빌딩 숲과 센트럴 파크)",
-              "5위 🥐 프랑스 파리 (낭만의 에펠탑과 센 강)",
-              "6위 🏔️ 스위스 (체르마트 마테호른 & 알프스)",
-              "7위 🧋 대만 타이베이 (식도락과 야시장 여행)"
-            ];
-            let idx = 0;
-            const textElement = document.getElementById('rank-text');
-            
-            setInterval(() => {
-              textElement.style.opacity = 0;
-              textElement.style.transform = "translateY(8px)";
-              setTimeout(() => {
-                idx = (idx + 1) % ranks.length;
-                textElement.innerText = ranks[idx];
-                textElement.style.opacity = 1;
-                textElement.style.transform = "translateY(0px)";
-              }, 400);
-            }, 3000);
-          </script>
-        </body>
-        </html>
-        """
-        components.html(ranking_ticker_html, height=55)
 
         sc1, sc2, sc3, sc4, sc5 = st.columns([1.2, 1.5, 1.1, 1.1, 0.9])
 
