@@ -390,7 +390,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (요청하신 일본 도쿄 사진 3종 교체)
+# 1-1. 여행지 상세 소개 페이지 (국가별 대표 사진 1개씩 적용)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -399,6 +399,7 @@ elif st.session_state.step == "destination_detail":
 
     dest_name = st.session_state.selected_destination_info
 
+    # 💡 6개 국가/도시 모두 갤러리에 대표 사진 1개만 배치
     dest_info_dict = {
         "도쿄": {
             "title": "🗼 일본 도쿄 (Tokyo)",
@@ -407,19 +408,7 @@ elif st.session_state.step == "destination_detail":
                 {
                     "title": "🌃 도쿄 타워 야경",
                     "url": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
-                },
-                {
-                    "title": "⛩️ 아사쿠사 센소지 사원",
-                    "url": "https://images.unsplash.com/photo-1583838382506-ee6f722e032f",  # 센소지 오층탑 사진
-                },
-                {
-                    "title": "🍣 정통 에도마에 초밥",
-                    "url": "https://images.unsplash.com/photo-1611143669185-af224c5e3252",  # 목판 위 모둠 초밥 세트
-                },
-                {
-                    "title": "🚶 시부야 스크램블 교차로",
-                    "url": "https://images.unsplash.com/photo-1542051841857-5f90071e7989",  # 시부야 교차로 전경
-                },
+                }
             ],
             "desc": "도쿄는 첨단 기술과 오랜 전통문화가 조화를 이루는 세계적인 대도시입니다. 시부야의 스크램블 교차로, 아사쿠사의 센소지 사원, 그리고 미식가들을 사로잡는 다양한 라멘과 스시 전문점이 여행객을 반깁니다.",
             "best_season": "3~5월 (화사한 벚꽃 시즌) 및 9~11월 (선선한 단풍 시즌)",
@@ -444,19 +433,7 @@ elif st.session_state.step == "destination_detail":
                 {
                     "title": "🛕 왓 아룬 (새벽 사원)",
                     "url": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220",
-                },
-                {
-                    "title": "🛍️ 방콕 야시장 (조명과 천막)",
-                    "url": "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf",
-                },
-                {
-                    "title": "🍜 정통 태국 팟타이",
-                    "url": "https://images.unsplash.com/photo-1559847844-5315695dadae",
-                },
-                {
-                    "title": "🛶 이국적인 수상 시장",
-                    "url": "https://images.unsplash.com/photo-1563492065599-3520f775eeed",
-                },
+                }
             ],
             "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원(왓 아룬 등), 그리고 전 세계 배낭여행자들의 성지인 활기찬 야시장이 어우러진 휴양지입니다.",
             "best_season": "11월 ~ 2월 (비가 적고 쾌적한 건기)",
@@ -481,19 +458,7 @@ elif st.session_state.step == "destination_detail":
                 {
                     "title": "🗼 낭만의 에펠탑",
                     "url": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f",
-                },
-                {
-                    "title": "🏛️ 루브르 박물관 피라미드",
-                    "url": "https://images.unsplash.com/photo-1499856871958-5b9627545d1a",
-                },
-                {
-                    "title": "☕ 파리 거리의 노천 카페",
-                    "url": "https://images.unsplash.com/photo-1559339352-11d035aa65de",
-                },
-                {
-                    "title": "🧁 프렌치 디저트 마카롱",
-                    "url": "https://images.unsplash.com/photo-1569864358642-9d1684040f43",
-                },
+                }
             ],
             "desc": "센 강이 유유히 흐르는 파리는 고풍스러운 건축물, 세계적인 루브르 미술관, 그리고 파리 특유의 노천 카페 문화가 가득한 낭만의 도시입니다.",
             "best_season": "5~6월 (포근한 봄날) 및 9~10월 (낭만적인 가을)",
@@ -518,19 +483,7 @@ elif st.session_state.step == "destination_detail":
                 {
                     "title": "🏙️ 타임스 스퀘어 야경",
                     "url": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
-                },
-                {
-                    "title": "🌳 센트럴 파크 전경",
-                    "url": "https://images.unsplash.com/photo-1534430480872-3498386e7856",
-                },
-                {
-                    "title": "🌉 브루클린 브릿지",
-                    "url": "https://images.unsplash.com/photo-1499092346589-b9b6be3e94b2",
-                },
-                {
-                    "title": "🍕 뉴욕 화덕 피자",
-                    "url": "https://images.unsplash.com/photo-1513104890138-7c749659a591",
-                },
+                }
             ],
             "desc": "뉴욕은 자유의 여신상, 브루클린 브릿지, 타임스 스퀘어 등 마천루가 빛나는 거대한 도심입니다.",
             "best_season": "9~11월 (센트럴 파크의 형형색색 단풍 시즌)",
@@ -555,19 +508,7 @@ elif st.session_state.step == "destination_detail":
                 {
                     "title": "🏖️ 에메랄드빛 미케 비치",
                     "url": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
-                },
-                {
-                    "title": "🏮 호이안 올드타운 야경",
-                    "url": "https://images.unsplash.com/photo-1528127269322-539801943592",
-                },
-                {
-                    "title": "🌉 바나힐 골든 브릿지",
-                    "url": "https://images.unsplash.com/photo-1570339322846-6f387181585f",
-                },
-                {
-                    "title": "🍜 정통 베트남 쌀국수",
-                    "url": "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43",
-                },
+                }
             ],
             "desc": "다낭은 끝없이 펼쳐진 미케 해변과 유네스코 세계유산인 호이안 구시가지가 근처에 있어 휴양과 관광을 함께 즐기기에 좋습니다.",
             "best_season": "2월 ~ 8월 (파도가 잔잔하고 맑은 건기)",
@@ -592,19 +533,7 @@ elif st.session_state.step == "destination_detail":
                 {
                     "title": "🏔️ 알프스 융프라우요흐",
                     "url": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
-                },
-                {
-                    "title": "🚂 산악 열차 풍경",
-                    "url": "https://images.unsplash.com/photo-1502784444187-359ac186c5bb",
-                },
-                {
-                    "title": "🧀 스위스 치즈 퐁듀",
-                    "url": "https://images.unsplash.com/photo-1541529086526-db283c563270",
-                },
-                {
-                    "title": "🪵 체르마트 마테호른 마을",
-                    "url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-                },
+                }
             ],
             "desc": "스위스는 융프라우와 만년설, 에메랄드빛 청정 호수가 어우러진 알프스의 낙원입니다.",
             "best_season": "6~8월 (하이킹) 또는 12~2월 (겨울 설경)",
@@ -636,17 +565,19 @@ elif st.session_state.step == "destination_detail":
     )
 
     st.markdown(
-        "<h3 style='color: white; margin-bottom: 15px;'>📸 풍경 & 문화 갤러리</h3>",
+        "<h3 style='color: white; margin-bottom: 15px;'>📸 대표 풍경</h3>",
         unsafe_allow_html=True,
     )
-    g_cols = st.columns(4)
-    for idx, item in enumerate(info["gallery"]):
-        with g_cols[idx]:
-            st.image(item["url"], use_container_width=True)
-            st.markdown(
-                f"<div class='img-card'><p>{item['title']}</p></div>",
-                unsafe_allow_html=True,
-            )
+    
+    # 대표 사진 1개만 중앙에 크게 표시
+    col_left, col_center, col_right = st.columns([1, 2, 1])
+    with col_center:
+        item = info["gallery"][0]
+        st.image(item["url"], use_container_width=True)
+        st.markdown(
+            f"<div class='img-card'><p>{item['title']}</p></div>",
+            unsafe_allow_html=True,
+        )
 
     st.markdown("<br>", unsafe_allow_html=True)
 
