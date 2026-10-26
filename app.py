@@ -356,7 +356,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (이미지 URL 완전 연동)
+# 1-1. 여행지 상세 소개 페이지 (방콕 이름: 야시장 수정 완료)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -390,8 +390,8 @@ elif st.session_state.step == "destination_detail":
         "방콕": {
             "title": "🏝 태국 방콕 (Bangkok)",
             "sub": "활기찬 야시장과 찬란한 불교 사원의 도시",
-            "img_title": "🛕 방콕 왓 아룬 (새벽 사원 야경)",
-            "img_url": "https://images.unsplash.com/photo-1508009603885-50cf7c579365", # 오류 없는 안정적인 왓 아룬 이미지[cite: 5]
+            "img_title": "🛍️ 방콕 야시장",  # 👈 요구사항 반영: '방콕 야시장'으로 변경
+            "img_url": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
             "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 짜오프라야 강변의 풍경 및 밤문화를 자랑하는 활기 넘치는 세계적인 여행지입니다.",
             "best_season": "11월 ~ 2월 (비가 적고 쾌적한 건기)",
             "tip": "사원 방문 시 반바지나 민소매 차림은 입장이 제한될 수 있으므로 얇은 긴 옷을 준비하세요.",
@@ -454,7 +454,7 @@ elif st.session_state.step == "destination_detail":
             "title": "🌊 베트남 다낭 (Da Nang)",
             "sub": "에메랄드빛 미케 해변과 휴양 리조트",
             "img_title": "🌉 베트남 다낭 바나힐 골든 브릿지",
-            "img_url": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b", # 고화질 다낭 대표 이미지로 수정
+            "img_url": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
             "desc": "다낭은 탁 트인 에메랄드빛 미케 해변과 풍등 야경이 매력적인 유네스코 유산 호이안 구시가지가 접해 있어 최고의 휴양지로 사랑받고 있습니다.",
             "best_season": "2월 ~ 8월 (파도가 잔잔한 건기)",
             "tip": "현지 이동 시에는 모바일 차량 호출 앱 'Grab(그랩)'을 이용하시면 안전하고 간편합니다.",
