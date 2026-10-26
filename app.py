@@ -200,6 +200,75 @@ if st.session_state.step == "home":
             '<div class="search-box-wrapper">', unsafe_allow_html=True
         )
 
+        # 🌟 1위부터 7위까지 실시간 인기 여행지 순위를 보여주는 티커 컴포넌트 추가
+        ranking_ticker_html = """
+        <!DOCTYPE html>
+        <html>
+        <head>
+        <style>
+          .ticker-box {
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            padding: 10px 18px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2563eb;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            font-family: sans-serif;
+          }
+          .ticker-badge {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-right: 15px;
+            white-space: nowrap;
+          }
+          .ticker-content {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #1e293b;
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+          }
+        </style>
+        </head>
+        <body>
+          <div class="ticker-box">
+            <div class="ticker-badge">🔥 실시간 인기 여행지 순위</div>
+            <div id="rank-text" class="ticker-content">1위 🗼 일본 도쿄</div>
+          </div>
+          <script>
+            const ranks = [
+              "1위 🗼 일본 도쿄 (최고 인기 메가폴리스)",
+              "2위 🛍️ 태국 방콕 (활기찬 야시장과 사원)",
+              "3위 🌊 베트남 다낭 (에메랄드빛 미케 해변)",
+              "4위 🏙️ 미국 뉴욕 (맨해튼 빌딩 숲과 센트럴 파크)",
+              "5위 🥐 프랑스 파리 (낭만의 에펠탑과 센 강)",
+              "6위 🏔️ 스위스 (체르마트 마테호른 & 알프스)",
+              "7위 🧋 대만 타이베이 (식도락과 야시장 여행)"
+            ];
+            let idx = 0;
+            const textElement = document.getElementById('rank-text');
+            
+            setInterval(() => {
+              textElement.style.opacity = 0;
+              textElement.style.transform = "translateY(8px)";
+              setTimeout(() => {
+                idx = (idx + 1) % ranks.length;
+                textElement.innerText = ranks[idx];
+                textElement.style.opacity = 1;
+                textElement.style.transform = "translateY(0px)";
+              }, 400);
+            }, 3000);
+          </script>
+        </body>
+        </html>
+        """
+        components.html(ranking_ticker_html, height=55)
+
         sc1, sc2, sc3, sc4, sc5 = st.columns([1.2, 1.5, 1.1, 1.1, 0.9])
 
         with sc1:
@@ -903,7 +972,7 @@ elif st.session_state.step == "passenger_info":
                 st.warning("성함을 올바르게 입력해주세요.")
 
 # ==========================================
-# 4. 예매 완료 화면 (궤도 회전 애니메이션)
+# 4. 예매 완료 화면 (대형 지구 애니메이션 적용)
 # ==========================================
 elif st.session_state.step == "success":
     if not st.session_state.is_logged_in:
@@ -949,34 +1018,46 @@ elif st.session_state.step == "success":
           .orbit-container {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 280px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 15px;
+            margin-top: 10px;
             overflow: hidden;
+            background: transparent;
           }
-          .earth {
-            font-size: 80px;
-            animation: spin 14s linear infinite;
-            user-select: none;
-            filter: drop-shadow(0 0 12px rgba(59, 130, 246, 0.5));
-          }
-          .orbit-path {
+          .earth-glow {
             position: absolute;
             width: 150px;
             height: 150px;
-            border: 1.5px dashed rgba(255, 255, 255, 0.4);
+            background: radial-gradient(circle, rgba(59,130,246,0.5) 0%, rgba(37,99,235,0) 70%);
             border-radius: 50%;
-            animation: rotateOrbit 7s linear infinite;
+            z-index: 1;
+          }
+          .earth {
+            font-size: 110px;
+            animation: spin 16s linear infinite;
+            user-select: none;
+            z-index: 2;
+            filter: drop-shadow(0 0 25px rgba(96, 165, 250, 0.9));
+          }
+          .orbit-path {
+            position: absolute;
+            width: 230px;
+            height: 230px;
+            border: 2px dashed rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: rotateOrbit 8s linear infinite;
+            z-index: 3;
+            box-shadow: 0 0 20px rgba(255,255,255,0.15);
           }
           .airplane {
             position: absolute;
-            top: -14px;
+            top: -16px;
             left: 50%;
             transform: translateX(-50%) rotate(90deg);
-            font-size: 24px;
-            filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.8));
+            font-size: 28px;
+            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
           }
           @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -990,6 +1071,7 @@ elif st.session_state.step == "success":
         </head>
         <body>
           <div class="orbit-container">
+            <div class="earth-glow"></div>
             <div class="earth">🌍</div>
             <div class="orbit-path">
               <div class="airplane">✈️</div>
@@ -998,7 +1080,7 @@ elif st.session_state.step == "success":
         </body>
         </html>
         """
-        components.html(flight_animation_html, height=190)
+        components.html(flight_animation_html, height=300)
 
         if st.button("🏠 처음으로 돌아가기", use_container_width=True):
             st.session_state.booking_data = {}
