@@ -356,7 +356,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (방콕 사진 반영 완료)
+# 1-1. 여행지 상세 소개 페이지 (사진과 명칭 완벽 매칭 반영 완료)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -390,8 +390,8 @@ elif st.session_state.step == "destination_detail":
         "방콕": {
             "title": "🏝 태국 방콕 (Bangkok)",
             "sub": "활기찬 야시장과 찬란한 불교 사원의 도시",
-            "img_title": "🛕 왓 아룬 (새벽 사원)",
-            "img_url": "https://images.unsplash.com/photo-1512343879784-a960bf40e7f2", # 올려주신 왓 아룬 야경 사진의 고화질 소스 적용[cite: 5]
+            "img_title": "🛕 방콕 왓 아룬 (새벽 사원 야경)",
+            "img_url": "image_5113b4.jpg",  # 👈 회원님이 올려주신 실제 왓 아룬 야경 사진 파일 연동[cite: 5]
             "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 짜오프라야 강변의 풍경 및 밤문화를 자랑하는 활기 넘치는 세계적인 여행지입니다.",
             "best_season": "11월 ~ 2월 (비가 적고 쾌적한 건기)",
             "tip": "사원 방문 시 반바지나 민소매 차림은 입장이 제한될 수 있으므로 얇은 긴 옷을 준비하세요.",
@@ -411,7 +411,7 @@ elif st.session_state.step == "destination_detail":
         "파리": {
             "title": "🥐 프랑스 파리 (Paris)",
             "sub": "예술, 낭만, 패션이 숨쉬는 영원한 수도",
-            "img_title": "🗼 파리의 상징, 낭만의 에펠탑",
+            "img_title": "🗼 파리 에펠탑과 센 강",
             "img_url": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f",
             "desc": "센 강이 흐르는 파리는 고풍스러운 도로, 세계 명화를 품은 루브르 박물관, 에펠탑, 향긋한 베이커리가 늘어선 노천 카페의 정취를 자랑합니다.",
             "best_season": "5~6월 (봄날) 및 9~10월 (가을)",
@@ -432,7 +432,7 @@ elif st.session_state.step == "destination_detail":
         "뉴욕": {
             "title": "🗽 미국 뉴욕 (New York)",
             "sub": "잠들지 않는 세계 경제와 문화의 메카",
-            "img_title": "🏙️ 맨해튼 마천루와 고층 빌딩숲",
+            "img_title": "🏙️ 뉴욕 센트럴 파크와 맨해튼 빌딩 숲",  # 사진 내용에 맞게 명칭 수정
             "img_url": "https://images.unsplash.com/photo-1534430480872-3498386e7856",
             "desc": "뉴욕은 자유의 여신상, 브루클린 브릿지, 타임스 스퀘어, 화려한 마천루가 눈을 사로잡는 세계 문화와 예술의 핵심 도시입니다.",
             "best_season": "9~11월 (센트럴 파크 단풍 시즌)",
@@ -453,7 +453,7 @@ elif st.session_state.step == "destination_detail":
         "다낭": {
             "title": "🌊 베트남 다낭 (Da Nang)",
             "sub": "에메랄드빛 미케 해변과 휴양 리조트",
-            "img_title": "🌉 바나힐 골든 브릿지 (손바닥 다리)",
+            "img_title": "🌉 베트남 다낭 바나힐 골든 브릿지",
             "img_url": "https://images.unsplash.com/photo-1570339322846-6f387181585f",
             "desc": "다낭은 탁 트인 에메랄드빛 미케 해변과 풍등 야경이 매력적인 유네스코 유산 호이안 구시가지가 접해 있어 최고의 휴양지로 사랑받고 있습니다.",
             "best_season": "2월 ~ 8월 (파도가 잔잔한 건기)",
@@ -474,7 +474,7 @@ elif st.session_state.step == "destination_detail":
         "스위스": {
             "title": "⛰️ 스위스 취리히 / 인터라켄 (Switzerland)",
             "sub": "알프스 대자연과 만년설의 동화 마을",
-            "img_title": "🏔️ 알프스 만년설과 융프라우요흐",
+            "img_title": "🏔️ 스위스 체르마트 마테호른과 알프스 마을",
             "img_url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
             "desc": "스위스는 융프라우, 알프스 산맥의 만년설, 깨끗하고 투명한 호수가 만들어내는 동화 같은 산악 자경을 품은 대표 힐링 여행지입니다.",
             "best_season": "6~8월 (하이킹) 및 12~2월 (겨울 설경)",
