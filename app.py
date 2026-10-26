@@ -356,7 +356,7 @@ if st.session_state.step == "home":
             st.rerun()
 
 # ==========================================
-# 1-1. 여행지 상세 소개 페이지 (6개 도시 정확한 1:1 매칭 이미지 전면 수정)
+# 1-1. 여행지 상세 소개 페이지 (설명과 사진 완벽 매칭 수정 완료)
 # ==========================================
 elif st.session_state.step == "destination_detail":
     if st.button("⬅️ 홈으로 돌아가기"):
@@ -365,13 +365,12 @@ elif st.session_state.step == "destination_detail":
 
     dest_name = st.session_state.selected_destination_info
 
-    # 💡 6개 모든 도시의 대표 사진 URL을 신뢰도 높고 정확한 Unsplash 이미지로 재배치
     dest_info_dict = {
         "도쿄": {
             "title": "🗼 일본 도쿄 (Tokyo)",
             "sub": "전통과 미래가 공존하는 매력적인 메가폴리스",
-            "img_title": "🗼 도쿄 타워 & 심야 도심 야경",
-            "img_url": "https://images.unsplash.com/photo-1503899036084-c55cdd92da26",
+            "img_title": "🗼 도쿄 타워와 도심 전경",
+            "img_url": "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc",
             "desc": "도쿄는 첨단 기술과 오랜 전통문화가 조화를 이루는 세계적인 대도시입니다. 시부야 스크램블 교차로, 아사쿠사 센소지 사원, 다양한 전통 라멘 및 스시 맛집이 자리 잡고 있습니다.",
             "best_season": "3~5월 (화사한 벚꽃 시즌) 및 9~11월 (선선한 단풍 시즌)",
             "tip": "도쿄 지하철 이용 시 스마트폰 교통카드(Suica 또는 Pasmo)를 등록해 두면 편하게 이동할 수 있습니다.",
@@ -391,8 +390,8 @@ elif st.session_state.step == "destination_detail":
         "방콕": {
             "title": "🏝 태국 방콕 (Bangkok)",
             "sub": "활기찬 야시장과 찬란한 불교 사원의 도시",
-            "img_title": "🛕 짜오프라야 강변의 왓 아룬 (새벽 사원)",
-            "img_url": "https://images.unsplash.com/photo-1508009603885-50cf7c579365",
+            "img_title": "🛕 왓 아룬 (새벽 사원)의 웅장한 자태",
+            "img_url": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220",
             "desc": "방콕은 화려한 왕궁과 웅장한 불교 사원, 짜오프라야 강변의 풍경 및 밤문화를 자랑하는 활기 넘치는 세계적인 여행지입니다.",
             "best_season": "11월 ~ 2월 (비가 적고 쾌적한 건기)",
             "tip": "사원 방문 시 반바지나 민소매 차림은 입장이 제한될 수 있으므로 얇은 긴 옷을 준비하세요.",
@@ -413,7 +412,7 @@ elif st.session_state.step == "destination_detail":
             "title": "🥐 프랑스 파리 (Paris)",
             "sub": "예술, 낭만, 패션이 숨쉬는 영원한 수도",
             "img_title": "🗼 파리의 상징, 낭만의 에펠탑",
-            "img_url": "https://images.unsplash.com/photo-1502602898657-3e91760cbb34",
+            "img_url": "https://images.unsplash.com/photo-1511739001486-6bfe10ce785f",
             "desc": "센 강이 흐르는 파리는 고풍스러운 도로, 세계 명화를 품은 루브르 박물관, 에펠탑, 향긋한 베이커리가 늘어선 노천 카페의 정취를 자랑합니다.",
             "best_season": "5~6월 (봄날) 및 9~10월 (가을)",
             "tip": "에펠탑이나 루브르 박물관 등의 인기 입장권은 출국 전 사전 예약이 필수적입니다.",
@@ -433,8 +432,8 @@ elif st.session_state.step == "destination_detail":
         "뉴욕": {
             "title": "🗽 미국 뉴욕 (New York)",
             "sub": "잠들지 않는 세계 경제와 문화의 메카",
-            "img_title": "🏙️ 마천루가 빛나는 타임스 스퀘어 도심",
-            "img_url": "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9",
+            "img_title": "🏙️ 맨해튼 마천루와 고층 빌딩숲",
+            "img_url": "https://images.unsplash.com/photo-1534430480872-3498386e7856",
             "desc": "뉴욕은 자유의 여신상, 브루클린 브릿지, 타임스 스퀘어, 화려한 마천루가 눈을 사로잡는 세계 문화와 예술의 핵심 도시입니다.",
             "best_season": "9~11월 (센트럴 파크 단풍 시즌)",
             "tip": "식당 이용 시 금액의 15~20% 상당의 팁 문화가 일반적입니다.",
@@ -454,8 +453,8 @@ elif st.session_state.step == "destination_detail":
         "다낭": {
             "title": "🌊 베트남 다낭 (Da Nang)",
             "sub": "에메랄드빛 미케 해변과 휴양 리조트",
-            "img_title": "🏖️ 아름다운 백사장, 미케 비치",
-            "img_url": "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
+            "img_title": "🌉 바나힐 골든 브릿지 (손바닥 다리)",
+            "img_url": "https://images.unsplash.com/photo-1570339322846-6f387181585f",
             "desc": "다낭은 탁 트인 에메랄드빛 미케 해변과 풍등 야경이 매력적인 유네스코 유산 호이안 구시가지가 접해 있어 최고의 휴양지로 사랑받고 있습니다.",
             "best_season": "2월 ~ 8월 (파도가 잔잔한 건기)",
             "tip": "현지 이동 시에는 모바일 차량 호출 앱 'Grab(그랩)'을 이용하시면 안전하고 간편합니다.",
@@ -475,8 +474,8 @@ elif st.session_state.step == "destination_detail":
         "스위스": {
             "title": "⛰️ 스위스 취리히 / 인터라켄 (Switzerland)",
             "sub": "알프스 대자연과 만년설의 동화 마을",
-            "img_title": "🏔️ 알프스 만년설 융프라우 & 대자연",
-            "img_url": "https://images.unsplash.com/photo-1530122037265-a5f1f91d3b99",
+            "img_title": "🏔️ 알프스 만년설과 융프라우요흐",
+            "img_url": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
             "desc": "스위스는 융프라우, 알프스 산맥의 만년설, 깨끗하고 투명한 호수가 만들어내는 동화 같은 산악 자경을 품은 대표 힐링 여행지입니다.",
             "best_season": "6~8월 (하이킹) 및 12~2월 (겨울 설경)",
             "tip": "기차와 유람선을 모두 이용할 수 있는 '스위스 트래블 패스'를 이용하는 것이 훨씬 경제적입니다.",
