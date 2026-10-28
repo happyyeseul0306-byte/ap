@@ -7,7 +7,7 @@ st.set_page_config(
     page_title="StarPort - 여행지 & 항공권", page_icon="🚀", layout="wide"
 )
 
-# 2. 스타일 및 CSS (아무것도 없는 빈 하얀 박스 스타일 완전 제거)
+# 2. 스타일 및 CSS
 st.markdown(
     """
     <style>
@@ -186,7 +186,6 @@ if st.session_state.step == "home":
         "무안 (MWX)",
     ]
 
-    # 🌟 기존 불필요한 흰 박스는 완전히 없애고 실시간 랭킹 티커만 정확한 위치에 표시
     ranking_ticker_html = """
     <!DOCTYPE html>
     <html>
@@ -294,7 +293,6 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 캐러셀 슬라이더 HTML
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -956,7 +954,7 @@ elif st.session_state.step == "passenger_info":
                 st.warning("성함을 올바르게 입력해주세요.")
 
 # ==========================================
-# 4. 예매 완료 화면 (대형 지구 애니메이션 적용)
+# 4. 예매 완료 화면 (티켓 위주 깔끔한 구성)
 # ==========================================
 elif st.session_state.step == "success":
     if not st.session_state.is_logged_in:
@@ -994,77 +992,7 @@ elif st.session_state.step == "success":
             unsafe_allow_html=True,
         )
 
-        flight_animation_html = """
-        <!DOCTYPE html>
-        <html>
-        <head>
-        <style>
-          .orbit-container {
-            position: relative;
-            width: 100%;
-            height: 280px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 10px;
-            overflow: hidden;
-            background: transparent;
-          }
-          .earth-glow {
-            position: absolute;
-            width: 150px;
-            height: 150px;
-            background: radial-gradient(circle, rgba(59,130,246,0.5) 0%, rgba(37,99,235,0) 70%);
-            border-radius: 50%;
-            z-index: 1;
-          }
-          .earth {
-            font-size: 110px;
-            animation: spin 16s linear infinite;
-            user-select: none;
-            z-index: 2;
-            filter: drop-shadow(0 0 25px rgba(96, 165, 250, 0.9));
-          }
-          .orbit-path {
-            position: absolute;
-            width: 230px;
-            height: 230px;
-            border: 2px dashed rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            animation: rotateOrbit 8s linear infinite;
-            z-index: 3;
-            box-shadow: 0 0 20px rgba(255,255,255,0.15);
-          }
-          .airplane {
-            position: absolute;
-            top: -16px;
-            left: 50%;
-            transform: translateX(-50%) rotate(90deg);
-            font-size: 28px;
-            filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.9));
-          }
-          @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-          @keyframes rotateOrbit {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-          }
-        </style>
-        </head>
-        <body>
-          <div class="orbit-container">
-            <div class="earth-glow"></div>
-            <div class="earth">🌍</div>
-            <div class="orbit-path">
-              <div class="airplane">✈️</div>
-            </div>
-          </div>
-        </body>
-        </html>
-        """
-        components.html(flight_animation_html, height=300)
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if st.button("🏠 처음으로 돌아가기", use_container_width=True):
             st.session_state.booking_data = {}
