@@ -7,7 +7,7 @@ st.set_page_config(
     page_title="StarPort - 여행지 & 항공권", page_icon="🚀", layout="wide"
 )
 
-# 2. 스타일 및 CSS
+# 2. 스타일 및 CSS (아무것도 없는 빈 하얀 박스 스타일 완전 제거)
 st.markdown(
     """
     <style>
@@ -15,19 +15,10 @@ st.markdown(
         background-color: #05132d;
         color: white;
     }
-    .nav-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px 20px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
     .search-box-wrapper {
-        background-color: #ffffff;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        background-color: transparent !important;
+        padding: 0px !important;
+        box-shadow: none !important;
         margin-top: 15px;
         margin-bottom: 40px;
     }
@@ -195,7 +186,7 @@ if st.session_state.step == "home":
         "무안 (MWX)",
     ]
 
-    # 🌟 기존 빈 하얀 박스를 제거하고 해당 위치에 실시간 랭킹 박스가 들어가도록 배치
+    # 🌟 기존 불필요한 흰 박스는 완전히 없애고 실시간 랭킹 티커만 정확한 위치에 표시
     ranking_ticker_html = """
     <!DOCTYPE html>
     <html>
@@ -207,7 +198,7 @@ if st.session_state.step == "home":
         background: #ffffff;
         padding: 12px 20px;
         border-radius: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         box-shadow: 0 4px 15px rgba(0,0,0,0.15);
         font-family: sans-serif;
       }
@@ -264,10 +255,6 @@ if st.session_state.step == "home":
     components.html(ranking_ticker_html, height=65)
 
     with st.container():
-        st.markdown(
-            '<div class="search-box-wrapper" style="margin-top: 0px;">', unsafe_allow_html=True
-        )
-
         sc1, sc2, sc3, sc4, sc5 = st.columns([1.2, 1.5, 1.1, 1.1, 0.9])
 
         with sc1:
@@ -293,8 +280,6 @@ if st.session_state.step == "home":
         cc1, cc2 = st.columns([1, 5])
         with cc1:
             st.checkbox("직항 항공편", value=False)
-
-        st.markdown("</div>", unsafe_allow_html=True)
 
         if search_clicked:
             if not st.session_state.is_logged_in:
