@@ -93,6 +93,24 @@ st.markdown(
         background-color: rgba(255, 255, 255, 0.1);
         border-color: white;
     }
+
+    /* 배너 카드형 버튼 스타일 */
+    .banner-card-btn {
+        background-size: cover;
+        background-position: center;
+        border-radius: 16px;
+        padding: 30px;
+        height: 220px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .banner-card-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
     </style>
 """,
     unsafe_allow_html=True,
@@ -293,118 +311,72 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 🌟 사진(캐러셀) 클릭 시 Streamlit 쿼리 파라미터를 통해 가이드 페이지로 이동하도록 설정
-    query_params = st.query_params
-    if "goto_dest" in query_params:
-        target_dest = query_params["goto_dest"]
-        st.session_state.selected_destination_info = target_dest
-        st.session_state.step = "destination_detail"
-        st.query_params.clear()
-        st.rerun()
-
-    carousel_html = """
-    <!DOCTYPE html>
-    <html>
-    <head>
-    <style>
-      .slider-container {
-        position: relative;
-        width: 100%;
-        height: 300px;
-        border-radius: 16px;
-        overflow: hidden;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        cursor: pointer;
-      }
-      .slide {
-        position: absolute;
-        top: 0; left: 0;
-        width: 100%; height: 100%;
-        background-size: cover;
-        background-position: center;
-        opacity: 0;
-        transition: opacity 1s ease-in-out;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        padding: 30px;
-        box-sizing: border-box;
-      }
-      .slide.active { opacity: 1; }
-      .slide-content {
-        background: rgba(0, 0, 0, 0.5);
-        padding: 15px 20px;
-        border-radius: 10px;
-        backdrop-filter: blur(5px);
-        width: fit-content;
-      }
-      h2 { color: white; margin: 0 0 5px 0; font-size: 1.6rem; font-family: sans-serif; }
-      p { color: #e2e8f0; margin: 0; font-size: 0.95rem; font-family: sans-serif; }
-    </style>
-    </head>
-    <body>
-    <div class="slider-container" onclick="handleClick()">
-      <div class="slide active" data-dest="도쿄" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
-        <div class="slide-content">
-          <h2>🗼 도쿄 여행 트렌드</h2>
-          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지 (클릭하여 가이드 보기)</p>
-        </div>
-      </div>
-      <div class="slide" data-dest="방콕" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
-        <div class="slide-content">
-          <h2>🏝️ 낭만의 방콕 휴가</h2>
-          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시 (클릭하여 가이드 보기)</p>
-        </div>
-      </div>
-      <div class="slide" data-dest="파리" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
-        <div class="slide-content">
-          <h2>🥐 예술의 도시 파리</h2>
-          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳 (클릭하여 가이드 보기)</p>
-        </div>
-      </div>
-    </div>
-    <script>
-      let currentSlide = 0;
-      const slides = document.querySelectorAll('.slide');
-      function nextSlide() {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-      }
-      let slideInterval = setInterval(nextSlide, 3500);
-
-      function handleClick() {
-        const activeSlide = document.querySelector('.slide.active');
-        const dest = activeSlide.getAttribute('data-dest');
-        window.parent.location.href = window.location.pathname + "?goto_dest=" + encodeURIComponent(dest);
-      }
-    </script>
-    </body>
-    </html>
-    """
-    components.html(carousel_html, height=320)
-
+    # 🌟 클릭이 100% 보장되는 고화질 대표 여행지 카드 배너
     st.markdown(
-        "<p style='text-align: center; color: #94a3b8; margin-top: 15px;'>👇 아래 추천 도시 버튼을 눌러 상세 가이드를 확인해보세요!</p>",
+        "<h3 style='color: white; margin-bottom: 15px;'>🔥 인기 추천 여행지 (사진 클릭 시 바로 가이드로 이동)</h3>",
         unsafe_allow_html=True,
     )
 
-    row1_c1, row1_c2, row1_c3 = st.columns(3)
-    with row1_c1:
-        if st.button("🗼 도쿄 가이드 보기", use_container_width=True):
+    b_col1, b_col2, b_col3 = st.columns(3)
+
+    with b_col1:
+        st.markdown(
+            """
+            <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
+                <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    <h3 style="color:white; margin:0;">🗼 도쿄 여행 트렌드</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.88rem;">화려한 도시와 다양한 식도락</p>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        if st.button(
+            "👉 '도쿄' 상세 가이드 보기", key="tokyo_banner_btn", use_container_width=True
+        ):
             st.session_state.selected_destination_info = "도쿄"
             st.session_state.step = "destination_detail"
             st.rerun()
-    with row1_c2:
-        if st.button("🏝️ 방콕 가이드 보기", use_container_width=True):
+
+    with b_col2:
+        st.markdown(
+            """
+            <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+                <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    <h3 style="color:white; margin:0;">🏝️ 낭만의 방콕 휴가</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.88rem;">이국적인 사원과 신나는 야시장</p>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        if st.button(
+            "👉 '방콕' 상세 가이드 보기", key="bangkok_banner_btn", use_container_width=True
+        ):
             st.session_state.selected_destination_info = "방콕"
             st.session_state.step = "destination_detail"
             st.rerun()
-    with row1_c3:
-        if st.button("🥐 파리 가이드 보기", use_container_width=True):
+
+    with b_col3:
+        st.markdown(
+            """
+            <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+                <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    <h3 style="color:white; margin:0;">🥐 예술의 도시 파리</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.88rem;">낭만적인 에펠탑과 센 강</p>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        if st.button(
+            "👉 '파리' 상세 가이드 보기", key="paris_banner_btn", use_container_width=True
+        ):
             st.session_state.selected_destination_info = "파리"
             st.session_state.step = "destination_detail"
             st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     row2_c1, row2_c2, row2_c3 = st.columns(3)
     with row2_c1:
