@@ -31,14 +31,6 @@ st.markdown(
         margin-bottom: 15px;
         border: 1px solid #e5e7eb;
     }
-    .eticket-box {
-        background: #ffffff;
-        color: #05132d;
-        border: 2px solid #05132d;
-        padding: 35px;
-        border-radius: 12px;
-        box-shadow: 0 6px 20px rgba(0,0,0,0.2);
-    }
     .dest-info-box {
         background-color: #ffffff;
         color: #05132d;
@@ -111,6 +103,114 @@ st.markdown(
     .banner-card-btn:hover {
         transform: translateY(-3px);
         box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    }
+
+    /* 🎫 이미지 스타일실제 실물 보딩패스 티켓 디자인 */
+    .boarding-pass {
+        width: 100%;
+        max-width: 580px;
+        margin: 0 auto;
+        background-color: #e5e7eb;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+        font-family: 'Arial', sans-serif;
+        color: #1e293b;
+    }
+    .bp-header {
+        background-color: #e2e8f0;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #cbd5e1;
+    }
+    .bp-header .pass-title {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #0284c7;
+        letter-spacing: 1px;
+    }
+    .bp-header .passenger-name {
+        font-size: 1.4rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin: 2px 0 0 0;
+    }
+    .bp-barcode {
+        height: 38px;
+        letter-spacing: 2px;
+        font-family: 'Libre Barcode 128', 'Courier New', monospace;
+        font-size: 32px;
+        color: #0f172a;
+        user-select: none;
+    }
+    .bp-body {
+        background-color: #0284c7;
+        color: white;
+        padding: 24px;
+        text-align: center;
+    }
+    .bp-route {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .bp-loc-code {
+        font-size: 2.3rem;
+        font-weight: 900;
+        letter-spacing: 1px;
+    }
+    .bp-loc-sub {
+        font-size: 0.85rem;
+        color: #e0f2fe;
+        margin-top: -2px;
+    }
+    .bp-plane-icon {
+        font-size: 2rem;
+        transform: rotate(45deg);
+    }
+    .bp-divider {
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.4);
+        margin: 16px 0;
+    }
+    .bp-times {
+        display: flex;
+        justify-content: space-around;
+        font-size: 0.85rem;
+    }
+    .bp-time-title {
+        font-size: 0.7rem;
+        color: #e0f2fe;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        margin-bottom: 3px;
+    }
+    .bp-time-val {
+        font-size: 1rem;
+        font-weight: 700;
+    }
+    .bp-footer {
+        background-color: #e2e8f0;
+        padding: 16px 24px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        text-align: center;
+    }
+    .bp-foot-item .label {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #64748b;
+        letter-spacing: 0.5px;
+    }
+    .bp-foot-item .value {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #0f172a;
+        margin-top: 2px;
     }
     </style>
 """,
@@ -312,13 +412,11 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 🌟 주요 6개 도시(도쿄, 방콕, 파리, 뉴욕, 다낭, 스위스) 카드 배너 섹션
     st.markdown(
         "<h3 style='color: white; margin-top: 30px; margin-bottom: 15px;'>🔥 주요 인기 추천 여행지</h3>",
         unsafe_allow_html=True,
     )
 
-    # 1행 (도쿄, 방콕, 파리)
     r1_c1, r1_c2, r1_c3 = st.columns(3)
 
     with r1_c1:
@@ -380,7 +478,6 @@ if st.session_state.step == "home":
 
     st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
 
-    # 2행 (뉴욕, 다낭, 스위스)
     r2_c1, r2_c2, r2_c3 = st.columns(3)
 
     with r2_c1:
@@ -987,7 +1084,7 @@ elif st.session_state.step == "passenger_info":
                 st.warning("성함을 올바르게 입력해주세요.")
 
 # ==========================================
-# 4. 예매 완료 화면 (티켓 위주 깔끔한 구성)
+# 4. 예매 완료 화면 (이미지 실물 보딩패스 완벽 재현)
 # ==========================================
 elif st.session_state.step == "success":
     if not st.session_state.is_logged_in:
@@ -1002,24 +1099,94 @@ elif st.session_state.step == "success":
     )
     b = st.session_state.booking_data
 
-    col1, col2, col3 = st.columns([1, 2, 1])
+    # 공항 코드 및 도시명 추출 파싱
+    dep_full = b.get("departure", "서울/인천 (ICN)")
+    dest_full = b.get("destination", "도쿄/나리타 (NRT) - 일본")
+
+    dep_code = "ICN"
+    if "(" in dep_full and ")" in dep_full:
+        dep_code = dep_full.split("(")[1].split(")")[0]
+    dep_city = dep_full.split("/")[0] if "/" in dep_full else "Incheon"
+
+    dest_code = "NRT"
+    if "(" in dest_full and ")" in dest_full:
+        dest_code = dest_full.split("(")[1].split(")")[0]
+    dest_city = dest_full.split("/")[0] if "/" in dest_full else "Tokyo"
+
+    passenger_name = b.get("name", "PASSENGER").upper()
+    flight_no = b.get("flight_no", "SP101")
+    dep_time_str = f"{b.get('dep_time', '09:00')} {b.get('date', date.today()).strftime('%b %d %Y').upper()}"
+    arr_time_str = f"{b.get('arr_time', '12:00')} {b.get('date', date.today()).strftime('%b %d %Y').upper()}"
+    seat_type = b.get("seat", "일반석")
+
+    col1, col2, col3 = st.columns([1, 2.5, 1])
     with col2:
         st.markdown(
             f"""
-            <div class="eticket-box">
-                <h3 style="text-align: center; color: #05132d; margin-top: 0; border-bottom: 2px solid #05132d; padding-bottom: 12px;">
-                    🎫 STARPORT E-PASSENGER TICKET
-                </h3>
-                <p><b>[탑승객]</b> {b.get('name')} ({b.get('birthdate')})</p>
-                <hr style="border: 0; border-top: 1px solid #e5e7eb;">
-                <p><b>[여정]</b> {b.get('departure')} ➔ {b.get('destination')}</p>
-                <p><b>[항공편]</b> {b.get('airline')} ({b.get('flight_no')})</p>
-                <p><b>[좌석 등급]</b> {b.get('seat')}</p>
-                <p><b>[일시]</b> {b.get('date')} | {b.get('dep_time')} 출발</p>
-                <hr style="border: 0; border-top: 1px solid #e5e7eb;">
-                <p style="text-align: right; font-size: 1.25rem; color: #0066ff; margin-bottom:0;">
-                    <b>총 결제금액: {b.get('price', 0):,}원</b>
-                </p>
+            <div class="boarding-pass">
+                <!-- 상단 헤더 & 바코드 -->
+                <div class="bp-header">
+                    <div>
+                        <div class="pass-title">BOARDING PASS</div>
+                        <div class="passenger-name">{passenger_name}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="bp-barcode">||||||| | ||||| |||||||</div>
+                    </div>
+                </div>
+                
+                <!-- 중단 메인 여정 세션 (블루) -->
+                <div class="bp-body">
+                    <div class="bp-route">
+                        <div>
+                            <div class="bp-loc-code">{dep_code}</div>
+                            <div class="bp-loc-sub">{dep_city}</div>
+                        </div>
+                        <div class="bp-plane-icon">✈</div>
+                        <div>
+                            <div class="bp-loc-code">{dest_code}</div>
+                            <div class="bp-loc-sub">{dest_city}</div>
+                        </div>
+                    </div>
+                    <hr class="bp-divider">
+                    <div class="bp-times">
+                        <div>
+                            <div class="bp-time-title">BOARDING TIME</div>
+                            <div class="bp-time-val">{dep_time_str}</div>
+                        </div>
+                        <div>
+                            <div class="bp-time-title">DEPARTURE TIME</div>
+                            <div class="bp-time-val">{arr_time_str}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 하단 탑승 정보 (FLIGHT / GATE / SEAT) -->
+                <div class="bp-footer">
+                    <div class="bp-foot-item">
+                        <div class="label">FLIGHT</div>
+                        <div class="value">{flight_no}</div>
+                    </div>
+                    <div style="border-left: 2px solid #cbd5e1; height: 35px;"></div>
+                    <div class="bp-foot-item">
+                        <div class="label">GATE</div>
+                        <div class="value">41A</div>
+                    </div>
+                    <div style="border-left: 2px solid #cbd5e1; height: 35px;"></div>
+                    <div class="bp-foot-item">
+                        <div class="label">SEAT NO.</div>
+                        <div class="value">10C</div>
+                    </div>
+                    <div style="border-left: 2px solid #cbd5e1; height: 35px;"></div>
+                    <div class="bp-foot-item">
+                        <div class="label">CLASS</div>
+                        <div class="value" style="font-size:0.95rem; font-weight:800; color:#0284c7;">{seat_type}</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 15px; color: #38bdf8; font-size: 1.15rem; font-weight: bold;">
+                💳 결제 완료 금액: {b.get('price', 0):,}원
             </div>
         """,
             unsafe_allow_html=True,
