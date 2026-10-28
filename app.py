@@ -100,12 +100,13 @@ st.markdown(
         background-position: center;
         border-radius: 16px;
         padding: 30px;
-        height: 220px;
+        height: 200px;
         display: flex;
         flex-direction: column;
         justify-content: flex-end;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        margin-bottom: 5px;
     }
     .banner-card-btn:hover {
         transform: translateY(-3px);
@@ -311,86 +312,130 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
-    # 🌟 클릭이 100% 보장되는 고화질 대표 여행지 카드 배너
+    # 🌟 주요 6개 도시(도쿄, 방콕, 파리, 뉴욕, 다낭, 스위스) 카드 배너 섹션
     st.markdown(
-        "<h3 style='color: white; margin-bottom: 15px;'>🔥 인기 추천 여행지 (사진 클릭 시 바로 가이드로 이동)</h3>",
+        "<h3 style='color: white; margin-top: 30px; margin-bottom: 15px;'>🔥 주요 인기 추천 여행지</h3>",
         unsafe_allow_html=True,
     )
 
-    b_col1, b_col2, b_col3 = st.columns(3)
+    # 1행 (도쿄, 방콕, 파리)
+    r1_c1, r1_c2, r1_c3 = st.columns(3)
 
-    with b_col1:
+    with r1_c1:
         st.markdown(
             """
             <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
                 <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
-                    <h3 style="color:white; margin:0;">🗼 도쿄 여행 트렌드</h3>
-                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.88rem;">화려한 도시와 다양한 식도락</p>
+                    <h3 style="color:white; margin:0; font-size: 1.2rem;">🗼 도쿄 여행 트렌드</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.85rem;">화려한 도시와 다양한 식도락</p>
                 </div>
             </div>
         """,
             unsafe_allow_html=True,
         )
         if st.button(
-            "👉 '도쿄' 상세 가이드 보기", key="tokyo_banner_btn", use_container_width=True
+            "👉 '도쿄' 상세 가이드", key="btn_tokyo", use_container_width=True
         ):
             st.session_state.selected_destination_info = "도쿄"
             st.session_state.step = "destination_detail"
             st.rerun()
 
-    with b_col2:
+    with r1_c2:
         st.markdown(
             """
             <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
                 <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
-                    <h3 style="color:white; margin:0;">🏝️ 낭만의 방콕 휴가</h3>
-                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.88rem;">이국적인 사원과 신나는 야시장</p>
+                    <h3 style="color:white; margin:0; font-size: 1.2rem;">🏝️ 낭만의 방콕 휴가</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.85rem;">이국적인 사원과 야시장</p>
                 </div>
             </div>
         """,
             unsafe_allow_html=True,
         )
         if st.button(
-            "👉 '방콕' 상세 가이드 보기", key="bangkok_banner_btn", use_container_width=True
+            "👉 '방콕' 상세 가이드", key="btn_bangkok", use_container_width=True
         ):
             st.session_state.selected_destination_info = "방콕"
             st.session_state.step = "destination_detail"
             st.rerun()
 
-    with b_col3:
+    with r1_c3:
         st.markdown(
             """
             <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
                 <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
-                    <h3 style="color:white; margin:0;">🥐 예술의 도시 파리</h3>
-                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.88rem;">낭만적인 에펠탑과 센 강</p>
+                    <h3 style="color:white; margin:0; font-size: 1.2rem;">🥐 예술의 도시 파리</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.85rem;">낭만적인 에펠탑과 센 강</p>
                 </div>
             </div>
         """,
             unsafe_allow_html=True,
         )
         if st.button(
-            "👉 '파리' 상세 가이드 보기", key="paris_banner_btn", use_container_width=True
+            "👉 '파리' 상세 가이드", key="btn_paris", use_container_width=True
         ):
             st.session_state.selected_destination_info = "파리"
             st.session_state.step = "destination_detail"
             st.rerun()
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
 
-    row2_c1, row2_c2, row2_c3 = st.columns(3)
-    with row2_c1:
-        if st.button("🗽 뉴욕 가이드 보기", use_container_width=True):
+    # 2행 (뉴욕, 다낭, 스위스)
+    r2_c1, r2_c2, r2_c3 = st.columns(3)
+
+    with r2_c1:
+        st.markdown(
+            """
+            <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1534430480872-3498386e7856');">
+                <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    <h3 style="color:white; margin:0; font-size: 1.2rem;">🗽 미국 뉴욕</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.85rem;">맨해튼 빌딩 숲과 센트럴 파크</p>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        if st.button(
+            "👉 '뉴욕' 상세 가이드", key="btn_newyork", use_container_width=True
+        ):
             st.session_state.selected_destination_info = "뉴욕"
             st.session_state.step = "destination_detail"
             st.rerun()
-    with row2_c2:
-        if st.button("🌊 다낭 가이드 보기", use_container_width=True):
+
+    with r2_c2:
+        st.markdown(
+            """
+            <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1559592413-7cec4d0cae2b');">
+                <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    <h3 style="color:white; margin:0; font-size: 1.2rem;">🌊 베트남 다낭</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.85rem;">에메랄드빛 미케 해변과 휴양</p>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        if st.button(
+            "👉 '다낭' 상세 가이드", key="btn_danang", use_container_width=True
+        ):
             st.session_state.selected_destination_info = "다낭"
             st.session_state.step = "destination_detail"
             st.rerun()
-    with row2_c3:
-        if st.button("⛰️ 스위스 가이드 보기", use_container_width=True):
+
+    with r2_c3:
+        st.markdown(
+            """
+            <div class="banner-card-btn" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b');">
+                <div style="background: rgba(0,0,0,0.5); padding: 12px; border-radius: 8px; backdrop-filter: blur(4px);">
+                    <h3 style="color:white; margin:0; font-size: 1.2rem;">⛰️ 스위스 알프스</h3>
+                    <p style="color:#e2e8f0; margin:4px 0 0 0; font-size:0.85rem;">만년설과 동화 같은 산악 마을</p>
+                </div>
+            </div>
+        """,
+            unsafe_allow_html=True,
+        )
+        if st.button(
+            "👉 '스위스' 상세 가이드", key="btn_swiss", use_container_width=True
+        ):
             st.session_state.selected_destination_info = "스위스"
             st.session_state.step = "destination_detail"
             st.rerun()
