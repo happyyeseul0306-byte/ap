@@ -293,6 +293,15 @@ if st.session_state.step == "home":
                 st.session_state.step = "select_flight"
                 st.rerun()
 
+    # 🌟 사진(캐러셀) 클릭 시 Streamlit 쿼리 파라미터를 통해 가이드 페이지로 이동하도록 설정
+    query_params = st.query_params
+    if "goto_dest" in query_params:
+        target_dest = query_params["goto_dest"]
+        st.session_state.selected_destination_info = target_dest
+        st.session_state.step = "destination_detail"
+        st.query_params.clear()
+        st.rerun()
+
     carousel_html = """
     <!DOCTYPE html>
     <html>
@@ -305,6 +314,7 @@ if st.session_state.step == "home":
         border-radius: 16px;
         overflow: hidden;
         box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        cursor: pointer;
       }
       .slide {
         position: absolute;
@@ -333,23 +343,23 @@ if st.session_state.step == "home":
     </style>
     </head>
     <body>
-    <div class="slider-container">
-      <div class="slide active" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
+    <div class="slider-container" onclick="handleClick()">
+      <div class="slide active" data-dest="도쿄" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1503899036084-c55cdd92da26');">
         <div class="slide-content">
           <h2>🗼 도쿄 여행 트렌드</h2>
-          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지</p>
+          <p>화려한 도시와 맛있는 음식이 기다리는 가까운 여행지 (클릭하여 가이드 보기)</p>
         </div>
       </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
+      <div class="slide" data-dest="방콕" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1508009603885-50cf7c579365');">
         <div class="slide-content">
           <h2>🏝️ 낭만의 방콕 휴가</h2>
-          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시</p>
+          <p>이국적인 사원과 야시장, 가성비 최고의 휴양 도시 (클릭하여 가이드 보기)</p>
         </div>
       </div>
-      <div class="slide" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
+      <div class="slide" data-dest="파리" style="background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1502602898657-3e91760cbb34');">
         <div class="slide-content">
           <h2>🥐 예술의 도시 파리</h2>
-          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳</p>
+          <p>낭만적인 에펠탑과 세계적인 명화가 숨쉬는 곳 (클릭하여 가이드 보기)</p>
         </div>
       </div>
     </div>
@@ -361,7 +371,13 @@ if st.session_state.step == "home":
         currentSlide = (currentSlide + 1) % slides.length;
         slides[currentSlide].classList.add('active');
       }
-      setInterval(nextSlide, 3500);
+      let slideInterval = setInterval(nextSlide, 3500);
+
+      function handleClick() {
+        const activeSlide = document.querySelector('.slide.active');
+        const dest = activeSlide.getAttribute('data-dest');
+        window.parent.location.href = window.location.pathname + "?goto_dest=" + encodeURIComponent(dest);
+      }
     </script>
     </body>
     </html>
