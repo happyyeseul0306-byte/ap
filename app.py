@@ -987,14 +987,14 @@ elif st.session_state.step == "passenger_info":
                 st.warning("성함을 올바르게 입력해주세요.")
 
 # ==========================================
-# 4. 예매 완료 화면 (티켓 위주 깔끔한 구성)
+# 4. 예매 완료 화면 (풍선 효과 완전 제거됨)
 # ==========================================
 elif st.session_state.step == "success":
     if not st.session_state.is_logged_in:
         st.session_state.step = "login"
         st.rerun()
 
-    st.balloons()
+    # st.balloons()  <-- 풍선 효과 제거 완료!
 
     st.markdown(
         "<h2 style='text-align: center; color: white;'>🎉 항공권 예매가 완료되었습니다!</h2>",
